@@ -1,0 +1,7 @@
+"gamemode"
+{
+	"base"		"sandbox"
+	"title"		"AbyssRP"
+	"maps"		"^rp_"
+	"menusystem"	"1"
+}
