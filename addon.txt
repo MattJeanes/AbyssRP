@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"		"AbyssRP"
+	"version"	"Git"
+	"up_date"	"25/11/12"
+	"author_name"	"Dr. Matt"
+	"author_email"	"mattjeanes23@gmail.com"
+	"author_url"	"mattjeanes.com"
+	
+	"info"		"A new type of roleplay gamemode."
+}
