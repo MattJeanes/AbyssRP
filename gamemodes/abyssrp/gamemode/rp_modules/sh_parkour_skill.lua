@@ -1,3 +1,4 @@
+
 CreateConVar( "Parkour_SpeedDivider", 5, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_ForceMul", 10, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_MinForceAdd", 10, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
@@ -104,11 +105,11 @@ if CLIENT then
 				SlideSound = CreateSound(ply, "player/slide/slide_loop_me.wav")
 				SlideSound:Play()
 			else	
-				SlideSound:ChangeVolume(1)
+				SlideSound:ChangeVolume(1,0)
 			end			
 		else
 			if SlideSound then
-				SlideSound:ChangeVolume(0)
+				SlideSound:ChangeVolume(0,0)
 				SlideSound:Stop()
 				SlideSound = nil
 			end	
@@ -128,10 +129,13 @@ if CLIENT then
 end
 
 if SERVER then
+	resource.AddFile("sound/player/slide/slide_start_1.wav")
+	resource.AddFile("sound/player/slide/slide_loop_me.wav")
+
     local CanLastVel2 = false
     local NextExp = CurTime()
-	local function DoWallJump(ply, key)
-		if (ply:Alive() and key == IN_JUMP and ply:WaterLevel() <= 1 and !ply:InVehicle() ) and ply:Team()==RP:GetTeamN("freerunner") then
+	local function DoWallJump(ply, key) 
+		if (ply:Alive() and key == IN_JUMP and ply:WaterLevel() <= 1 and !ply:InVehicle() ) then
 		
 		local pos = ply:GetShootPos();
 		local up = ply:GetUp();
@@ -238,13 +242,14 @@ if SERVER then
 	hook.Add("KeyPress", "DoWallJump", DoWallJump);
 	
 	function DoRoll( ply, vel )
+
 		local weapon  = ply:GetActiveWeapon()
 		ply.lookangle = ply:GetUp() - ply:GetAimVector()
 		ply.lookingdown = false
 		if (ply.lookangle.z > 1.7) then 
 			ply.lookingdown = true 
 		end
-		if ply.lookingdown == true and ply:KeyDown(IN_DUCK) and ply:Team()==RP:GetTeamN("freerunner") then
+		if ply.lookingdown == true and ply:KeyDown(IN_DUCK) then
 			if weapon:IsValid() then
 				if weapon.Primary == nil then
 					weapon:SendWeaponAnim(ACT_VM_HOLSTER)
@@ -311,281 +316,281 @@ if SERVER then
 		
 	function ParkourThink()
 		for k, v in pairs(player.GetAll()) do
-			if v:Team()==7 then
-				local pos = v:GetShootPos();
-				local up = v:GetUp();
-				local down = v:GetUp() * -1;
-				local left = (v:GetRight() * -1);
-				local right = v:GetRight();
-				local forward = v:GetForward();
-				local back = (v:GetForward() * -1);
-				local weapon = v:GetActiveWeapon()
-				local vel = v:GetVelocity()
-				local vellen = vel:Length()
-				
-				if !v:OnGround() and v:KeyDown(IN_USE) and CanClimb(v) then
-					if CanLastVel == true then
-						CanLastVel = false
-						v.LastVel = v:GetVelocity()
-						v.CanClimbTime = 1
-						CanClimbTime = CurTime() + v.CanClimbTime
-					end
-					if CanClimbTime >= CurTime() then
-						v.Climbing = true
-						if weapon:IsValid() then
-							weapon:SetNextPrimaryFire(CurTime() + 0.1)
-						end	
-					elseif v.Climbing and CanClimbTime < CurTime() then
-						v.Climbing = false
-					end
-					if !v:KeyDown(IN_JUMP) then
-						v:SetLocalVelocity(down * 150);
-					elseif !v.Hanging and v:KeyDown(IN_JUMP) and v.Climbing then
-						v:SetLocalVelocity(up * v.LastVel);
-						if NextClimbSound <= CurTime() then
-							v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-							NextClimbSound = CurTime() + 0.2
-							if PunchCyle == 0 then
-								v:ViewPunch(Angle(5, math.random(3,7), 0));
-								PunchCyle = 1
-							else
-								v:ViewPunch(Angle(5, -(math.random(3,7)), 0));
-								PunchCyle = 0
-							end
-						end
-					end
-				elseif !v:OnGround() and !v:KeyDown(IN_USE) and v.Climbing then
-					v.Climbing = false
-				end
-				
-				if v:OnGround() or v:WaterLevel() > 0 or v:GetMoveType() == MOVETYPE_NOCLIP then
-					v.Climbing = false
-					v.Hanging = false
-					CanLastVel = true
-					v.ImOnGround = true
-					v.WalljumpCombo = 0
-					v.WRunning = false
-					v.WallRunStep = 0
-					v:SetNWBool("ParkourLeanView", false)
-					v:SetNWBool("ParkourRightLeanView", false)
-					v:SetNWBool("ParkourLeftLeanView", false)
-					v:SetNWBool("WallRunning", false)
-				else
-					v.ImOnGround = false	
-				end
-				
-				if v.WallRunStep == nil then
-					v.WallRunStep = 0
-				end
-				
-				if v:KeyDown(IN_FORWARD) and v:KeyDown(IN_JUMP) and v:KeyDown(IN_SPEED) and !v:KeyDown(IN_MOVELEFT) and !v:KeyDown(IN_MOVERIGHT) and CanWallRun(v) and !v.Hanging and !v.Climbing and v.WallRunStep != 4 then
-					v.WRunning = true
-					v.Climbing = false
-					v.Hanging = false
-					v.LastVel = vellen
-					v:SetMoveType(MOVETYPE_WALK)
-					v:SetGravity(false)
-					v:SetLocalVelocity(forward * v.LastVel + up * 5)
-					v:SetNWBool("WallRunning", true)
-					if NextWallRunSound <= CurTime() and vel:Length() > 100 then
-						v:EmitSound("physics/cardboard/cardboard_box_impact_hard" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-						v.WallRunStep = v.WallRunStep + 1
-						NextWallRunSound = CurTime() + 0.2
-					end
-				elseif v.WRunning and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_FORWARD) or vellen < 100 or !CanWallRun(v) or v.WallRunStep >= 4 then
-					v.WRunning = false
-					v:SetGravity(true)
-					v:SetNWBool("WallRunning", false)
-					v:SetNWBool("ParkourLeanView", false)
-					v:SetNWBool("ParkourRightLeanView", false)
-					v:SetNWBool("ParkourLeftLeanView", false)
-				end
-				
-				if !v.Hanging and v:KeyDown(IN_USE) and GrabLedge(v) then
-					v.Hanging = true
-					v:SetMoveType(MOVETYPE_NONE)
-					v.HangForward = v:GetForward()
-					v.HangLeft = left
-					v.HangRight = right
-					v:ViewPunch(Angle(-10, 0, 0));
-					v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-				elseif v.Hanging and !v:KeyDown(IN_USE) and v:KeyDown(IN_JUMP) then
-					v.Hanging = false
-					v:SetMoveType(MOVETYPE_WALK)
-					v:SetLocalVelocity(up * 325)
-					v:ViewPunch(Angle(10, 0, 0));
-					v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-				end
-				
-				if v.Hanging and v:KeyDown(IN_MOVELEFT) and !v:KeyDown(IN_MOVERIGHT) and v.HangLeft and LedgeLeft(v, v.HangLeft, v.HangForward) then
-					v:SetMoveType(MOVETYPE_WALK)
-					v:SetGravity(false)
-					v:SetLocalVelocity(v.HangLeft * 100 + up * 5)
-					if NextClimbSound <= CurTime() then
-						v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-						NextClimbSound = CurTime() + 0.55
-						if PunchCyle == 0 then
-							v:ViewPunch(Angle(2, 2, 0));
-							PunchCyle = 1
-						else
-							v:ViewPunch(Angle(2, -2, 0));
-							PunchCyle = 0
-						end
-					end
-				elseif v.Hanging and v:KeyReleased(IN_MOVELEFT) then
-					v:SetMoveType(MOVETYPE_NONE)
-				elseif v.Hanging and v:KeyDown(IN_MOVERIGHT) and !v:KeyDown(IN_MOVELEFT) and v.HangRight and LedgeRight(v, v.HangRight, v.HangForward) then
-					v:SetMoveType(MOVETYPE_WALK)
-					v:SetGravity(false)
-					v:SetLocalVelocity(v.HangRight * 100 + up * 5)
-					if NextClimbSound <= CurTime() then
-						v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
-						NextClimbSound = CurTime() + 0.55
-						if PunchCyle == 0 then
-							v:ViewPunch(Angle(2, 2, 0));
-							PunchCyle = 1
-						else
-							v:ViewPunch(Angle(2, -2	, 0));
-							PunchCyle = 0
-						end
-					end
-				elseif v.Hanging and v:KeyReleased(IN_MOVERIGHT) then
-					v:SetMoveType(MOVETYPE_NONE)
-				end
+	  
+			local pos = v:GetShootPos();
+			local up = v:GetUp();
+			local down = v:GetUp() * -1;
+			local left = (v:GetRight() * -1);
+			local right = v:GetRight();
+			local forward = v:GetForward();
+			local back = (v:GetForward() * -1);
+			local weapon = v:GetActiveWeapon()
+			local vel = v:GetVelocity()
+			local vellen = vel:Length()
 			
-				local trF = util.QuickTrace(v:GetPos() + Vector(0,0,15) , (v:GetForward() * 50), v);
-				
-				if v.Rolling and v:OnGround() then
-					v:SetLocalVelocity(forward * 450 )
+			if !v:OnGround() and v:KeyDown(IN_USE) and CanClimb(v) then
+				if CanLastVel == true then
+					CanLastVel = false
+					v.LastVel = v:GetVelocity()
+					v.CanClimbTime = 1
+					CanClimbTime = CurTime() + v.CanClimbTime
+				end
+				if CanClimbTime >= CurTime() then
+					v.Climbing = true
 					if weapon:IsValid() then
-						weapon:SetNextPrimaryFire(CurTime() + 0.3)
-					end
-					if NextRollSound and NextRollSound <= CurTime() and vellen > 0 then
-						NextRollSound = CurTime() + 0.2
-						if SERVER then
-							v:EmitSound("npc/combine_soldier/gear"..math.random(1, 6)..".wav", math.Rand(80, 100), math.Rand(90, 120))
-						end		
+						weapon:SetNextPrimaryFire(CurTime() + 0.1)
 					end	
-				end	
-				if v.Rolling and trF and trF.Hit then
-					v.Rolling = false
-					v:SetVelocity(v:GetAimVector(), 0)
-					if SERVER then
-						v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
-					end
-					if trF.Entity:IsValid() then
-						trF.Entity:TakeDamage(35, v)
-					end
-					local shake = ents.Create( "env_shake" )
-					shake:SetOwner(v)
-					shake:SetPos( trF.HitPos )
-					shake:SetKeyValue( "amplitude", "2500" )
-					shake:SetKeyValue( "radius", "100" )
-					shake:SetKeyValue( "duration", "0.5" )
-					shake:SetKeyValue( "frequency", "255" )
-					shake:SetKeyValue( "spawnflags", "4" )	
-					shake:Spawn()
-					shake:Activate()
-					shake:Fire( "StartShake", "", 0 )
+				elseif v.Climbing and CanClimbTime < CurTime() then
+					v.Climbing = false
 				end
-				
-				if v.SlideCond == nil then
-					v.SlideCond = false
-					v.SlideTime = nil
-					v.Sliding = false
-					v.SlideLastDir = v:GetForward()
-					v.NextSlideEffect = CurTime()
-					umsg.Start("SendSlideToClient",v)
-						umsg.Bool(false)
-					umsg.End()
-				end
-				
-				local trD = util.QuickTrace(v:GetPos(), (v:GetUp() * -1) * 20, v);
-				
-				if trD.Hit then
-					v.CanSlide = true
-				else
-					v.CanSlide = false
-				end
-				
-				if !v.SlideCond and v:KeyDown(IN_SPEED) and v:KeyDown(IN_DUCK) and v.CanSlide and vellen >= v:GetRunSpeed() then
-					if !v.SlideCond then
-						if SERVER then
-							v:EmitSound("player/slide/slide_start_1.wav", math.Rand(80, 100), math.Rand(90, 120))
+				if !v:KeyDown(IN_JUMP) then
+					v:SetLocalVelocity(down * 150);
+				elseif !v.Hanging and v:KeyDown(IN_JUMP) and v.Climbing then
+					v:SetLocalVelocity(up * v.LastVel);
+					if NextClimbSound <= CurTime() then
+						v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+						NextClimbSound = CurTime() + 0.2
+						if PunchCyle == 0 then
+							v:ViewPunch(Angle(5, math.random(3,7), 0));
+							PunchCyle = 1
+						else
+							v:ViewPunch(Angle(5, -(math.random(3,7)), 0));
+							PunchCyle = 0
 						end
 					end
-					v.SlideCond = true
-					v.SlideLastVel = vellen
-					v.SlideLastDir = vel:GetNormalized()
-					v.SlideTime = CurTime() + math.Clamp(v.SlideLastVel / 800, 0, 2)
-				elseif v.SlideCond and v.Sliding and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_DUCK) or v.Rolling or !v.CanSlide then
-					v.SlideCond = false
-					v.SlideTime = nil
-					v.Sliding = false
 				end
-				
-				if v.SlideCond and v.SlideLastVel > 0 then
-					v.Sliding = true
-					v.SlideCond = true
-					
-					if v.SlideTime and v.SlideTime < CurTime() then
-						v.SlideLastVel = v.SlideLastVel - FrameTime() * 600
-					end	
-					
-					v:SetLocalVelocity(v.SlideLastDir * v.SlideLastVel)
-					
-					if v.NextSlideEffect <= CurTime() then
-						v.NextSlideEffect = CurTime() + 0.01
-						local fx 	= EffectData()
-						fx:SetStart(trD.HitPos)
-						fx:SetOrigin(trD.HitPos)
-						fx:SetNormal(trD.HitNormal)
-						util.Effect("slide_effect",fx)
-					end	
-				elseif v.Sliding and v.SlideLastVel <= 0 or v.Sliding and !v.CanSlide then
-					v.SlideTime = nil
-					v.Sliding = false
-					v.SlideCond1 = false
-				end
-				
-				local trF = util.QuickTrace(v:GetPos() + Vector(0,0,50) , (v.SlideLastDir * 50), v);
-				
-				if trF and trF.Hit and v.Sliding and v.SlideCond then
-					v.SlideTime = nil
-					v.Sliding = false
-					v.SlideCond = false
+			elseif !v:OnGround() and !v:KeyDown(IN_USE) and v.Climbing then
+				v.Climbing = false
+			end
 			
-					v:SetVelocity(v:GetAimVector(), 0)
+			if v:OnGround() or v:WaterLevel() > 0 or v:GetMoveType() == MOVETYPE_NOCLIP then
+				v.Climbing = false
+				v.Hanging = false
+				CanLastVel = true
+				v.ImOnGround = true
+				v.WalljumpCombo = 0
+				v.WRunning = false
+				v.WallRunStep = 0
+				v:SetNWBool("ParkourLeanView", false)
+				v:SetNWBool("ParkourRightLeanView", false)
+				v:SetNWBool("ParkourLeftLeanView", false)
+				v:SetNWBool("WallRunning", false)
+			else
+				v.ImOnGround = false	
+			end
+			
+			if v.WallRunStep == nil then
+				v.WallRunStep = 0
+			end
+			
+			if v:KeyDown(IN_FORWARD) and v:KeyDown(IN_JUMP) and v:KeyDown(IN_SPEED) and !v:KeyDown(IN_MOVELEFT) and !v:KeyDown(IN_MOVERIGHT) and CanWallRun(v) and !v.Hanging and !v.Climbing and v.WallRunStep != 4 then
+				v.WRunning = true
+				v.Climbing = false
+				v.Hanging = false
+				v.LastVel = vellen
+				v:SetMoveType(MOVETYPE_WALK)
+				v:SetGravity(0)
+				v:SetLocalVelocity(forward * v.LastVel + up * 5)
+				v:SetNWBool("WallRunning", true)
+				if NextWallRunSound <= CurTime() and vel:Length() > 100 then
+					v:EmitSound("physics/cardboard/cardboard_box_impact_hard" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+					v.WallRunStep = v.WallRunStep + 1
+					NextWallRunSound = CurTime() + 0.2
+				end
+			elseif v.WRunning and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_FORWARD) or vellen < 100 or !CanWallRun(v) or v.WallRunStep >= 4 then
+				v.WRunning = false
+				v:SetGravity(0)
+				v:SetNWBool("WallRunning", false)
+				v:SetNWBool("ParkourLeanView", false)
+				v:SetNWBool("ParkourRightLeanView", false)
+				v:SetNWBool("ParkourLeftLeanView", false)
+			end
+			
+			if !v.Hanging and v:KeyDown(IN_USE) and GrabLedge(v) then
+				v.Hanging = true
+				v:SetMoveType(MOVETYPE_NONE)
+				v.HangForward = v:GetForward()
+				v.HangLeft = left
+				v.HangRight = right
+				v:ViewPunch(Angle(-10, 0, 0));
+				v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+			elseif v.Hanging and !v:KeyDown(IN_USE) and v:KeyDown(IN_JUMP) then
+				v.Hanging = false
+				v:SetMoveType(MOVETYPE_WALK)
+				v:SetLocalVelocity(up * 325)
+				v:ViewPunch(Angle(10, 0, 0));
+				v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+			end
+			
+			if v.Hanging and v:KeyDown(IN_MOVELEFT) and !v:KeyDown(IN_MOVERIGHT) and v.HangLeft and LedgeLeft(v, v.HangLeft, v.HangForward) then
+				v:SetMoveType(MOVETYPE_WALK)
+				v:SetGravity(0)
+				v:SetLocalVelocity(v.HangLeft * 100 + up * 5)
+				if NextClimbSound <= CurTime() then
+					v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+					NextClimbSound = CurTime() + 0.55
+					if PunchCyle == 0 then
+						v:ViewPunch(Angle(2, 2, 0));
+						PunchCyle = 1
+					else
+						v:ViewPunch(Angle(2, -2, 0));
+						PunchCyle = 0
+					end
+				end
+			elseif v.Hanging and v:KeyReleased(IN_MOVELEFT) then
+				v:SetMoveType(MOVETYPE_NONE)
+			elseif v.Hanging and v:KeyDown(IN_MOVERIGHT) and !v:KeyDown(IN_MOVELEFT) and v.HangRight and LedgeRight(v, v.HangRight, v.HangForward) then
+				v:SetMoveType(MOVETYPE_WALK)
+				v:SetGravity(0)
+				v:SetLocalVelocity(v.HangRight * 100 + up * 5)
+				if NextClimbSound <= CurTime() then
+					v:EmitSound("physics/body/body_medium_impact_soft" .. math.random(1, 7) .. ".wav", math.Rand(90, 110), math.Rand(90, 120))
+					NextClimbSound = CurTime() + 0.55
+					if PunchCyle == 0 then
+						v:ViewPunch(Angle(2, 2, 0));
+						PunchCyle = 1
+					else
+						v:ViewPunch(Angle(2, -2	, 0));
+						PunchCyle = 0
+					end
+				end
+			elseif v.Hanging and v:KeyReleased(IN_MOVERIGHT) then
+				v:SetMoveType(MOVETYPE_NONE)
+			end
+		
+			local trF = util.QuickTrace(v:GetPos() + Vector(0,0,15) , (v:GetForward() * 50), v);
+			
+			if v.Rolling and v:OnGround() then
+				v:SetLocalVelocity(forward * 450 )
+				if weapon:IsValid() then
+					weapon:SetNextPrimaryFire(CurTime() + 0.3)
+				end
+				if NextRollSound and NextRollSound <= CurTime() and vellen > 0 then
+					NextRollSound = CurTime() + 0.2
 					if SERVER then
-						v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
+						v:EmitSound("npc/combine_soldier/gear"..math.random(1, 6)..".wav", math.Rand(80, 100), math.Rand(90, 120))
+					end		
+				end	
+			end	
+			if v.Rolling and trF and trF.Hit then
+				v.Rolling = false
+				v:SetVelocity(v:GetAimVector(), 0)
+				if SERVER then
+					v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
+				end
+				if trF.Entity:IsValid() then
+					trF.Entity:TakeDamage(35, v)
+				end
+				local shake = ents.Create( "env_shake" )
+				shake:SetOwner(v)
+				shake:SetPos( trF.HitPos )
+				shake:SetKeyValue( "amplitude", "2500" )
+				shake:SetKeyValue( "radius", "100" )
+				shake:SetKeyValue( "duration", "0.5" )
+				shake:SetKeyValue( "frequency", "255" )
+				shake:SetKeyValue( "spawnflags", "4" )	
+				shake:Spawn()
+				shake:Activate()
+				shake:Fire( "StartShake", "", 0 )
+			end
+			
+			if v.SlideCond == nil then
+				v.SlideCond = false
+				v.SlideTime = nil
+				v.Sliding = false
+				v.SlideLastDir = v:GetForward()
+				v.NextSlideEffect = CurTime()
+				umsg.Start("SendSlideToClient",v)
+					umsg.Bool(false)
+				umsg.End()
+			end
+			
+			local trD = util.QuickTrace(v:GetPos(), (v:GetUp() * -1) * 20, v);
+			
+			if trD.Hit then
+				v.CanSlide = true
+			else
+				v.CanSlide = false
+			end
+			
+			if !v.SlideCond and v:KeyDown(IN_SPEED) and v:KeyDown(IN_DUCK) and v.CanSlide and vellen >= v:GetRunSpeed() then
+				if !v.SlideCond then
+					if SERVER then
+						v:EmitSound("player/slide/slide_start_1.wav", math.Rand(80, 100), math.Rand(90, 120))
 					end
-					if trF.Entity:IsValid() and not trF.Entity:IsPlayer() then
-						trF.Entity:TakeDamage(v.SlideLastVel / 20, v)
-					end
-					local shake = ents.Create( "env_shake" )
-					shake:SetOwner(v)
-					shake:SetPos( trF.HitPos )
-					shake:SetKeyValue( "amplitude", "2500" )
-					shake:SetKeyValue( "radius", "100" )
-					shake:SetKeyValue( "duration", "0.5" )
-					shake:SetKeyValue( "frequency", "255" )
-					shake:SetKeyValue( "spawnflags", "4" )	
-					shake:Spawn()
-					shake:Activate()
-					shake:Fire( "StartShake", "", 0 )
+				end
+				v.SlideCond = true
+				v.SlideLastVel = vellen
+				v.SlideLastDir = vel:GetNormalized()
+				v.SlideTime = CurTime() + math.Clamp(v.SlideLastVel / 800, 0, 2)
+			elseif v.SlideCond and v.Sliding and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_DUCK) or v.Rolling or !v.CanSlide then
+				v.SlideCond = false
+				v.SlideTime = nil
+				v.Sliding = false
+			end
+			
+			if v.SlideCond and v.SlideLastVel > 0 then
+				v.Sliding = true
+				v.SlideCond = true
+				
+				if v.SlideTime and v.SlideTime < CurTime() then
+					v.SlideLastVel = v.SlideLastVel - FrameTime() * 600
 				end	
 				
-				if v.LastSlide == nil then
-					v.LastSlide = false
-				end
+				v:SetLocalVelocity(v.SlideLastDir * v.SlideLastVel)
 				
-				if v.LastSlide != v.Sliding then
-					v.LastSlide = v.Sliding
-					umsg.Start("SendSlideToClient",v)
-						umsg.Bool(v.Sliding)
-					umsg.End()
-				end
+				if v.NextSlideEffect <= CurTime() then
+					v.NextSlideEffect = CurTime() + 0.01
+					local fx 	= EffectData()
+					fx:SetStart(trD.HitPos)
+					fx:SetOrigin(trD.HitPos)
+					fx:SetNormal(trD.HitNormal)
+					util.Effect("slide_effect",fx)
+				end	
+			elseif v.Sliding and v.SlideLastVel <= 0 or v.Sliding and !v.CanSlide then
+				v.SlideTime = nil
+				v.Sliding = false
+				v.SlideCond1 = false
 			end
+			
+			local trF = util.QuickTrace(v:GetPos() + Vector(0,0,50) , (v.SlideLastDir * 50), v);
+			
+			if trF and trF.Hit and v.Sliding and v.SlideCond then
+				v.SlideTime = nil
+				v.Sliding = false
+				v.SlideCond = false
+		
+				v:SetVelocity(v:GetAimVector(), 0)
+				if SERVER then
+					v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
+				end
+				if trF.Entity:IsValid() then
+					trF.Entity:TakeDamage(v.SlideLastVel / 20, v)
+				end
+				local shake = ents.Create( "env_shake" )
+				shake:SetOwner(v)
+				shake:SetPos( trF.HitPos )
+				shake:SetKeyValue( "amplitude", "2500" )
+				shake:SetKeyValue( "radius", "100" )
+				shake:SetKeyValue( "duration", "0.5" )
+				shake:SetKeyValue( "frequency", "255" )
+				shake:SetKeyValue( "spawnflags", "4" )	
+				shake:Spawn()
+				shake:Activate()
+				shake:Fire( "StartShake", "", 0 )
+			end	
+			
+			if v.LastSlide == nil then
+				v.LastSlide = false
+			end
+			
+			if v.LastSlide != v.Sliding then
+				v.LastSlide = v.Sliding
+				umsg.Start("SendSlideToClient",v)
+					umsg.Bool(v.Sliding)
+				umsg.End()
+			end
+			
 		end
 	end
 	hook.Add( "Think", "ParkourThink", ParkourThink )

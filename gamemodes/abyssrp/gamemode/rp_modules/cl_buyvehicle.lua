@@ -26,7 +26,7 @@ function SpawnVehicle_Menu( ply )
 		if LocalPlayer():Team() == 3 then
 			gui.SetMousePos( ScrW(), ScrH() )
 			timer.Simple(0.1,function()
-				if Frame:IsValid() then
+				if IsValid(Frame) then
 					Frame:Close()
 				end
 				timer.Simple(0.1,function()

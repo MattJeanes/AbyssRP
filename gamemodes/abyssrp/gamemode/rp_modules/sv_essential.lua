@@ -23,7 +23,11 @@ function GM:PlayerSpawn( ply )
     end)
     // Set player model
     hook.Call( "PlayerSetModel", GAMEMODE, ply )
-    
+	
+	-- Player class hooks
+	player_manager.OnPlayerSpawn( ply )
+	player_manager.RunClass( ply, "Spawn" )
+	
 end
  
 function GM:ShowSpare2( ply )

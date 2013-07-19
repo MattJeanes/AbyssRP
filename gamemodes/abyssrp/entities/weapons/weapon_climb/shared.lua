@@ -140,7 +140,7 @@ end
 
 function SWEP:Deploy()
 	timer.Simple(1.0, function()
-		if self.Owner == nil then return false end
+		if not IsValid(self) or not IsValid(self.Owner) then return false end
 		if SERVER then
 			self.Owner:DrawViewModel(false)
 		end

@@ -1,4 +1,4 @@
-function PropCore.spawnShipment(self,name,pos,angles,count1,price)
+local function spawnShipment(self,name,pos,angles,count1,price)
 	
 	pos = E2Lib.clampPos( pos )
 	
@@ -66,13 +66,13 @@ function PropCore.spawnShipment(self,name,pos,angles,count1,price)
 end
 
 e2function void spawnShipment(string name, vector pos, angle rot, number count, number price)
-	return PropCore.spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]),count, price)
+	return spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]),count, price)
 end
 
 e2function void spawnShipment(string name, vector pos, angle rot, number count)
-	return PropCore.spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]),count)
+	return spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]),count)
 end
 
 e2function void spawnShipment(string name, vector pos, angle rot)
-	return PropCore.spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]))
+	return spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]))
 end

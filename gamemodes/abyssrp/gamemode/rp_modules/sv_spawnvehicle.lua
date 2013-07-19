@@ -26,7 +26,7 @@ local function VehicleSpawn(ply, command, args)
 				if SPropProtection then
 					SPropProtection.PlayerMakePropOwner(ply, ent)
 				end
-				ply:TakeCash(cost)
+				ply:TakeCash(v.cost)
 			end
 		end
 	end

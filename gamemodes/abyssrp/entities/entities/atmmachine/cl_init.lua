@@ -2,7 +2,7 @@ include( 'shared.lua' )
 
 ENT.RenderGroup = RENDERGROUP_BOTH
 
-surface.CreateFont("TabLarge", {font="Tahoma", size=13, weight=700, shadow=true})
+surface.CreateFont("TabLarge", {font="Tahoma", size=72, weight=700, shadow=true})
 
 function ENT:Draw()
     self.Entity:DrawModel()
@@ -15,7 +15,7 @@ function ENT:Draw()
 	dir:RotateAroundAxis(dir:Right(), -90)
 	dir:RotateAroundAxis(dir:Up(), 90)
 	
-	cam.Start3D2D(pos + Vector(0, 0, 100) + fwd, dir, 0.7 )
+	cam.Start3D2D(pos + Vector(0, 0, 100) + fwd, dir, 0.15 )
 		draw.DrawText("ATM (Bank)", "TabLarge", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER )
 	cam.End3D2D()
 end

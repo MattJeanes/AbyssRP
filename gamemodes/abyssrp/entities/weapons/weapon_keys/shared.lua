@@ -57,7 +57,6 @@ function SWEP:PrimaryAttack()
 			if (trace.Entity.OwnedByTeam[i] == tonumber(self.Owner:Team())) then
 				trace.Entity:Fire( "lock", "", 0 );
 				self.Owner:EmitSound( self.Sound );
-				self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_ITEM_PLACE)
 				self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
 			end
 		end
@@ -65,14 +64,12 @@ function SWEP:PrimaryAttack()
 	elseif (trace.Entity.TheOwner and trace.Entity.TheOwner == self.Owner) or (((self.Owner:Team() == RP:GetTeamN("officer")) or (self.Owner:Team() == RP:GetTeamN("mayor"))) and trace.Entity.TheOwner and trace.Entity.TheOwner.Warranted) then
 		trace.Entity:Fire( "lock", "", 0 );
 		self.Owner:EmitSound( self.Sound );
-		self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_ITEM_PLACE)
 		self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
 		
 		
 	else
 		
 		self.Owner:EmitSound("physics/wood/wood_crate_impact_hard2.wav", 100, math.random(90, 110))
-		self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST)
 		self.Weapon:SetNextPrimaryFire(CurTime() + 0.3)
 		
 	end
@@ -93,7 +90,6 @@ function SWEP:SecondaryAttack()
 			if (trace.Entity.OwnedByTeam[i] == tonumber(self.Owner:Team())) then
 				trace.Entity:Fire( "unlock", "", 0 );
 				self.Owner:EmitSound( self.Sound );
-				self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_ITEM_PLACE)
 				self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
 			end
 		end
@@ -101,13 +97,11 @@ function SWEP:SecondaryAttack()
 	elseif (trace.Entity.TheOwner and trace.Entity.TheOwner == self.Owner) or (((self.Owner:Team() == RP:GetTeamN("officer")) or (self.Owner:Team() == RP:GetTeamN("mayor"))) and trace.Entity.TheOwner and trace.Entity.TheOwner.Warranted) then
 		trace.Entity:Fire( "unlock", "", 0 );
 		self.Owner:EmitSound( self.Sound );
-		self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_ITEM_PLACE)
 		self.Weapon:SetNextSecondaryFire(CurTime() + 1.0)
 	
 	else
 		
 		self.Owner:EmitSound("physics/wood/wood_crate_impact_hard2.wav", 100, math.random(90, 110))
-		self.Owner:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST)
 		self.Weapon:SetNextSecondaryFire(CurTime() + 0.3)
 		
 	end
