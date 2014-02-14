@@ -1,4 +1,4 @@
-function playerDies( victim, weapon, killer )
+local function playerDies( victim, weapon, killer )
 	if victim != killer and IsValid(killer) and killer:IsPlayer() and victim:Nick() != killer:Nick() and (victim:Team() == 2 or victim:Team() == 8) then
 	A = team.GetName(victim:Team()) .. " "
 		if killer:Team() == 2 or killer:Team() == 8 then

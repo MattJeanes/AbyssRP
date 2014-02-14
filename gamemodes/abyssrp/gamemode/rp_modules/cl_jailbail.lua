@@ -25,7 +25,8 @@ function jailbail_menu( ply, command, cost )
 	DButton1:SetPos( ScrW() * 0.01, ScrH() * 0.12 )
 	DButton1:SetText('Bail my ass outta this jail!')
 	DButton1.DoClick = function()
-		RunConsoleCommand("rp_bailout")
+		net.Start("RP-Bail")
+		net.SendToServer()
 	DFrame1:Close()
 	end
 end

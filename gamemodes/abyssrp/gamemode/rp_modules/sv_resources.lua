@@ -14,3 +14,6 @@ resource.AddFile("sound/player/slide/slide_floor_3.wav")
 resource.AddFile("sound/player/slide/slide_loop_me.wav")
 resource.AddFile("sound/player/slide/slide_loop4.wav")
 resource.AddFile("sound/player/slide/slide_start_1.wav")
+
+resource.AddFile("materials/scope/scope_normal.vmt")
+resource.AddFile("materials/scope/scope_reddot.vmt")

@@ -24,9 +24,9 @@ CreateConVar( "rp_adminnoclip", "1", FCVAR_NOTIFY )
 function JailedSpawn( ply )
 	if ( ply.RP_Jailed ) then
 		if JailSupport then
-		ply:SetPos( ply.JailPos )
+			ply:SetPos( ply.JailPos )
 		else
-		ply:SetPos( RP.jailPos )
+			ply:SetPos( RP.jailPos )
 		end
 	end
 end

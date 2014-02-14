@@ -1,21 +1,4 @@
-
-AddCSLuaFile()
 DEFINE_BASECLASS( "player_default" )
-
-if ( CLIENT ) then
-
-	CreateConVar( "cl_playercolor", "0.24 0.34 0.41", { FCVAR_ARCHIVE, FCVAR_USERINFO, FCVAR_DONTRECORD }, "The value is a Vector - so between 0-1 - not between 0-255" )
-	CreateConVar( "cl_weaponcolor", "0.30 1.80 2.10", { FCVAR_ARCHIVE, FCVAR_USERINFO, FCVAR_DONTRECORD }, "The value is a Vector - so between 0-1 - not between 0-255" )
-	CreateConVar( "cl_playerskin", "0", { FCVAR_ARCHIVE, FCVAR_USERINFO, FCVAR_DONTRECORD }, "The skin to use, if the model has any" )
-	CreateConVar( "cl_playerbodygroups", "0", { FCVAR_ARCHIVE, FCVAR_USERINFO, FCVAR_DONTRECORD }, "The bodygroups to use, if the model has any" )
-
-end
-	
-if SERVER then
-	print("hello FUCK YOU AND YOUR DUBUG TEXT")
-else
-	print("small child")
-end
 
 local PLAYER = {}
 
@@ -47,32 +30,23 @@ end
 -- Called when the player spawns
 --
 function PLAYER:Spawn()
-
 	BaseClass.Spawn( self )
-
-	local col = self.Player:GetInfo( "cl_playercolor" )
-	self.Player:SetPlayerColor( Vector( col ) )
-
-	local col = self.Player:GetInfo( "cl_weaponcolor" )
-	self.Player:SetWeaponColor( Vector( col ) )
-
-	-- It is here because it must be in sandbox and GM:PlayerSetModel must really be inside a player class instead of the gamemode itself.
-	timer.Simple( 0, function()
 	
-		if ( !IsValid( self.Player ) ) then return end
+	local oldhands = self.Player:GetHands();
+	if ( IsValid( oldhands ) ) then
+		oldhands:Remove()
+	end
 
-		local skin = self.Player:GetInfoNum( "cl_playerskin", 0 )
-		self.Player:SetSkin( skin )
+	local hands = ents.Create( "gmod_hands" )
+	if ( IsValid( hands ) ) then
+		hands:DoSetup( self.Player )
+		hands:Spawn()
+	end	
 
-		local groups = self.Player:GetInfo( "cl_playerbodygroups" );
-		if ( groups == nil ) then groups = "" end
-		local groups = string.Explode( " ", groups )
-		for k = 0, self.Player:GetNumBodyGroups() - 1 do
-			self.Player:SetBodygroup( k, tonumber( groups[ k + 1 ] ) or 0 )
-		end
-
-	end )
-
+	local col = team.GetColor( self.Player:Team() )
+	local colvec = Vector( col.r, col.g, col.b ) / 255
+	self.Player:SetPlayerColor( colvec )
+	self.Player:SetWeaponColor( colvec )
 end
 
 --

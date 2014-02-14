@@ -16,16 +16,19 @@ function PLUGIN:Call( ply, args )
 	end
 end
 
-concommand.Add("rp_bailout",function(ply)
-	if tonumber(ply:GetNWInt("cash")) >= tonumber(GetConVarNumber("rp_costtobail")) then
-		ply:TakeCash(tonumber(GetConVarNumber("rp_costtobail")))
-		UnarrestPlayer( ply, true )
-		if timer.Exists("JailTimer-"..ply:SteamID()) then
-			timer.Stop("JailTimer-"..ply:SteamID())
+if SERVER then
+	util.AddNetworkString("RP-Bail")
+	net.Receive("RP-Bail", function(len,ply)
+		if tonumber(ply:GetNWInt("cash")) >= tonumber(GetConVarNumber("rp_costtobail")) then
+			ply:TakeCash(tonumber(GetConVarNumber("rp_costtobail")))
+			RP:UnarrestPlayer( ply, true )
+			if timer.Exists("JailTimer-"..ply:SteamID()) then
+				timer.Stop("JailTimer-"..ply:SteamID())
+			end
+		else
+			RP:Error(ply, RP.colors.white, "You do not have enough cash!")
 		end
-	else
-		RP:Error(ply, RP.colors.white, "You do not have enough cash!")
-	end
-end)
+	end)
+end
 
 RP:AddPlugin( PLUGIN )

@@ -1,5 +1,3 @@
-AddCSLuaFile()
-
 local NoDropWeapons = {
 	"weapon_physcannon",
 	"weapon_physgun",
@@ -17,24 +15,28 @@ local NoDropWeapons = {
 	"weapon_rape"
 }
 
+function RP:NoDropWeapons()
+	return NoDropWeapons
+end
+
 local function PlayerDropWeapon( ply, attacker, dmginfo )
 	if GetConVarNumber("rp_dropweapon") == 1 and not ply.RP_Jailed then
-		if NoDropWeapons and IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon():GetClass() then
+		local wep=ply:GetActiveWeapon()
+		if IsValid(wep) and wep:GetClass() then
 			for k,v in pairs(NoDropWeapons) do
-				if ply:GetActiveWeapon():GetClass() == v then
+				if wep:GetClass() == v then
 					return
 				end
 			end
 		end
-		if ply:GetActiveWeapon() then
-			ply:GetActiveWeapon().TheOwner = ply
-			ply:DropWeapon(ply:GetActiveWeapon())
+		
+		if IsValid(wep) then
+			if CPPI then
+				wep:CPPISetOwner(ply)
+			end
+			wep.TheOwner = ply
+			ply:DropWeapon(wep)
 		end
 	end
 end
-
 hook.Add("DoPlayerDeath", "DropWeapons", PlayerDropWeapon)
-
-function RP:GetNoDropWeapons()
-	return NoDropWeapons
-end

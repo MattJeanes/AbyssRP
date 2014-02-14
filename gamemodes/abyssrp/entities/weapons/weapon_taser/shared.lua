@@ -56,7 +56,13 @@ function SWEP:PrimaryAttack()
 	
 	local allowed = true
 	
-	local eyetrace = self.Owner:GetEyeTrace(); 
+	local pos = self.Owner:GetShootPos()
+	local ang = self.Owner:GetAimVector()
+	local tracedata = {}
+	tracedata.start = pos
+	tracedata.endpos = pos+(ang*500)
+	tracedata.filter = self.Owner
+	local eyetrace = util.TraceLine(tracedata)
 	
 	if !eyetrace.Entity:IsPlayer() then
 		if !eyetrace.Entity:IsNPC() then return end 

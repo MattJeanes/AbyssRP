@@ -22,12 +22,12 @@ function ENT:Draw()
 	dir2:RotateAroundAxis(dir2:Right(), 90)
 	dir2:RotateAroundAxis(dir2:Up(), -90)
 	
-	cam.Start3D2D(pos + Vector(0, 0, 10) + fwd, dir, 0.7 )
-		draw.DrawText("$".. tostring(self.Entity:GetNWInt("cash")), "TabLarge", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER )
+	cam.Start3D2D(pos + Vector(0, 0, 15) + fwd, dir, 0.7 )
+		draw.DrawText("$".. tostring(self.Entity:GetNWInt("cash")), "Trebuchet18", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER )
 	cam.End3D2D()
 	
-	cam.Start3D2D(pos + Vector(0, 0, 10) + fwd, dir2, 0.7 )
-		draw.DrawText("$".. tostring(self.Entity:GetNWInt("cash")), "TabLarge", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER )
+	cam.Start3D2D(pos + Vector(0, 0, 15) + fwd, dir2, 0.7 )
+		draw.DrawText("$".. tostring(self.Entity:GetNWInt("cash")), "Trebuchet18", 0, 0, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER )
 	cam.End3D2D()
 	
 end

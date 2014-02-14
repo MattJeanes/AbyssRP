@@ -1,9 +1,8 @@
 if SERVER then
-	AddCSLuaFile("holdfix.lua")
-	local R = debug.getregistry()
-	oldsetholdtype = oldsetholdtype or R.Weapon.SetWeaponHoldType
-	print(oldsetholdtype)
-	function R.Weapon:SetWeaponHoldType(type)
+	local WeaponMeta = FindMetaTable("Weapon")
+	local WeaponMeta = FindMetaTable("Entity")
+	oldsetholdtype = oldsetholdtype or WeaponMeta.SetWeaponHoldType
+	function WeaponMeta:SetWeaponHoldType(type)
 		if !type then return end
 		if type == self.oldholdtype then
 			self.sametype = self.sametype or 0
@@ -12,9 +11,9 @@ if SERVER then
 			self.sametype = 0
 		end
 		if self.sametype >= 3 then return end
-		oldsetholdtype = oldsetholdtype or debug.getregistry().Weapon.SetWeaponHoldType
+		oldsetholdtype = oldsetholdtype or WeaponMeta.SetWeaponHoldType
 		umsg.Start"WeaponHoldTypeFix"
-		umsg.Short(debug.getregistry().Entity.EntIndex(self))
+		umsg.Short(EntityMeta.EntIndex(self))
 		umsg.String(type)
 		umsg.End()
 		oldsetholdtype(type)

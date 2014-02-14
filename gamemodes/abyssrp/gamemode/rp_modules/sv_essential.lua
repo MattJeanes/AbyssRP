@@ -14,20 +14,16 @@ function GM:PlayerInitialSpawn( ply ) //"When the player first joins the server 
 end
 
 function GM:PlayerSpawn( ply )
-	player_manager.SetPlayerClass( ply, "player_abyssrp" )
-    // Call item loadout function
-	ply:RemoveAllAmmo()
-	ply:StripWeapons() -- This command strips all weapons from the player.
-	timer.Simple(1,function()
-		hook.Call( "PlayerLoadout", GAMEMODE, ply )
-    end)
-    // Set player model
-    hook.Call( "PlayerSetModel", GAMEMODE, ply )
-	
-	-- Player class hooks
 	player_manager.OnPlayerSpawn( ply )
 	player_manager.RunClass( ply, "Spawn" )
-	
+
+	-- Call item loadout function
+	ply:RemoveAllAmmo()
+	ply:StripWeapons()
+	hook.Call( "PlayerLoadout", GAMEMODE, ply )
+
+	-- Set player model
+	hook.Call( "PlayerSetModel", GAMEMODE, ply )
 end
  
 function GM:ShowSpare2( ply )
@@ -47,7 +43,6 @@ end
    Desc: Give the player the default spawning weapons/ammo
 ---------------------------------------------------------*/
 function GM:PlayerLoadout( ply )
-	
 	if not ( ply.RP_Jailed ) then
 		if ply:Team()==RP:GetTeamN("freerunner") then ply:Give( "weapon_climb" ) else ply:Give( "hands" ) end
 		
