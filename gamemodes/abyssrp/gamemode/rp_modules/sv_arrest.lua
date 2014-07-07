@@ -7,10 +7,10 @@ function RP:ArrestPlayer( ply, jailer )
 	if #RP.JailPoses > 0 then
 		ply.JailNum = math.random(1,#RP.JailPoses)
 		ply.JailPos = RP.JailPoses[ply.JailNum]
-		ply:SetPos( ply.JailPos )
 	else
-		ply:SetPos( RP.jailPos )
+		ply.JailPos = RP.jailPos
 	end
+	ply:SetPos( ply.JailPos )
 	
 	ply:SetMoveType( MOVETYPE_WALK )
 	ply:SetCollisionGroup( COLLISION_GROUP_WEAPON )
@@ -41,5 +41,19 @@ function RP:UnarrestPlayer( ply, bailed )
 	ply.Wanted = nil
 	ply.Jailer = nil
 end
+
+hook.Add("PlayerSpawn", "RP-Jail", function(ply)
+	if ( ply.RP_Jailed ) then
+		ply:SetPos( ply.JailPos )
+	end
+end)
+
+hook.Add("CanPlayerSuicide", "RP-Jail", function(ply)
+	if ( ply.RP_Jailed ) then return false end
+end)
+
+hook.Add("PlayerNoClip", "RP-Jail", function(ply)
+	if ( ply.RP_Jailed ) then return false end
+end)
 
 CreateConVar( "rp_jailtime", "120", FCVAR_NOTIFY )

@@ -8,7 +8,7 @@ GM.Website 	= "http://mattjeanes.com"
 
 //Load modules
 
-RP = {}
+RP = RP or {}
 
 local modules = file.Find( "abyssrp/gamemode/rp_modules/*.lua", "LUA" )
 for _, plugin in ipairs( modules ) do

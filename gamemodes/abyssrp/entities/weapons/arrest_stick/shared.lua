@@ -91,12 +91,7 @@ function SWEP:PrimaryAttack()
 	if ( trace.Entity.RP_Jailed ) then
 		RP:Notify(trace.Entity, RP.colors.white, "You have been moved back to your cell!")
 		RP:Notify(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " was moved back to their cell!")
-		if JailSupport then
-			trace.Entity:SetPos(trace.Entity.JailPos)
-		else
-			trace.Entity:SetPos(RP.jailPos)
-		end
-		
+		trace.Entity:SetPos(trace.Entity.JailPos)
 		return
 	end
 	

@@ -7,7 +7,7 @@ if SERVER then AddCSLuaFile() end
 local pluginFile
 
 function RP:LoadPlugins()
-	RP.plugins = {}
+	RP.plugins = RP.plugins or {}
 	plugins = file.Find( "abyssrp/gamemode/rp_plugins/*.lua", "LUA" ) -- not good practise, fix when its fixed
 	for _, plugin in ipairs( plugins ) do
 		local prefix = string.Left( plugin, string.find( plugin, "_" ) - 1 )
