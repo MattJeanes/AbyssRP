@@ -3,12 +3,10 @@ function GM:PlayerInitialSpawn( ply )
 	ply:LoadPlayerData()
 	ply:SavePlayerData()
 	if ply:GetNWInt("cash") == nil then
-		ply:SetNWInt("cash", 1000)
-		ply:SavePlayerData()
+		ply:SetCash(1000)
 	end
 	if ply:GetNWInt("bank") == nil then
-		ply:SetNWInt("bank", 100)
-		ply:SavePlayerData()
+		ply:SetBank(100)
 	end
 	ply:ConCommand( "team_menu" )
 end
@@ -27,9 +25,7 @@ function GM:PlayerSpawn( ply )
 end
  
 function GM:ShowSpare2( ply )
-
     ply:ConCommand( "team_menu" )
-    
 end
 
 function GM:SetupMove( ply )

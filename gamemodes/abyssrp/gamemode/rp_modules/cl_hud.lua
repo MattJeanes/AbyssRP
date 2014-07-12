@@ -51,7 +51,7 @@ hook.Add("HUDPaint", "CreateAbyssHUD", function()
 	surface.SetDrawColor(255,255,255,255)
 	surface.DrawTexturedRectRotated(ScrW()*0.017, ScrH()*0.927, 16, 16,0)
 
-	draw.SimpleText("  $"..LocalPlayer():GetNWInt("cash"), "AbyssRPHUD2", ScrW()*0.015, ScrH()*0.915, Color(255,255,255,255))
+	draw.SimpleText("  $"..LocalPlayer():GetCash(), "AbyssRPHUD2", ScrW()*0.015, ScrH()*0.915, Color(255,255,255,255))
 
 end)
  

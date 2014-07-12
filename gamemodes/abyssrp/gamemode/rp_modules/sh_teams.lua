@@ -5,20 +5,8 @@ function RP:AddTeam(t)
 		return
 	end
 	local n = t.num or #RP.Team+1
-	RP.Team[n]={}
-	RP.Team[n].name = t.name
-	RP.Team[n].color = t.color
-	RP.Team[n].model = t.model
-	RP.Team[n].salary = t.salary
-	RP.Team[n].desc = t.desc
-	RP.Team[n].rules = t.rules
-	RP.Team[n].extra = t.extra
-	RP.Team[n].modelrand = t.modelrand
-	RP.Team[n].modelrandn = t.modelrandn
-	RP.Team[n].votejoin = t.votejoin
-	RP.Team[n].maxplayers = t.maxplayers
-	if t.func then
-		RP.Team[n].func=t.func
+	RP.Team[n]=table.Copy(t)
+	if RP.Team[n].func then
 		RP.Team[n].func(RP.Team[n], "RP.Team-"..n, n)
 	end
 	
@@ -66,7 +54,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Citizen",
-	color=Color( 255, 255, 0, 255 ),
+	color=Color( 255, 255, 0 ),
 	model={"models/player/group01/male_0",".mdl"},
 	modelrand=true,
 	modelrandn={1,9},
@@ -78,7 +66,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Officer",
-	color=Color( 0, 0, 205, 255 ),
+	color=Color( 0, 0, 205 ),
 	model="models/player/police.mdl",
 	salary=150,
 	desc="You are a police officer, your role is to protect the fellow citizens of AbyssRP and treat your fellow officers well.",
@@ -86,6 +74,7 @@ RP:AddTeam({
 	extra="Arrest/Unarrest Players with your special baton.\n!wanted <player> [1/0] - Allow's someone to be arrested.",
 	votejoin=true,
 	maxplayers=5,
+	police=true,
 	func=function(a,b,c)
 		hook.Add("PlayerLoadout", b, function(ply)
 			if ply:Team()==c and not ply.RP_Jailed then
@@ -98,17 +87,12 @@ RP:AddTeam({
 				ply:Give( "weapon_rp_mp5" )
 			end
 		end)
-		hook.Add("PlayerDeath", b, function( victim, weapon, killer )
-			if IsValid(victim) and IsValid(killer) and victim != killer and victim:Team()==c then
-				RP:Notify(RP.colors.white, team.GetName(victim:Team()) .. " ", RP.colors.blue, victim:Nick(), RP.colors.white, " has been killed by " .. team.GetName(killer:Team()) .. " ", RP.colors.red, killer:Nick())
-			end
-		end)
 	end
 })
 
 RP:AddTeam({
 	name="Car Dealer",
-	color=Color( 0, 255, 0, 255 ),
+	color=Color( 0, 255, 0 ),
 	model="models/player/barney.mdl",
 	salary=30,
 	desc="You are a car dealer. Your job is to sell car's to other people who want them, and make yourself a living from it!",
@@ -118,7 +102,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Thief",
-	color=Color( 255, 120, 0, 255 ),
+	color=Color( 255, 120, 0 ),
 	model="models/player/arctic.mdl",
 	salary=30,
 	desc="You are a thief, it is your 'job' to try and steal peoples cash without them noticing, or break into someones house and take their possessions.",
@@ -137,7 +121,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Assassin",
-	color=Color( 0, 191, 255, 255 ),
+	color=Color( 0, 191, 255 ),
 	model="models/player/combine_super_soldier.mdl",
 	salary=65,
 	desc="You are the assassin! Your job varies on what your client want's to do, remember police officers can still arrest you!",
@@ -157,7 +141,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Pedophile",
-	color=Color( 160, 82, 45, 255 ),
+	color=Color( 160, 82, 45 ),
 	model="models/player/monk.mdl",
 	salary=20,
 	desc="You are the scum of the earth, the pedophiles! Your 'job' is to capture small childs and do things like [REDACTED]..",
@@ -175,7 +159,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Freerunner",
-	color=Color( 255, 255, 255, 255 ),
+	color=Color( 18, 181, 142 ),
 	model={"models/player/group03/male_0",".mdl"},
 	modelrand=true,
 	modelrandn={1,9},
@@ -195,7 +179,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Police Chief",
-	color=Color( 130, 65, 107, 255 ),
+	color=Color( 130, 65, 107 ),
 	model="models/player/combine_soldier_prisonguard.mdl",
 	salary=200,
 	desc="You are the police chief! Your job is to command your police force and use command's like !wanted and !warrant to allow your fellow officers to arrest people.",
@@ -203,6 +187,7 @@ RP:AddTeam({
 	extra="!wanted <player> [1/0] - Allow's someone to be arrested.\n!warrant <player> [1/0] - Allows your force to search a players house.",
 	votejoin=true,
 	maxplayers=1,
+	police=true,
 	func=function(a,b,c)
 		hook.Add("PlayerLoadout", b, function(ply)
 			if ply:Team()==c and not ply.RP_Jailed then
@@ -217,17 +202,12 @@ RP:AddTeam({
 				ply:Give( "weapon_slam" )
 			end
 		end)
-		hook.Add("PlayerDeath", b, function( victim, weapon, killer )
-			if IsValid(victim) and IsValid(killer) and victim != killer and victim:Team()==c then
-				RP:Notify(RP.colors.white, team.GetName(victim:Team()) .. " ", RP.colors.blue, victim:Nick(), RP.colors.white, " has been killed by " .. team.GetName(killer:Team()) .. " ", RP.colors.red, killer:Nick())
-			end
-		end)
 	end
 })
 
 RP:AddTeam({
 	name="Gun Dealer",
-	color=Color( 99, 99, 99, 255 ),
+	color=Color( 99, 99, 99 ),
 	model="models/player/odessa.mdl",
 	salary=30,
 	desc="You're a gun dealer, You sell gun's to people to make your living. If the police catch you it's time to use your weapon cache!",
@@ -239,7 +219,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Mayor",
-	color=Color( 255, 0, 0, 255 ),
+	color=Color( 255, 0, 0 ),
 	model="models/player/breen.mdl",
 	salary=500,
 	desc="You are the wonderful mayor! You have much control over your people and can even allow the police force to search someones house!",
@@ -259,7 +239,7 @@ RP:AddTeam({
 
 RP:AddTeam({
 	name="Medic",
-	color=Color( 255, 0, 170, 255 ),
+	color=Color( 255, 0, 170 ),
 	model={"models/player/group03/female_0",".mdl"},
 	modelrand=true,
 	modelrandn={1,4},

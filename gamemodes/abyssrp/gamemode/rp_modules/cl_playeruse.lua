@@ -1,7 +1,5 @@
-
-
-surface.CreateFont("Arial16", {size=ScreenScale(6)})
-surface.CreateFont("Arial24", {size=ScreenScale(8), weight=800})
+surface.CreateFont("Arial16", {size=16})
+surface.CreateFont("Arial24", {size=24, weight=800})
 
 local d=0
 hook.Add("KeyPress", "PlayerUsePlayer", function(ply, key)

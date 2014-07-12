@@ -16,14 +16,13 @@ function PLUGIN:Call( ply, args )
 		local players = RP:FindPlayer( args, ply, true, true )
 		if not string.find(args[2], "[^%d]") then
 			if ( #players == 1 ) then
-				players[1]:SetNWInt("cash", tonumber(args[2]))
+				players[1]:SetCash(tonumber(args[2]))
 				if ply == players[1] then
 					RP:Notify( ply, RP.colors.white, "You have set your own money to: ", RP.colors.blue, "$" .. args[2], RP.colors.white, "!")
 				else
 					RP:Notify( ply, RP.colors.white, "You have set ", RP.colors.blue, players[1]:Nick() .. "s", RP.colors.white, " balance to: ", RP.colors.blue, "$".. args[2], RP.colors.white, "!" )
 					RP:Notify( players[1], RP.colors.blue, ply:Nick(), RP.colors.white, " has set your money to: ", RP.colors.blue, "$" .. args[2], RP.colors.white, "!" )
 				end
-				players[1]:SavePlayerData()
 			elseif ( #players > 1 ) then
 				RP:Notify( ply, RP.colors.white, "Did you mean ", RP.colors.red, RP:CreatePlayerList( players, true ), RP.colors.white, "?" )
 			else

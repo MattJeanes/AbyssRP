@@ -1,10 +1,10 @@
-function GM:ScoreboardShow()
+hook.Add("ScoreboardShow", "RP-Scoreboard", function()
 	GAMEMODE.ShowScoreboard = true
-end
+end)
 
-function GM:ScoreboardHide()
+hook.Add("ScoreboardHide", "RP-Scoreboard", function()
 	GAMEMODE.ShowScoreboard = false
-end
+end)
 
 // TODO: CLEAN THIS CODE
 

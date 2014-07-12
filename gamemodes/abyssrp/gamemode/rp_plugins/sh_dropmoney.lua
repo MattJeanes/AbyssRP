@@ -17,7 +17,7 @@ function PLUGIN:Call( ply, args )
 	end
 
 	if not string.find(args[1], "[^%d]") then
-		local A = tonumber(ply:GetNWInt("cash"))
+		local A = ply:GetCash()
 		local B = tonumber(args[1])
 		local C = A - B
 		if C > -1 then

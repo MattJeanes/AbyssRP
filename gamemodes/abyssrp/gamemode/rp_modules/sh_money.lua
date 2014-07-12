@@ -1,15 +1,29 @@
+local meta = FindMetaTable("Player")
+
+function meta:GetCash()
+	local amount=self:GetNWInt("cash",0)
+	return tonumber(amount)
+end
+
+function meta:GetBank()
+	local amount=self:GetNWInt("bank",0)
+	return tonumber(amount)
+end
+
+if CLIENT then return end
+
 function RP:GiveSalary()
 	for k,v in pairs(player.GetAll()) do
 		if v:Team()==0 then continue end
 		hook.Call( "Payday", GAMEMODE, v, RP.Team[v:Team()].salary )
-		v:SetNWInt("cash", v:GetNWInt("cash") + tonumber(RP.Team[v:Team()].salary))
-		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay. ", RP.colors.blue, "$"..tonumber(RP.Team[v:Team()].salary))
-		v:SavePlayerData()
+		v:AddCash(tonumber(RP.Team[v:Team()].salary))
+		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay: ", RP.colors.blue, "$"..tonumber(RP.Team[v:Team()].salary))
 	end
-	timer.Simple(300,function() self:GiveSalary() end)
 end
 
-RP:GiveSalary()
+timer.Create("RP-GiveSalary", 300, 0, function()
+	RP:GiveSalary()
+end)
 
 -- Payday hook test!
 /*
@@ -20,11 +34,9 @@ hook.Add("Payday", "RPPAYDAYTEST", function(ply, salary)
 end)
 */
 
-local meta = FindMetaTable("Player")
-
 function meta:SavePlayerData()
-	self:SetPData("cash", self:GetNWInt("cash",0))
-	self:SetPData("bank", self:GetNWInt("bank",0))
+	self:SetPData("cash", self:GetCash())
+	self:SetPData("bank", self:GetBank())
 end
 
 function meta:LoadPlayerData()
@@ -32,47 +44,34 @@ function meta:LoadPlayerData()
 	self:SetNWInt("bank", self:GetPData("bank",100))
 end
 
-function meta:GetCash()
-	local amount=self:GetPData("cash",0)
-	if not tonumber(amount) then amount=0 end
-	return tonumber(amount)
-end
-
-function meta:AddCash(amount)
-	if not tonumber(amount) then return end;
-	if tonumber(amount) < 1 then return end
-	self:SetNWInt("cash", self:GetPData("cash",0) + amount)
-	self:SavePlayerData()
-end
-
 function meta:SetCash(amount)
 	if not tonumber(amount) then return end;
-	if tonumber(amount) < 1 then return end
+	if tonumber(amount) < 0 then return end
 	self:SetNWInt("cash", amount)
 	self:SavePlayerData()
 end
 
+function meta:AddCash(amount)
+	self:SetCash(self:GetCash()+amount)
+end
+
 function meta:TakeCash(amount)
+	self:SetCash(self:GetCash()-amount)
+end
+
+function meta:SetBank(amount)
 	if not tonumber(amount) then return end;
-	if tonumber(amount) < 1 then return end
-	if (self:GetPData("cash") - amount) < -1 then return end 
-	self:SetNWInt("cash", self:GetPData("cash",0) - amount)
+	if tonumber(amount) < 0 then return end
+	self:SetNWInt("bank", amount)
 	self:SavePlayerData()
 end
 
 function meta:AddBank(amount)
-	if not tonumber(amount) then return end;
-	if tonumber(amount) < 1 then return end
-	self:SetNWInt("bank", self:GetNWInt("bank",0) + amount)
-	self:SavePlayerData()
+	self:SetBank(self:GetBank()+amount)
 end
 
 function meta:TakeBank(amount)
-	if not tonumber(amount) then return end;
-	if tonumber(amount) < 1 then return end
-	if (self:GetPData("bank") - amount) < -1 then return end 
-	self:SetNWInt("bank", self:GetNWInt("bank",0) - amount)
-	self:SavePlayerData()
+	self:SetBank(self:GetBank()-amount)
 end
 
 hook.Add( "PlayerDeath", "RP-Money", function(victim, weapon, killer)

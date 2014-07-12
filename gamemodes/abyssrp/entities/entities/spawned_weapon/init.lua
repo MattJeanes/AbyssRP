@@ -37,7 +37,7 @@ function ENT:Use(activator,caller)
 		return
 	end
 	
-	if activator:GetNWInt("cash") >= cost then
+	if activator:GetCash() >= cost then
 		weapon:SetAngles(self.Entity:GetAngles())
 		weapon:SetPos(self.Entity:GetPos())
 		weapon.ShareGravgun = true
