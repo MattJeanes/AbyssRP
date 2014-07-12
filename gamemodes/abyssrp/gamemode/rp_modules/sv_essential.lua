@@ -1,5 +1,5 @@
-function GM:PlayerInitialSpawn( ply ) //"When the player first joins the server and spawns" function 
-	// to make sure the first time someone joined it gives them their values.
+function GM:PlayerInitialSpawn( ply )
+	player_manager.SetPlayerClass(ply, "player_abyssrp")
 	ply:LoadPlayerData()
 	ply:SavePlayerData()
 	if ply:GetNWInt("cash") == nil then
@@ -10,7 +10,7 @@ function GM:PlayerInitialSpawn( ply ) //"When the player first joins the server 
 		ply:SetNWInt("bank", 100)
 		ply:SavePlayerData()
 	end
-	ply:ConCommand( "team_menu" ) //Run the console command when the player first spawns
+	ply:ConCommand( "team_menu" )
 end
 
 function GM:PlayerSpawn( ply )

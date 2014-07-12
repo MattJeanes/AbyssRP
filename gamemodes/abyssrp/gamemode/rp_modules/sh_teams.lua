@@ -52,7 +52,9 @@ end
 RP:AddTeam({
 	num=0,
 	nosetup=true,
-	model="models/player.mdl",
+	model={"models/player/group01/male_0",".mdl"},
+	modelrand=true,
+	modelrandn={1,9},
 	name="No Class",
 	salary="0\n\nYou're not even a person why would you earn money?",
 	desc="You aren't any class! You need to select one to the left.",
@@ -94,6 +96,11 @@ RP:AddTeam({
 				ply:Give( "weapon_rp_glock" )
 				ply:GiveAmmo(100, "9MM")
 				ply:Give( "weapon_rp_mp5" )
+			end
+		end)
+		hook.Add("PlayerDeath", b, function( victim, weapon, killer )
+			if IsValid(victim) and IsValid(killer) and victim != killer and victim:Team()==c then
+				RP:Notify(RP.colors.white, team.GetName(victim:Team()) .. " ", RP.colors.blue, victim:Nick(), RP.colors.white, " has been killed by " .. team.GetName(killer:Team()) .. " ", RP.colors.red, killer:Nick())
 			end
 		end)
 	end
@@ -208,6 +215,11 @@ RP:AddTeam({
 				ply:Give( "weapon_rp_m4" )
 				ply:GiveAmmo(150, "5.56MM")
 				ply:Give( "weapon_slam" )
+			end
+		end)
+		hook.Add("PlayerDeath", b, function( victim, weapon, killer )
+			if IsValid(victim) and IsValid(killer) and victim != killer and victim:Team()==c then
+				RP:Notify(RP.colors.white, team.GetName(victim:Team()) .. " ", RP.colors.blue, victim:Nick(), RP.colors.white, " has been killed by " .. team.GetName(killer:Team()) .. " ", RP.colors.red, killer:Nick())
 			end
 		end)
 	end

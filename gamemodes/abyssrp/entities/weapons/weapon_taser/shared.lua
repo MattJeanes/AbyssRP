@@ -303,7 +303,9 @@ function SWEP:SecondaryAttack()
 		local shock1 = math.random(-1200, 1200 )
 		local shock2 = math.random(-1200, 1200 )
 		local shock3 = math.random(-1200, 1200 )
-		v:GetPhysicsObject():ApplyForceCenter( Vector( shock1, shock2, shock3 ) )
+		if IsValid(v) and IsValid(v:GetPhysicsObject()) then
+			v:GetPhysicsObject():ApplyForceCenter( Vector( shock1, shock2, shock3 ) )
+		end
 	end
 
 end

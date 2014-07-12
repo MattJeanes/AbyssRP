@@ -1,31 +1,12 @@
-
+-- Parkour Skill Pre 1.0.2 By SpY and Allusona - adapted by Dr. Matt
 CreateConVar( "Parkour_SpeedDivider", 5, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
-CreateConVar( "Parkour_ForceMul", 10, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
+CreateConVar( "Parkour_ForceMul", 15, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_MinForceAdd", 10, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_MaxForceAdd", 20, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
+CreateConVar( "Parkour_MaxWallCombo", 999, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 
 	
-if CLIENT then
-	/*
-	local lastnodraw = false
-	function Parkour_ViewModelThink()
-		for k, v in pairs(player.GetAll()) do
-			local ViewModel = v:GetViewModel()
-			local Weapon = v:GetActiveWeapon()
-			if !Weapon:IsValid() or !ViewModel:IsValid() then return end
-			if !lastnodraw and !deployed and v.Hanging or v.WHanging or v.WRunning then
-				ViewModel:SetNoDraw(true)
-				lastnodraw = true
-			elseif lastnodraw and !v.WHanging and !v.Hanging and !v.WRunning then
-				ViewModel:SetNoDraw(false)
-				lastnodraw = false
-				Weapon:SendWeaponAnim(ACT_VM_DRAW)
-			end
-		end
-	end
-	hook.Add( "Think", "Parkour_ViewModelThink", Parkour_ViewModelThink )
-	*/
-	
+if CLIENT then	
 	function ParkourRoll( um )
 		local ply = LocalPlayer()
 		ply.IsRolling = true
@@ -69,7 +50,7 @@ if CLIENT then
 			RollValue = RollValue + FrameTime() * 600
 		end	
 		
-		if AddRoll != 0 then -- not affect other calc view
+		if AddRoll != 0 then
 			angles.roll = angles.roll + AddRoll
 		end
 		
@@ -89,7 +70,7 @@ if CLIENT then
 			ply.SlideLeanAngle = math.Approach(ply.SlideLeanAngle, 0, FrameTime() * (DistOut * 6))
 		end
 	
-		if ply.SlideLeanAngle != 0 then -- no more affect other calc view
+		if ply.SlideLeanAngle != 0 then
 			angles.roll = angles.roll + ply.SlideLeanAngle
 		end
 		
@@ -97,44 +78,11 @@ if CLIENT then
 		
 	end
 	hook.Add("CalcView", "ParkourCalcView", ParkourCalcView)
-	
-	function SlidingSound()
-		local ply = LocalPlayer()
-		if ply.Sliding then
-			if !SlideSound then
-				SlideSound = CreateSound(ply, "player/slide/slide_loop_me.wav")
-				SlideSound:Play()
-			else	
-				SlideSound:ChangeVolume(1,0)
-			end			
-		else
-			if SlideSound then
-				SlideSound:ChangeVolume(0,0)
-				SlideSound:Stop()
-				SlideSound = nil
-			end	
-		end
-	end
-	hook.Add("RenderScreenspaceEffects", "SlidingSound", SlidingSound) -- i dont know why its work with this hook but its work 8D.
-	
-	function SlideUpdateAnim(ply, velocity)
-	
-		if ply.Sliding then
-			ply:AnimRestartGesture(GESTURE_SLOT_FLINCH, ACT_HL2MP_GESTURE_RANGE_ATTACK_FIST)
-		end	
-		
-	end
-	hook.Add("CalcMainActivity", "SlideUpdateAnim", SlideUpdateAnim) 
-	
-end
 
-if SERVER then
-	resource.AddFile("sound/player/slide/slide_start_1.wav")
-	resource.AddFile("sound/player/slide/slide_loop_me.wav")
-
+elseif SERVER then 
     local CanLastVel2 = false
     local NextExp = CurTime()
-	local function DoWallJump(ply, key) 
+	local function DoWallJump(ply, key)
 		if (ply:Alive() and key == IN_JUMP and ply:WaterLevel() <= 1 and !ply:InVehicle() ) then
 		
 		local pos = ply:GetShootPos();
@@ -147,11 +95,12 @@ if SERVER then
 		local MaxDamage = 10
 		local MinForcevalue = GetConVarNumber("Parkour_MinForceAdd") * GetConVarNumber("Parkour_ForceMul")
 		local MaxForcevalue = GetConVarNumber("Parkour_MaxForceAdd") * GetConVarNumber("Parkour_ForceMul")
+		local WallJumpComboMax = GetConVarNumber("Parkour_MaxWallCombo")
 		local upforce = (up * (math.random(MinForcevalue * 2, MaxForcevalue * 2) + (ply:GetVelocity():Length() / 2) / GetConVarNumber("Parkour_SpeedDivider")))
 		
 		ply.PushForce = (math.random(MinForcevalue, MaxForcevalue) + ((ply:GetVelocity():Length() * 2) / GetConVarNumber("Parkour_SpeedDivider")))
 		
-		if ply.WalljumpCombo >= 5 then return end
+		if ply.WalljumpCombo >= WallJumpComboMax then return end
 		
 		if (ply:KeyDown(IN_FORWARD)) then
 			local tr = util.QuickTrace(pos, (back * 60), ply);
@@ -260,7 +209,7 @@ if SERVER then
 					end
 					timer.Simple(totime, function()
 						ply:DrawViewModel(false)
-					end)
+					end, ply)
 				else
 					ply:DrawViewModel(false)
 				end
@@ -287,7 +236,7 @@ if SERVER then
 					end	
 					ply.Rolling = false	
 				end
-			end)
+			end, ply)
 			if vel > 1000 then
 				return vel / 20
 			else
@@ -399,7 +348,7 @@ if SERVER then
 				end
 			elseif v.WRunning and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_FORWARD) or vellen < 100 or !CanWallRun(v) or v.WallRunStep >= 4 then
 				v.WRunning = false
-				v:SetGravity(0)
+				v:SetGravity(1)
 				v:SetNWBool("WallRunning", false)
 				v:SetNWBool("ParkourLeanView", false)
 				v:SetNWBool("ParkourRightLeanView", false)

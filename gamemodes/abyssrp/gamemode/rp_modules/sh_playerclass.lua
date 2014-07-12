@@ -1,3 +1,5 @@
+
+AddCSLuaFile()
 DEFINE_BASECLASS( "player_default" )
 
 local PLAYER = {}
@@ -75,6 +77,14 @@ function PLAYER:CalcView( view )
 	if ( self.TauntCam:CalcView( view, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
 
 	-- Your stuff here
+
+end
+
+function PLAYER:GetHandsModel()
+
+	-- return { model = "models/weapons/c_arms_cstrike.mdl", skin = 1, body = "0100000" }
+
+	return player_manager.TranslatePlayerHands( player_manager.TranslateToPlayerModelName(self.Player:GetModel()) )
 
 end
 

@@ -20,12 +20,14 @@ function SWEP:PrimaryAttack()
 				trace.Entity:Fire( "lock", "", 0 );
 				self.Owner:EmitSound( self.Sound );
 				self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
+				self.Owner:ChatPrint("Door locked.")
 			end
 		end
 	elseif (trace.Entity.TheOwner and trace.Entity.TheOwner == self.Owner) or (((self.Owner:Team() == RP:GetTeamN("officer")) or (self.Owner:Team() == RP:GetTeamN("mayor"))) and trace.Entity.TheOwner and trace.Entity.TheOwner.Warranted) then
 		trace.Entity:Fire( "lock", "", 0 );
 		self.Owner:EmitSound( self.Sound );
 		self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
+		self.Owner:ChatPrint("Door locked.")
 	else
 		self.Owner:EmitSound("physics/wood/wood_crate_impact_hard2.wav", 100, math.random(90, 110))
 		self.Weapon:SetNextPrimaryFire(CurTime() + 0.3)
@@ -45,6 +47,7 @@ function SWEP:SecondaryAttack()
 				trace.Entity:Fire( "unlock", "", 0 );
 				self.Owner:EmitSound( self.Sound );
 				self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
+				self.Owner:ChatPrint("Door unlocked.")
 			end
 		end
 	
@@ -52,6 +55,7 @@ function SWEP:SecondaryAttack()
 		trace.Entity:Fire( "unlock", "", 0 );
 		self.Owner:EmitSound( self.Sound );
 		self.Weapon:SetNextSecondaryFire(CurTime() + 1.0)
+		self.Owner:ChatPrint("Door unlocked.")
 	else
 		self.Owner:EmitSound("physics/wood/wood_crate_impact_hard2.wav", 100, math.random(90, 110))
 		self.Weapon:SetNextSecondaryFire(CurTime() + 0.3)
@@ -91,14 +95,18 @@ function SWEP:Reload()
 		self.Owner:AddCash(sellprice)
 	elseif ent:Owned() and IsValid(ent.TheOwner) and ent.TheOwner != self.Owner and ent:IsDoor() then
 		RP:Error(self.Owner, RP.colors.white, "This door is owned by: ", RP.colors.blue, ent.TheOwner:Nick(), RP.colors.white, "!")
-	elseif not ent:Owned() and ent.Ownable and (tonumber(self.Owner:GetPData("cash")) - doorcost > -1) and ent:IsDoor() then
-		RP:Notify(self.Owner, RP.colors.white, "You have bought this door for: ", RP.colors.blue, "$" .. tostring(doorcost))
-		ent.Ownable = false
-		ent:SetNWBool("Owned", true)
-		ent:Fire( "unlock", "", 0 )
-		ent:Fire( "open", "", 0 )
-		ent.TheOwner = self.Owner
-		self.Owner:TakeCash(doorcost)
+	elseif not ent:Owned() and ent.Ownable and ent:IsDoor() then
+		if (self.Owner:GetCash() - doorcost) > -1 then
+			RP:Notify(self.Owner, RP.colors.white, "You have bought this door for: ", RP.colors.blue, "$" .. tostring(doorcost))
+			ent.Ownable = false
+			ent:SetNWBool("Owned", true)
+			ent:Fire( "unlock", "", 0 )
+			ent:Fire( "open", "", 0 )
+			ent.TheOwner = self.Owner
+			self.Owner:TakeCash(doorcost)
+		else
+			RP:Error(self.Owner, RP.colors.white, "You don't have enough cash!")
+		end
 	elseif ent:IsVehicle() and ent.TheOwner == self.Owner then
 		local vehiclecost = ent.Cost
 		local sellprice2 = (tonumber(vehiclecost) * tonumber(sellpercent))
@@ -106,14 +114,12 @@ function SWEP:Reload()
 		ent:Remove()
 		self.Owner:AddCash(sellprice2)
 	elseif ent:IsVehicle() and ent.TheOwner and ent.TheOwner != self.Owner then
-	RP:Error(self.Owner, RP.colors.white, "Vehicle owned by: ", RP.colors.blue, ent.TheOwner:Nick(), RP.colors.white, ". Ask them to buy it!")
+		RP:Error(self.Owner, RP.colors.white, "Vehicle owned by: ", RP.colors.blue, ent.TheOwner:Nick(), RP.colors.white, ". Ask them to buy it!")
 	elseif tobool(ent.OwnedByTeam) and ent:IsDoor() then
 		RP:Error(self.Owner, RP.colors.white, "This door belongs to the ", RP.colors.blue, string.lower(team.GetName(ent.OwnedByTeam[1])) .. "s", RP.colors.white, "!")
 	elseif (ent.Ownable == false and ent.TheOwner == nil) and ent:IsDoor() then
 		RP:Error(self.Owner, RP.colors.white, "You cannot own this door!")
 	elseif (ent.Ownable == false and ent.TheOwner == nil) and ent:IsVehicle() then
 		RP:Error(self.Owner, RP.colors.white, "You cannot own this vehicle!")
-	else
-		RP:Error(self.Owner, RP.colors.white, "You don't have enough cash!")
 	end
 end
