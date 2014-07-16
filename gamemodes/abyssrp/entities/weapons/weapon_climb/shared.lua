@@ -264,7 +264,7 @@ function SWEP:Think()
 						if self.Owner.HasWallJumped == false then
 							if self.Owner:KeyDown(IN_FORWARD) then
 								if SERVER then
-									self.Owner:SetEyeAngles(self.Owner:EyeAngles() - Vector(0, 180, 0))
+									self.Owner:SetEyeAngles(self.Owner:EyeAngles() - Angle(0, 180, 0))
 									self.Owner:SetLocalVelocity(self.Owner:GetForward() * -375 + Vector(0, 0, 75))
 								end
 								self.Degree = 180
@@ -273,7 +273,7 @@ function SWEP:Think()
 								
 							elseif self.Owner:KeyDown(IN_MOVERIGHT) then
 								if SERVER then
-									self.Owner:SetEyeAngles(self.Owner:EyeAngles() - Vector(0, 90, 0))
+									self.Owner:SetEyeAngles(self.Owner:EyeAngles() - Angle(0, 90, 0))
 									self.Owner:SetLocalVelocity(self.Owner:GetRight() * 375 + Vector(0, 0, 75))
 								end
 								self.Degree = 90
@@ -282,7 +282,7 @@ function SWEP:Think()
 								
 							elseif self.Owner:KeyDown(IN_MOVELEFT) then
 								if SERVER then
-									self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Vector(0, 90, 0))
+									self.Owner:SetEyeAngles(self.Owner:EyeAngles() + Angle(0, 90, 0))
 									self.Owner:SetLocalVelocity(self.Owner:GetRight() * -375 + Vector(0, 0, 75))
 								end
 								self.Degree = 90

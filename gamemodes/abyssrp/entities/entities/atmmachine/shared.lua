@@ -8,8 +8,3 @@ ENT.Instructions	= "Press E to open the bank menu."
 ENT.AutomaticFrameAdvance = true
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
-ENT.Category 		= "AbyssRP"
-
-function ENT:SetAutomaticFrameAdvance( bUsingAnim )
-	self.AutomaticFrameAdvance = bUsingAnim
-end

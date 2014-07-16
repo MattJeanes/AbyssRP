@@ -19,7 +19,7 @@ function PLUGIN:Call( ply, args )
 				RP:Notify(RP.colors.blue, players[1]:Nick(), RP.colors.white, " is now wanted by Police with the reason \""..reason.."\".")
 				ScreenNotify(players[1]:Nick() .. " is now wanted by Police!")
 			else
-				RP:Error( ply, "You need a reason!" )
+				RP:Error( ply, RP.colors.white, "You need a reason!" )
 			end
 		elseif ( #players > 1 ) then
 			RP:Notify( ply, RP.colors.white, "Did you mean ", RP.colors.red, RP:CreatePlayerList( players, true ), RP.colors.white, "?" )

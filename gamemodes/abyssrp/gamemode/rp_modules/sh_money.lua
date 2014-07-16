@@ -87,7 +87,7 @@ hook.Add( "PlayerDeath", "RP-Money", function(victim, weapon, killer)
 			ent.Owner = victim
 			timer.Simple(0.5,function()
 				if IsValid(ent) and ent:IsInWorld() then
-					victim:TakeCash(cash1)
+					victim:TakeCash(cash)
 					RP:Notify(victim, RP.colors.white, "You dropped ", RP.colors.red, "$".. cash, RP.colors.white, " on death!")
 				end
 			end)

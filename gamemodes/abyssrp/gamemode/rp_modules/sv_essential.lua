@@ -14,14 +14,14 @@ end
 function GM:PlayerSpawn( ply )
 	player_manager.OnPlayerSpawn( ply )
 	player_manager.RunClass( ply, "Spawn" )
+	
+	-- Set player model
+	hook.Call( "PlayerSetModel", GAMEMODE, ply )
 
 	-- Call item loadout function
 	ply:RemoveAllAmmo()
 	ply:StripWeapons()
 	hook.Call( "PlayerLoadout", GAMEMODE, ply )
-
-	-- Set player model
-	hook.Call( "PlayerSetModel", GAMEMODE, ply )
 end
  
 function GM:ShowSpare2( ply )
@@ -39,17 +39,28 @@ end
    Desc: Give the player the default spawning weapons/ammo
 ---------------------------------------------------------*/
 function GM:PlayerLoadout( ply )
-	if not ( ply.RP_Jailed ) then
-		if ply:Team()==RP:GetTeamN("freerunner") then ply:Give( "weapon_climb" ) else ply:Give( "hands" ) end
-		
-		ply:Give( "weapon_physcannon" )
-		ply:Give( "gmod_camera" )
-		ply:Give( "weapon_keys" )
-		
-		if ply:RP_IsAdmin() and GetConVarNumber("rp_admingivetools")==1 then
-			ply:Give( "gmod_tool" )
-			ply:Give( "weapon_physgun" )
+	if ply.RP_Jailed then return end
+	local t=RP.Team[ply:Team()]
+	
+	if not t.nohands then ply:Give( "hands" ) end
+	
+	ply:Give( "weapon_physcannon" )
+	ply:Give( "gmod_camera" )
+	ply:Give( "weapon_keys" )
+	
+	if ply:RP_IsAdmin() and GetConVarNumber("rp_admingivetools")==1 then
+		ply:Give( "gmod_tool" )
+		ply:Give( "weapon_physgun" )
+	end
+	
+	if t.weps then
+		for k,v in pairs(t.weps) do
+			ply:Give(v)
 		end
+	end
+	
+	if t.armor then
+		ply:SetArmor(t.armor)
 	end
 end
 

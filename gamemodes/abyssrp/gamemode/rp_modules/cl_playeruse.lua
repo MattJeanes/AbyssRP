@@ -5,6 +5,7 @@ local d=0
 hook.Add("KeyPress", "PlayerUsePlayer", function(ply, key)
 	if key==IN_USE then
 		local e=LocalPlayer():GetEyeTraceNoCursor().Entity
+		if not IsValid(e) then return end
 		if e:GetClass()=="player" and e:GetPos():Distance(LocalPlayer():GetPos()) < 100 then
 			if d > CurTime() then return end
 			d=CurTime()+1

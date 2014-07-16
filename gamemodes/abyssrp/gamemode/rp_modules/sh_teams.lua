@@ -75,19 +75,15 @@ RP:AddTeam({
 	votejoin=true,
 	maxplayers=5,
 	police=true,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:SetArmor(100)
-				ply:Give( "arrest_stick" )
-				ply:Give( "weapon_taser" )
-				ply:Give( "weapon_stunstick" )
-				ply:Give( "weapon_rp_glock" )
-				ply:GiveAmmo(100, "9MM")
-				ply:Give( "weapon_rp_mp5" )
-			end
-		end)
-	end
+	armor=100,
+	weps={
+		"arrest_stick",
+		"weapon_taser",
+		"weapon_stunstick",
+		"fas2_glock20",
+		"fas2_mp5a5",
+		"fas2_dv2"
+	}
 })
 
 RP:AddTeam({
@@ -109,14 +105,11 @@ RP:AddTeam({
 	rules="If you do go round stealing peoples money or breaking into houses, you must be prepared for the consequences if you're caught.",
 	extra="Try not to get seen by anybody while breaking into a house or pickpocketing someone.",
 	maxplayers=4,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:Give("weapon_pickpocket")
-				ply:Give("weapon_lockpick")
-			end
-		end)
-	end
+	weps={
+		"weapon_pickpocket",
+		"weapon_lockpick",
+		"fas2_dv2"
+	}
 })
 
 RP:AddTeam({
@@ -129,14 +122,9 @@ RP:AddTeam({
 	extra="You're hired to kill.",
 	maxplayers=2,
 	votejoin=true,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:Give( "weapon_rp_scout" )
-				ply:GiveAmmo(20, "7.62MM")
-			end
-		end)
-	end
+	weps={
+		"fas2_m1911"
+	}
 })
 
 RP:AddTeam({
@@ -148,13 +136,9 @@ RP:AddTeam({
 	rules="No Rules! You make your own.. with the small childs.",
 	extra="Abduct small childs.",
 	maxplayers=3,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:Give( "weapon_rape" )
-			end
-		end)
-	end
+	weps={
+		"weapon_rape"
+	}
 })
 
 RP:AddTeam({
@@ -167,10 +151,15 @@ RP:AddTeam({
 	desc="You are a freerunner! You feel the flow of the city as it comes together, rooftops and obstacles become simple pathways as you explore the terrain.",
 	rules="No Rules! You feel the breeze of the city, away from any trouble.",
 	extra="Roam the city, hopefully free from trouble.",
+	nohands=true,
+	weps={
+		"weapon_climb"
+	},
 	func=function(a,b,c)		
 		hook.Add("SetupMove", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				GAMEMODE:SetPlayerSpeed(ply, 250, 500)
+			if ply:Team()==c then
+				ply:SetWalkSpeed(250)
+				ply:SetRunSpeed(500)
 				return true
 			end
 		end)
@@ -188,21 +177,14 @@ RP:AddTeam({
 	votejoin=true,
 	maxplayers=1,
 	police=true,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:SetArmor(100)
-				ply:Give( "arrest_stick" )
-				ply:Give( "weapon_rp_deagle" )
-				ply:Give( "weapon_stunstick" )
-				ply:Give( "weapon_taser" )
-				ply:GiveAmmo(56, ".50MM")
-				ply:Give( "weapon_rp_m4" )
-				ply:GiveAmmo(150, "5.56MM")
-				ply:Give( "weapon_slam" )
-			end
-		end)
-	end
+	weps={
+		"arrest_stick",
+		"weapon_stunstick",
+		"weapon_taser",
+		"fas2_deagle",
+		"fas2_rk95",
+		"fas2_dv2"
+	}
 })
 
 RP:AddTeam({
@@ -227,14 +209,11 @@ RP:AddTeam({
 	extra="!wanted <player> [1/0] - Allow's someone to be arrested.\n!warrant <player> [1/0] - Allow police force to search a players house.",
 	votejoin=true,
 	maxplayers=1,
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:SetArmor(100)
-				ply:Give( "arrest_stick" )
-			end
-		end)
-	end
+	armor=100,
+	weps={
+		"arrest_stick",
+		"fas2_p226"
+	}
 })
 
 RP:AddTeam({
@@ -247,11 +226,7 @@ RP:AddTeam({
 	desc="You are the helpful medic! Your job is to heal those who have injured themselves (probably the freerunners) or those who have been shot!",
 	rules="Make sure to respond to 'medic' requests from your peers.",
 	extra="People can call for you with !medic.",
-	func=function(a,b,c)
-		hook.Add("PlayerLoadout", b, function(ply)
-			if ply:Team()==c and not ply.RP_Jailed then
-				ply:Give( "med_kit" )
-			end
-		end)
-	end
+	weps={
+		"med_kit"
+	}
 })

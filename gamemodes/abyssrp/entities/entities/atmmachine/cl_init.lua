@@ -24,8 +24,6 @@ function ENT:DrawEntityOutline()
      --DO NOTHING
 end
 
-surface.CreateFont("ATMText", {})
-
 local function BankMenu()
 	local DButton2
 	local DButton1
@@ -52,7 +50,6 @@ local function BankMenu()
 	end)
 	DLabel1:SetText("Welcome to your bank account, Please enter the values below on how much you want to withdraw or deposit. You have $"..LocalPlayer():GetBank().." in your bank account.")
 	DLabel1:SetTextColor(color_white)
-	DLabel1:SetFont("ATMText")
 	DLabel1:SetDrawBackground(false)
 	DLabel1:SetDrawBorder(false)
 	DLabel1:SetEditable(false)
