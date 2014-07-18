@@ -331,91 +331,91 @@ RP:AddWeapon({
 RP:AddAttachment({
 	name="ACOG 4x",
 	class="fas2_att_acog",
-	cost=100
+	cost=250
 })
 
 RP:AddAttachment({
 	name="CompM4",
 	class="fas2_att_compm4",
-	cost=100
+	cost=200
 })
 
 RP:AddAttachment({
 	name="ELCAN C79",
 	class="fas2_att_c79",
-	cost=100
+	cost=300
 })
 
 RP:AddAttachment({
 	name="EoTech 553",
 	class="fas2_att_eotech",
-	cost=100
+	cost=200
 })
 
 RP:AddAttachment({
 	name="Foregrip",
 	class="fas2_att_foregrip",
-	cost=100
+	cost=50
 })
 
 RP:AddAttachment({
 	name="Harris Bipod",
 	class="fas2_att_harrisbipod",
-	cost=100
+	cost=50
 })
 
 RP:AddAttachment({
 	name="Leupold MK4",
 	class="fas2_att_leupold",
-	cost=100
+	cost=400
 })
 
 RP:AddAttachment({
 	name="M21 20RND Mag",
 	class="fas2_att_m2120mag",
-	cost=100
+	cost=150
 })
 
 RP:AddAttachment({
 	name="MP5K 30RND Mag",
 	class="fas2_att_mp5k30mag",
-	cost=100
+	cost=175
 })
 
 RP:AddAttachment({
 	name="PSO-1",
 	class="fas2_att_pso1",
-	cost=100
+	cost=350
 })
 
 RP:AddAttachment({
 	name="SG55X 30RND Mag",
 	class="fas2_att_sg55x30mag",
-	cost=100
+	cost=175
 })
 
 RP:AddAttachment({
 	name="SKS 20RND Mag",
 	class="fas2_att_sks20mag",
-	cost=100
+	cost=150
 })
 
 RP:AddAttachment({
 	name="SKS 30RND Mag",
 	class="fas2_att_sks30mag",
-	cost=100
+	cost=175
 })
 
 RP:AddAttachment({
 	name="Suppressor",
 	class="fas2_att_suppressor",
-	cost=100
+	cost=200
 })
 
 RP:AddAttachment({
 	name="Tritium Sights",
 	class="fas2_att_tritiumsights",
-	cost=100
+	cost=50
 })
 
 RP:AddAttachment({
