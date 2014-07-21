@@ -59,9 +59,9 @@ RP:AddTeam({
 	modelrand=true,
 	modelrandn={1,9},
 	salary=50,
-	desc="The citizen has a basic role of life, you are a standard person, with no special benefits or abilities.",
-	rules="No Rules! Your just a normal citizen!",
-	extra="No extra information."
+	desc="You are a citizen. You have no special benefits or abilities but are free to roam the world.",
+	rules="No specific rules, just follow the law.",
+	extra="You earn an fair salary, higher than the lawbreakers but lower than authority figures."
 })
 
 RP:AddTeam({
@@ -69,9 +69,9 @@ RP:AddTeam({
 	color=Color( 0, 0, 205 ),
 	model="models/player/police.mdl",
 	salary=150,
-	desc="You are a police officer, your role is to protect the fellow citizens of AbyssRP and treat your fellow officers well.",
-	rules="You are of authority, do not abuse your power.",
-	extra="Arrest/Unarrest Players with your special baton.\n!wanted <player> [1/0] - Allow's someone to be arrested.",
+	desc="You are a police officer. Your role is to protect the citizens and lock up any troublemakers.",
+	rules="You have high authority, so don't abuse your power.",
+	extra="Arrest/Unarrest Players with your special baton.\n!wanted <player> <reason> - Allows someone to be arrested.",
 	votejoin=true,
 	maxplayers=5,
 	police=true,
@@ -91,9 +91,9 @@ RP:AddTeam({
 	color=Color( 0, 255, 0 ),
 	model="models/player/barney.mdl",
 	salary=30,
-	desc="You are a car dealer. Your job is to sell car's to other people who want them, and make yourself a living from it!",
-	rules="Make sure to use !giveownership <ply> while looking at the vehicle, before letting the client drive off in it!",
-	extra="Special Car Spawn-menu.",
+	desc="You are a car dealer. You sell cars for a living, and that is your main source of income.",
+	rules="Make sure to transfer ownership of the vehicle with !giveownership <ply> before handing it over.",
+	extra="Use !shop to access the car shop.",
 	func=function(a,b,c)
 		hook.Add("SpawnMenuOpen", b, function()
 			if LocalPlayer():Team()==c then
@@ -109,9 +109,9 @@ RP:AddTeam({
 	color=Color( 255, 120, 0 ),
 	model="models/player/arctic.mdl",
 	salary=30,
-	desc="You are a thief, it is your 'job' to try and steal peoples cash without them noticing, or break into someones house and take their possessions.",
-	rules="If you do go round stealing peoples cash or breaking into houses, you must be prepared for the consequences if you're caught.",
-	extra="Try not to get seen by anybody while breaking into a house or pickpocketing someone.",
+	desc="You are a thief. It is your 'job' to try and steal people's cash without them noticing, or break into someones house and take their possessions.",
+	rules="You don't have any rules, but be prepared to deal with the police if you get caught.",
+	extra="You can also use your knife to mug citizens, but this is not recommended.",
 	maxplayers=4,
 	weps={
 		"weapon_pickpocket",
@@ -125,9 +125,9 @@ RP:AddTeam({
 	color=Color( 0, 191, 255 ),
 	model="models/player/combine_super_soldier.mdl",
 	salary=65,
-	desc="You are the assassin! Your job varies on what your client want's to do, remember police officers can still arrest you!",
-	rules="Do not randomly kill people, you must be hired to do so!",
-	extra="You're hired to kill.",
+	desc="You are an assassin. Strike from the shadows and slip away undetected.",
+	rules="You must be hired to kill, so don't randomly kill people.",
+	extra="People can request a hit using !hit <player> <offer>, which you can accept or reject.",
 	maxplayers=2,
 	votejoin=true,
 	weps={
@@ -140,12 +140,13 @@ RP:AddTeam({
 	color=Color( 160, 82, 45 ),
 	model="models/player/monk.mdl",
 	salary=20,
-	desc="You are the scum of the earth, the pedophiles! Your 'job' is to capture small childs and do things like [REDACTED]..",
-	rules="No Rules! You make your own.. with the small childs.",
-	extra="Abduct small childs.",
+	desc="You are a pedophile. Everyone in society looks down upon you. Abduct people and do what you will with them.",
+	rules="You don't have any rules, but it's recommended to keep away from authority.",
+	extra="You are similar to the thief, except you are not after their cash or possessions.",
 	maxplayers=3,
 	weps={
-		"weapon_rape"
+		"weapon_rape",
+		"fas2_dv2"
 	}
 })
 
@@ -155,10 +156,10 @@ RP:AddTeam({
 	model={"models/player/group03/male_0",".mdl"},
 	modelrand=true,
 	modelrandn={1,9},
-	salary=55,
-	desc="You are a freerunner! You feel the flow of the city as it comes together, rooftops and obstacles become simple pathways as you explore the terrain.",
-	rules="No Rules! You feel the breeze of the city, away from any trouble.",
-	extra="Roam the city, hopefully free from trouble.",
+	salary=40,
+	desc="You are a freerunner. Most of your time is spent on the rooftops, away from authority.",
+	rules="You don't have any rules. You may choose to follow the law but you don't have to.",
+	extra="You are like a citizen, but you can move faster and use obstacles to your aid.",
 	nohands=true,
 	freerun=true,
 	weps={
@@ -180,9 +181,9 @@ RP:AddTeam({
 	color=Color( 130, 65, 107 ),
 	model="models/player/combine_soldier_prisonguard.mdl",
 	salary=200,
-	desc="You are the police chief! Your job is to command your police force and use command's like !wanted and !warrant to allow your fellow officers to arrest people.",
-	rules="Do not randomly make players wanted/warranted, you must have a reason.\nYou are of very high authority so do not abuse it!",
-	extra="!wanted <player> [1/0] - Allow's someone to be arrested.\n!warrant <player> [1/0] - Allows your force to search a players house.",
+	desc="You are the police chief. Your job is to command your fellow officers and help them to hold the law.",
+	rules="You must have a valid reason to issue a warrant or make someone wanted.\nYou are of very high authority so don't abuse it.",
+	extra="!wanted <player> <reason> - Allows someone to be arrested.\n!warrant <player> [1/0] - Allows you and your fellow officers to search a players house.",
 	votejoin=true,
 	maxplayers=1,
 	police=true,
@@ -201,15 +202,17 @@ RP:AddTeam({
 	color=Color( 99, 99, 99 ),
 	model="models/player/odessa.mdl",
 	salary=30,
-	desc="You're a gun dealer, You sell gun's to people to make your living. If the police catch you it's time to use your weapon cache!",
-	rules="You have the right not to sell your guns, however don't hog the class just to get gun's to shoot people yourself!",
-	extra="No extra information.",
+	desc="You are a gun dealer.	You sell guns to people to make your living.",
+	rules="You must actually sell guns to people, you cannot be this class for just your own personal gain.",
+	extra="You can access the gun shop with !shop.",
 	votejoin=true,
 	maxplayers=2,
 	func=function(a,b,c)
 		hook.Add("RP-Shop", b, function(ply)
-			ply:SendLua('RP:GunShop()')
-			return true
+			if ply:Team()==c then
+				ply:SendLua('RP:GunShop()')
+				return true
+			end
 		end)
 	end
 })
@@ -219,9 +222,9 @@ RP:AddTeam({
 	color=Color( 255, 0, 0 ),
 	model="models/player/breen.mdl",
 	salary=500,
-	desc="You are the wonderful mayor! You have much control over your people and can even allow the police force to search someones house!",
-	rules="As for the Police Chief, you are of extremely high authority and you should not randomly warrant/arrest players so do not abuse.",
-	extra="!wanted <player> [1/0] - Allow's someone to be arrested.\n!warrant <player> [1/0] - Allow police force to search a players house.",
+	desc="You are the mayor. Your job is to oversee the town and keep things running smoothly.",
+	rules="You are of extremely high authority and you must never warrant/arrest players with no reason.",
+	extra="!wanted <player> <reason> - Allows someone to be arrested.\n!warrant <player> [1/0] - Allows police force to search a players house.",
 	votejoin=true,
 	maxplayers=1,
 	armor=100,
@@ -238,8 +241,8 @@ RP:AddTeam({
 	modelrand=true,
 	modelrandn={1,4},
 	salary=150,
-	desc="You are the helpful medic! Your job is to heal those who have injured themselves (probably the freerunners) or those who have been shot!",
-	rules="Make sure to respond to 'medic' requests from your peers.",
+	desc="You are the medic. Your job is to heal those who have been injured.",
+	rules="Make sure to respond to 'medic' requests wherever possible.",
 	extra="People can call for you with !medic.",
 	weps={
 		"med_kit"
