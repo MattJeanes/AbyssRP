@@ -1,4 +1,30 @@
-AddCSLuaFile()
+function GM:OnPlayerChat( ply, txt, teamchat, dead )
+	local tab = {}
+
+	if ( dead ) then
+		table.insert( tab, Color( 255, 30, 40 ) )
+		table.insert( tab, "*DEAD* " )
+	end
+
+	if ( teamchat ) then
+		table.insert( tab, Color( 30, 160, 40 ) )
+		table.insert( tab, "(TEAM) " )
+	end
+
+	if ( IsValid( ply ) ) then
+		table.insert( tab, team.GetColor( ply:Team() ) )
+		table.insert( tab, ply:Nick() )
+	else
+		table.insert( tab, "Console" )
+	end
+
+	table.insert( tab, Color( 255, 255, 255 ) )
+	table.insert( tab, ": " .. txt )
+
+	chat.AddText( unpack( tab ) )
+
+	return true
+end
 
 hook.Add("HUDPaint", "RPWhoCanHear", function()
 	if GetConVarNumber("rp_localchat") == 1 and ChatOpen then

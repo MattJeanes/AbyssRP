@@ -160,6 +160,7 @@ RP:AddTeam({
 	rules="No Rules! You feel the breeze of the city, away from any trouble.",
 	extra="Roam the city, hopefully free from trouble.",
 	nohands=true,
+	freerun=true,
 	weps={
 		"weapon_climb"
 	},

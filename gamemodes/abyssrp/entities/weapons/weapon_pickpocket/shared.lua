@@ -121,7 +121,7 @@ function SWEP:Succeed()
 			RP:Error(self.Owner, RP.colors.white, "You cannot steal an admins cash, sorry!")
 		else
 			local P=math.floor(math.random(10,30))/100
-			local A=math.floor((trace.Entity:GetPData("cash")*P)*0.1)*10
+			local A=math.Clamp(math.floor((trace.Entity:GetCash()*P)*0.1)*10,0,GetConVarNumber("rp_maxdroppedcash"))
 			self.Owner:AddCash(A)
 			trace.Entity:TakeCash(A)
 			RP:Notify(self.Owner, RP.colors.white, "You have stolen ", RP.colors.blue, RP:CC(A), RP.colors.white, " from ", RP.colors.red, trace.Entity:Nick(), RP.colors.white, ".")

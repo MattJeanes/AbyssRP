@@ -16,10 +16,12 @@ function PLUGIN:Call( ply, args )
 		if players[1] == ply then
 		RP:Error(ply, RP.colors.white, "You cannot send cash to yourself!")
 		return end
-		if not string.find(args[2], "[^%d]") then
+		if tonumber(args[2]) then
 			local A = ply:GetCash()
-			local B = tonumber(args[2]) or 0
-			if A > B then
+			local B = tonumber(args[2])
+			if B<=0 then
+				RP:Error( ply, RP.colors.white, "You must enter an amount greater than zero!" )
+			elseif A > B then
 				ply:TakeCash(B)
 				players[1]:AddCash(B)
 				RP:Notify( ply, RP.colors.white, "You have given ", RP.colors.red, RP:CC(B), RP.colors.white, " to: ", RP.colors.blue, players[1]:Nick() )
@@ -28,7 +30,7 @@ function PLUGIN:Call( ply, args )
 				RP:Error( ply, RP.colors.white, "You do not have enough cash to complete this transaction!" )
 			end
 		else
-			RP:Error( ply, RP.colors.white, "You cannot give people words as cash!")
+			RP:Error( ply, RP.colors.white, "Invalid arguments!")
 		end
 	elseif ( #players > 1 ) then
 		RP:Notify( ply, RP.colors.white, "Did you mean ", RP.colors.red, RP:CreatePlayerList( players, true ), RP.colors.white, "?" )

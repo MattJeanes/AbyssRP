@@ -121,6 +121,9 @@ function SWEP:tasePlayer(ply)
 	ply:SpectateEntity(rag)
 	ply.Tased = true
 	
+	if CPPI then
+		rag:CPPISetOwnerless(true)
+	end
 	
 	-- finalize ragdoll
     rag:Spawn()

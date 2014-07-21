@@ -1,12 +1,7 @@
-hook.Add("PlayerSay", "RP_CustomName", function(ply, text)
-	if not ( string.Left( text, 1 ) == "/" or string.Left( text, 1 ) == "!" or string.Left( text, 1 ) == "@" ) then
-		if GetConVarNumber("rp_localchat")==0 then
-			RP:Notify( team.GetColor(ply:Team()), ply:Nick(), RP.colors.white, ": "..text )
-			print(ply:Nick()..": "..text)
-		else
-			RP:TalkToRange(ply, text, 250)
-			print(ply:Nick()..": "..text)
-		end
+hook.Add("PlayerSay", "RP-Localchat", function(ply, text)
+	if GetConVarNumber("rp_localchat")==1 then
+		RP:TalkToRange(ply, text, 250)
+		print(ply:Nick()..": "..text)
 		return ""
 	end
 end)

@@ -83,6 +83,7 @@ elseif SERVER then
     local CanLastVel2 = false
     local NextExp = CurTime()
 	local function DoWallJump(ply, key)
+		if not RP.Team[ply:Team()].freerun then return end
 		if (ply:Alive() and key == IN_JUMP and ply:WaterLevel() <= 1 and !ply:InVehicle() ) then
 		
 		local pos = ply:GetShootPos();
@@ -191,7 +192,7 @@ elseif SERVER then
 	hook.Add("KeyPress", "DoWallJump", DoWallJump);
 	
 	function DoRoll( ply, vel )
-
+		if not RP.Team[ply:Team()].freerun then return end
 		local weapon  = ply:GetActiveWeapon()
 		ply.lookangle = ply:GetUp() - ply:GetAimVector()
 		ply.lookingdown = false
@@ -265,7 +266,7 @@ elseif SERVER then
 		
 	function ParkourThink()
 		for k, v in pairs(player.GetAll()) do
-	  
+			if not RP.Team[v:Team()].freerun then continue end
 			local pos = v:GetShootPos();
 			local up = v:GetUp();
 			local down = v:GetUp() * -1;
@@ -427,9 +428,6 @@ elseif SERVER then
 				if SERVER then
 					v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
 				end
-				if trF.Entity:IsValid() then
-					trF.Entity:TakeDamage(35, v)
-				end
 				local shake = ents.Create( "env_shake" )
 				shake:SetOwner(v)
 				shake:SetPos( trF.HitPos )
@@ -512,9 +510,6 @@ elseif SERVER then
 				v:SetVelocity(v:GetAimVector(), 0)
 				if SERVER then
 					v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1, 6) .. ".wav", math.Rand(80, 100), math.Rand(90, 120))
-				end
-				if trF.Entity:IsValid() then
-					trF.Entity:TakeDamage(v.SlideLastVel / 20, v)
 				end
 				local shake = ents.Create( "env_shake" )
 				shake:SetOwner(v)

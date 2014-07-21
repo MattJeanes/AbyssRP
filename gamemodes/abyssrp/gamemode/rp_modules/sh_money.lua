@@ -77,10 +77,12 @@ function meta:SetCash(amount)
 end
 
 function meta:AddCash(amount)
+	if amount<=0 then return end
 	self:SetCash(self:GetCash()+amount)
 end
 
 function meta:TakeCash(amount)
+	if amount<=0 then return end
 	self:SetCash(self:GetCash()-amount)
 end
 
