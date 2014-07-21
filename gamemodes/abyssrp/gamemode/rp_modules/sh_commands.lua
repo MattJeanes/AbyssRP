@@ -7,7 +7,7 @@ if SERVER then AddCSLuaFile() end
 local pluginFile
 
 function RP:LoadPlugins()
-	RP.plugins = RP.plugins or {}
+	RP.plugins = {}
 	plugins = file.Find( "abyssrp/gamemode/rp_plugins/*.lua", "LUA" ) -- not good practise, fix when its fixed
 	for _, plugin in ipairs( plugins ) do
 		local prefix = string.Left( plugin, string.find( plugin, "_" ) - 1 )
@@ -47,14 +47,6 @@ end
 function RP:Error( ply, ... )
 	RP:Notify(ply, RP.colors.red, "ERROR: ", ...)
 end
-
-local pmeta = FindMetaTable("Player")
-pmeta.SteamName = pmeta.Name
-function pmeta:Name()
-	return self:GetNWString("rpname", self:SteamName())
-end
-pmeta.GetName = pmeta.Name
-pmeta.Nick = pmeta.Name
 
 function RP:PluginSafeCall(cmd, ply, args, silent)
 	

@@ -20,7 +20,7 @@ local function spawnShipment(self,name,pos,angles,count1,price)
 		local cash = self.player:GetCash()
 		local cost = tonumber((Shipments.Cost[num] * count))
 		if cost > cash then
-			RP:Error(ply, RP.colors.white, "Not enough money! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
+			RP:Error(ply, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
 			ShipmentFound = false
 			ShipmentNum = nil
 			return

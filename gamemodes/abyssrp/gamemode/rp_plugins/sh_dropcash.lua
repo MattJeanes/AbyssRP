@@ -1,14 +1,14 @@
 /*-------------------------------------------------------------------------------------------------------------------------
-	Drop money!
+	Drop cash!
 -------------------------------------------------------------------------------------------------------------------------*/
 
 local PLUGIN = {}
-PLUGIN.Title = "Drop Money"
-PLUGIN.Description = "Drop your money!"
+PLUGIN.Title = "Drop Cash"
+PLUGIN.Description = "Drop your cash!"
 PLUGIN.Author = "Overv/Matt J"
-PLUGIN.ChatCommand = "dropmoney"
-PLUGIN.Usage = "<money>"
-PLUGIN.Privileges = { "Drop Money" }
+PLUGIN.ChatCommand = "dropcash"
+PLUGIN.Usage = "<cash>"
+PLUGIN.Privileges = { "Drop Cash" }
 
 function PLUGIN:Call( ply, args )
 	if not args[1] or #args>1 or args[1]=="0" then
@@ -36,10 +36,10 @@ function PLUGIN:Call( ply, args )
 				end
 			end)
 		else
-			RP:Error( ply, RP.colors.white, "You do not have enough money!" )
+			RP:Error( ply, RP.colors.white, "You do not have enough cash!" )
 		end
 	else
-		RP:Error( ply, RP.colors.white, "You cannot drop words as money!")
+		RP:Error( ply, RP.colors.white, "You cannot drop words as cash!")
 	end
 end
 

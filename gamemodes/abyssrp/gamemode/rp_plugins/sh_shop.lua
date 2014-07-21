@@ -9,14 +9,10 @@ PLUGIN.Author = "Dr. Matt"
 PLUGIN.ChatCommand = "shop"
 
 function PLUGIN:Call( ply, args )
-	RP:Notify(ply, RP.colors.white, "You can buy the following things!")
-	timer.Simple(0.5,function()
-		for k,v in pairs(RP.Shipments) do
-			timer.Simple(k*0.2, function()
-				RP:Notify(ply, RP.colors.white, v.name .. " for ", RP.colors.blue, RP:CC(v.cost))
-			end)
-		end
-	end)
+	local success=hook.Call("RP-Shop", GAMEMODE, ply)
+	if success==false then
+		RP:Error(ply, RP.colors.white, "There is no shop assigned to your class!")
+	end
 end
 
 RP:AddPlugin( PLUGIN )

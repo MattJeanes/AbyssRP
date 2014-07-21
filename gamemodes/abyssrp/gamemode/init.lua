@@ -11,5 +11,5 @@ CreateConVar( "rp_dropweapon", "1", FCVAR_NOTIFY )
 CreateConVar( "rp_shownames", "0", FCVAR_NOTIFY ) // not sure what this actually does?
 CreateConVar( "rp_debug", "0", FCVAR_NOTIFY ) // not sure if used
 CreateConVar( "rp_admincandoall", "1", FCVAR_NOTIFY )
-CreateConVar( "rp_admindropmoney", "0", FCVAR_NOTIFY )
+CreateConVar( "rp_admindropcash", "0", FCVAR_NOTIFY )
 CreateConVar( "rp_admingivetools", "1", FCVAR_NOTIFY )

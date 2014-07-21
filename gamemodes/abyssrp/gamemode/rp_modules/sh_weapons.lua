@@ -108,6 +108,8 @@ RP:AddWeapon({
 	name="AK-47",
 	class="fas2_ak47",
 	ammotype="7.62x39MM",
+	model="models/weapons/w_rif_ak47.mdl",
+	displaymodel="models/weapons/w_ak47.mdl",
 	cost=1700
 })
 
@@ -115,12 +117,16 @@ RP:AddWeapon({
 	name="AK-74",
 	class="fas2_ak74",
 	ammotype="5.45x39MM",
+	model="models/weapons/w_rif_ak47.mdl",
+	displaymodel="models/weapons/w_ak47.mdl",
 	cost=1500
 })
 
 RP:AddWeapon({
 	name="DV2",
 	class="fas2_dv2",
+	model="models/weapons/w_knife_ct.mdl",
+	displaymodel="models/weapons/w_dv2.mdl",
 	cost=100
 })
 
@@ -128,6 +134,8 @@ RP:AddWeapon({
 	name="FAMAS F1",
 	class="fas2_famas",
 	ammotype="5.56x45MM",
+	model="models/weapons/w_rif_famas.mdl",
+	displaymodel="models/weapons/w_famas.mdl",
 	cost=1600
 })
 
@@ -135,6 +143,8 @@ RP:AddWeapon({
 	name="G36C",
 	class="fas2_g36c",
 	ammotype="5.56x45MM",
+	model="models/weapons/w_rif_m4a1.mdl",
+	displaymodel="models/weapons/w_g36e.mdl",
 	cost=1500
 })
 
@@ -142,6 +152,8 @@ RP:AddWeapon({
 	name="G3A3",
 	class="fas2_g3",
 	ammotype="7.62x51MM",
+	model="models/weapons/w_rif_ak47.mdl",
+	displaymodel="models/weapons/w_g3a3.mdl",
 	cost=1300
 })
 
@@ -149,6 +161,8 @@ RP:AddWeapon({
 	name="Glock-20",
 	class="fas2_glock20",
 	ammotype="10x25MM",
+	model="models/weapons/w_pist_glock18.mdl",
+	displaymodel="models/weapons/w_pist_glock18.mdl",
 	cost=600
 })
 
@@ -156,6 +170,8 @@ RP:AddWeapon({
 	name="IMI Desert Eagle",
 	class="fas2_deagle",
 	ammotype=".50 AE",
+	model="models/weapons/w_pist_deagle.mdl",
+	displaymodel="models/weapons/w_deserteagle.mdl",
 	cost=1000
 })
 
@@ -163,6 +179,8 @@ RP:AddWeapon({
 	name="IMI Uzi",
 	class="fas2_uzi",
 	ammotype="9x19MM",
+	model="models/weapons/w_smg_mp5.mdl",
+	displaymodel="models/weapons/w_mp5.mdl",
 	cost=900
 })
 
@@ -170,6 +188,8 @@ RP:AddWeapon({
 	name="KS-23",
 	class="fas2_ks23",
 	ammotype="23x75MMR",
+	model="models/weapons/w_shot_m3super90.mdl",
+	displaymodel="models/weapons/world/shotguns/ks23.mdl",
 	cost=1400
 })
 
@@ -177,6 +197,8 @@ RP:AddWeapon({
 	name="M11A1",
 	class="fas2_mac11",
 	ammotype=".380 ACP",
+	model="models/weapons/w_smg_mp5.mdl",
+	displaymodel="models/weapons/w_mp5.mdl",
 	cost=700
 })
 
@@ -184,6 +206,8 @@ RP:AddWeapon({
 	name="M14",
 	class="fas2_m14",
 	ammotype="7.62x51MM",
+	model="models/weapons/w_snip_awp.mdl",
+	displaymodel="models/weapons/w_m14.mdl",
 	cost=2000
 })
 
@@ -191,6 +215,8 @@ RP:AddWeapon({
 	name="M1911",
 	class="fas2_m1911",
 	ammotype=".45 ACP",
+	model="models/weapons/w_pist_p228.mdl",
+	displaymodel="models/weapons/w_1911.mdl",
 	cost=600
 })
 
@@ -198,6 +224,8 @@ RP:AddWeapon({
 	name="M21",
 	class="fas2_m21",
 	ammotype="7.62x51MM",
+	model="models/weapons/w_snip_awp.mdl",
+	displaymodel="models/weapons/w_m14.mdl",
 	cost=2500
 })
 
@@ -205,6 +233,8 @@ RP:AddWeapon({
 	name="M24",
 	class="fas2_m24",
 	ammotype="7.62x51MM",
+	model="models/weapons/w_snip_awp.mdl",
+	displaymodel="models/weapons/w_m24.mdl",
 	cost=2300
 })
 
@@ -212,6 +242,8 @@ RP:AddWeapon({
 	name="M3 Super 90",
 	class="fas2_m3s90",
 	ammotype="12 Gauge",
+	model="models/weapons/w_shot_m3super90.mdl",
+	displaymodel="models/weapons/w_m3.mdl",
 	cost=1150
 })
 
@@ -219,12 +251,16 @@ RP:AddWeapon({
 	name="M4A1",
 	class="fas2_m4a1",
 	ammotype="5.56x45MM",
+	model="models/weapons/w_rif_m4a1.mdl",
+	displaymodel="models/weapons/w_m4.mdl",
 	cost=1900
 })
 
 RP:AddWeapon({
 	name="Machete",
 	class="fas2_machete",
+	model="models/weapons/w_knife_ct.mdl",
+	displaymodel="models/weapons/w_machete.mdl",
 	cost=250
 })
 
@@ -232,6 +268,8 @@ RP:AddWeapon({
 	name="MP5A5",
 	class="fas2_mp5a5",
 	ammotype="9x19MM",
+	model="models/weapons/w_smg_mp5.mdl",
+	displaymodel="models/weapons/w_mp5.mdl",
 	cost=1000
 })
 
@@ -239,6 +277,8 @@ RP:AddWeapon({
 	name="MP5K",
 	class="fas2_mp5k",
 	ammotype="9x19MM",
+	model="models/weapons/w_smg_mp5.mdl",
+	displaymodel="models/weapons/w_mp5.mdl",
 	cost=1000
 })
 
@@ -246,6 +286,8 @@ RP:AddWeapon({
 	name="MP5SD6",
 	class="fas2_mp5sd6",
 	ammotype="9x19MM",
+	model="models/weapons/w_smg_mp5.mdl",
+	displaymodel="models/weapons/w_mp5.mdl",
 	cost=1000
 })
 
@@ -253,6 +295,8 @@ RP:AddWeapon({
 	name="OTs-33 Pernach",
 	class="fas2_ots33",
 	ammotype="9x18MM",
+	model="models/weapons/world/pistols/ots33.mdl",
+	displaymodel="models/weapons/world/pistols/ots33.mdl",
 	cost=650
 })
 
@@ -260,6 +304,8 @@ RP:AddWeapon({
 	name="P226",
 	class="fas2_p226",
 	ammotype=".357 SIG",
+	model="models/weapons/w_pist_p228.mdl",
+	displaymodel="models/weapons/w_pist_p228.mdl",
 	cost=550
 })
 
@@ -267,6 +313,8 @@ RP:AddWeapon({
 	name="PP-19 Bizon",
 	class="fas2_pp19",
 	ammotype="9x18MM",
+	model="models/weapons/w_smg_biz.mdl",
+	displaymodel="models/weapons/w_smg_biz.mdl",
 	cost=900
 })
 
@@ -274,6 +322,8 @@ RP:AddWeapon({
 	name="Raging Bull",
 	class="fas2_ragingbull",
 	ammotype=".454 Casull",
+	model="models/weapons/w_357.mdl",
+	displaymodel="models/weapons/w_357.mdl",
 	cost=1700
 })
 
@@ -281,6 +331,8 @@ RP:AddWeapon({
 	name="Remington 870",
 	class="fas2_rem870",
 	ammotype="12 Gauge",
+	model="models/weapons/w_shot_m3super90.mdl",
+	displaymodel="models/weapons/w_m3.mdl",
 	cost=1500
 })
 
@@ -288,6 +340,8 @@ RP:AddWeapon({
 	name="RPK-47",
 	class="fas2_rpk",
 	ammotype="7.62x39MM",
+	model="models/weapons/w_rif_ak47.mdl",
+	displaymodel="models/weapons/w_ak47.mdl",
 	cost=1600
 })
 
@@ -295,6 +349,8 @@ RP:AddWeapon({
 	name="Sako RK-95",
 	class="fas2_rk95",
 	ammotype="7.62x39MM",
+	model="models/weapons/w_rif_ak47.mdl",
+	displaymodel="models/weapons/world/rifles/rk95.mdl",
 	cost=1800
 })
 
@@ -302,6 +358,8 @@ RP:AddWeapon({
 	name="SG 550",
 	class="fas2_sg550",
 	ammotype="5.56x45MM",
+	model="models/weapons/w_snip_sg550.mdl",
+	displaymodel="models/weapons/w_sg550.mdl",
 	cost=1400
 })
 
@@ -309,6 +367,8 @@ RP:AddWeapon({
 	name="SG 552",
 	class="fas2_sg552",
 	ammotype="5.56x45MM",
+	model="models/weapons/w_snip_sg550.mdl",
+	displaymodel="models/weapons/w_sg550.mdl",
 	cost=1400
 })
 
@@ -316,6 +376,8 @@ RP:AddWeapon({
 	name="SKS",
 	class="fas2_sks",
 	ammotype="7.62x39MM",
+	model="models/weapons/w_snip_awp.mdl",
+	displaymodel="models/weapons/world/rifles/sks.mdl",
 	cost=1800
 })
 
@@ -323,6 +385,8 @@ RP:AddWeapon({
 	name="SR-25",
 	class="fas2_sr25",
 	ammotype="7.62x51MM",
+	model="models/weapons/w_snip_sg550.mdl",
+	displaymodel="models/weapons/w_sr25.mdl",
 	cost=2600
 })
 

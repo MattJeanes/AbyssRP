@@ -51,9 +51,9 @@ hook.Add("KeyPress", "PlayerUsePlayer", function(ply, key)
 			local DButton1 = vgui.Create('DButton', DFrame1)
 			DButton1:SetSize( ScrW() * 0.06, ScrH() * 0.06 )
 			DButton1:SetPos( ScrW() * 0.01, ScrH() * 0.17 )
-			DButton1:SetText('Give Money')
+			DButton1:SetText('Give Cash')
 			DButton1.DoClick = function()
-				RunConsoleCommand("rp", "givemoney", e:SteamID(), DTextEntry1:GetValue())
+				RunConsoleCommand("rp", "givecash", e:SteamID(), DTextEntry1:GetValue())
 				DFrame1:Close()
 			end
 			

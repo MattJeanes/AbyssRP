@@ -41,6 +41,12 @@ function PLUGIN:ChatTextChanged( str )
 			if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #Suggestions < 3 ) then table.insert( Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } ) end
 		end
 		
+		if evolve then
+			for _, v in pairs( evolve.plugins ) do
+				if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #Suggestions < 3 ) then table.insert( Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } ) end
+			end
+		end
+		
 		table.SortByMember( Suggestions, "ChatCommand", function( a, b ) return a < b end )
 	else
 		Suggestions = {}

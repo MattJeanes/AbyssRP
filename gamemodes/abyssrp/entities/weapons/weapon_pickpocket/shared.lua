@@ -117,8 +117,8 @@ function SWEP:Succeed()
 	self:SetWeaponHoldType("normal")
 	local trace = self.Owner:GetEyeTrace()
 	if SERVER and IsValid(trace.Entity) and trace.Entity:IsPlayer() then
-		if GetConVarNumber("rp_admindropmoney")==0 and trace.Entity:RP_IsAdmin() then
-			RP:Error(self.Owner, RP.colors.white, "You cannot steal an admins money, sorry!")
+		if GetConVarNumber("rp_admindropcash")==0 and trace.Entity:RP_IsAdmin() then
+			RP:Error(self.Owner, RP.colors.white, "You cannot steal an admins cash, sorry!")
 		else
 			local P=math.floor(math.random(10,30))/100
 			local A=math.floor((trace.Entity:GetPData("cash")*P)*0.1)*10

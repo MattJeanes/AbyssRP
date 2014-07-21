@@ -99,8 +99,8 @@ function meta:TakeBank(amount)
 	self:SetBank(self:GetBank()-amount)
 end
 
-hook.Add( "PlayerDeath", "RP-Money", function(victim, weapon, killer)
-	if (victim:GetCash() * GetConVarNumber("rp_cashlosspercent") > 5) and not (GetConVarNumber("rp_admindropmoney")==0 and victim:RP_IsAdmin()) then
+hook.Add( "PlayerDeath", "RP-Cash", function(victim, weapon, killer)
+	if (victim:GetCash() * GetConVarNumber("rp_cashlosspercent") > 5) and not (GetConVarNumber("rp_admindropcash")==0 and victim:RP_IsAdmin()) then
 		if math.random(1,4) == 1 then
 			local ent = ents.Create("rp_cash")
 			local pos = victim:GetPos()

@@ -44,7 +44,7 @@ RP:AddTeam({
 	modelrand=true,
 	modelrandn={1,9},
 	name="No Class",
-	salary="0\n\nYou're not even a person why would you earn money?",
+	salary="0\n\nYou're not even a person why would you earn cash?",
 	desc="You aren't any class! You need to select one to the left.",
 	rules="This isn't even a team what are you doing.",
 	extra="You are not a person."
@@ -110,7 +110,7 @@ RP:AddTeam({
 	model="models/player/arctic.mdl",
 	salary=30,
 	desc="You are a thief, it is your 'job' to try and steal peoples cash without them noticing, or break into someones house and take their possessions.",
-	rules="If you do go round stealing peoples money or breaking into houses, you must be prepared for the consequences if you're caught.",
+	rules="If you do go round stealing peoples cash or breaking into houses, you must be prepared for the consequences if you're caught.",
 	extra="Try not to get seen by anybody while breaking into a house or pickpocketing someone.",
 	maxplayers=4,
 	weps={
@@ -204,7 +204,13 @@ RP:AddTeam({
 	rules="You have the right not to sell your guns, however don't hog the class just to get gun's to shoot people yourself!",
 	extra="No extra information.",
 	votejoin=true,
-	maxplayers=2
+	maxplayers=2,
+	func=function(a,b,c)
+		hook.Add("RP-Shop", b, function(ply)
+			ply:SendLua('RP:GunShop()')
+			return true
+		end)
+	end
 })
 
 RP:AddTeam({

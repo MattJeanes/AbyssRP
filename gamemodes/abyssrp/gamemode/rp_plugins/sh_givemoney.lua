@@ -1,20 +1,20 @@
 /*-------------------------------------------------------------------------------------------------------------------------
-	Give money away!
+	Give cash away!
 -------------------------------------------------------------------------------------------------------------------------*/
 
 local PLUGIN = {}
-PLUGIN.Title = "Give Money"
-PLUGIN.Description = "Give your money away!"
+PLUGIN.Title = "Give Cash"
+PLUGIN.Description = "Give your cash away!"
 PLUGIN.Author = "Overv/Matt J"
-PLUGIN.ChatCommand = "givemoney"
-PLUGIN.Usage = "<player> <money>"
-PLUGIN.Privileges = { "Give Money", "Money Check" }
+PLUGIN.ChatCommand = "givecash"
+PLUGIN.Usage = "<player> <cash>"
+PLUGIN.Privileges = { "Give Cash", "Cash Check" }
 
 function PLUGIN:Call( ply, args )
 	local players = RP:FindPlayer( args, ply, true, true )
 	if ( #players == 1 ) then
 		if players[1] == ply then
-		RP:Error(ply, RP.colors.white, "You cannot send money to yourself!")
+		RP:Error(ply, RP.colors.white, "You cannot send cash to yourself!")
 		return end
 		if not string.find(args[2], "[^%d]") then
 			local A = ply:GetCash()
@@ -25,10 +25,10 @@ function PLUGIN:Call( ply, args )
 				RP:Notify( ply, RP.colors.white, "You have given ", RP.colors.red, RP:CC(B), RP.colors.white, " to: ", RP.colors.blue, players[1]:Nick() )
 				RP:Notify( players[1], RP.colors.white, "You have received ", RP.colors.red, RP:CC(B), RP.colors.white, " from: ", RP.colors.blue, ply:Nick() )
 			else
-				RP:Error( ply, RP.colors.white, "You do not have enough money to complete this transaction!" )
+				RP:Error( ply, RP.colors.white, "You do not have enough cash to complete this transaction!" )
 			end
 		else
-			RP:Error( ply, RP.colors.white, "You cannot give people words as money!")
+			RP:Error( ply, RP.colors.white, "You cannot give people words as cash!")
 		end
 	elseif ( #players > 1 ) then
 		RP:Notify( ply, RP.colors.white, "Did you mean ", RP.colors.red, RP:CreatePlayerList( players, true ), RP.colors.white, "?" )

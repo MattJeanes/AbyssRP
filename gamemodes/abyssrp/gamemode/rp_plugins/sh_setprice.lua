@@ -25,12 +25,7 @@ function PLUGIN:Call( ply, args )
 	end
 	
 	if not args[1] then
-		RP:Error(ply, RP.colors.white, "You need to select a price!")
-		return
-	end
-	
-	if tonumber(args[1]) > 1000 then
-		RP:Error(ply, RP.colors.white, "That number is too large!")
+		RP:Error(ply, RP.colors.white, "You need to choose a price!")
 		return
 	end
 	
