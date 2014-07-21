@@ -10,7 +10,7 @@ local function VehicleSpawn(ply, command, args)
 			if (cash - v.cost) < -1 then
 				RP:Error(ply, RP.colors.white, "You don't have enough cash!")
 			else
-				RP:Notify(ply, RP.colors.white, "You have bought vehicle: ", RP.colors.blue, v.name, RP.colors.white, " for ", RP.colors.red, "$" .. v.cost, RP.colors.white, ".")
+				RP:Notify(ply, RP.colors.white, "You have bought vehicle: ", RP.colors.blue, v.name, RP.colors.white, " for ", RP.colors.red, RP:CC(v.cost), RP.colors.white, ".")
 				
 				local ent = ents.Create(v.class)
 				ent:SetKeyValue("vehiclescript", v.script) 

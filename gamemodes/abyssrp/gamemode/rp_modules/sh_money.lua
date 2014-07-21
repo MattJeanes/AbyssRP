@@ -1,13 +1,38 @@
 local meta = FindMetaTable("Player")
 
 function meta:GetCash()
-	local amount=self:GetNWInt("cash",0)
+	local amount=self:GetNWFloat("cash",0)
 	return tonumber(amount)
 end
 
 function meta:GetBank()
-	local amount=self:GetNWInt("bank",0)
+	local amount=self:GetNWFloat("bank",0)
 	return tonumber(amount)
+end
+
+function RP:CC(value) -- Cash convert
+	value=tonumber(value)
+	if not value then
+		value=0
+	end
+	local str,k=string.format("%.2f", tostring(value))
+	while true do
+	str,k = string.gsub(str, "^(-?%d+)(%d%d%d)", '%1,%2')
+		if (k==0) then
+			break
+		end
+	end
+	if value > 0 and value < 1 then -- Pennies/cent etc
+		if value >= 0.1 then
+			return string.sub(str,-2).."p"
+		else
+			return string.sub(str,-1).."p"
+		end
+	elseif string.find(str,"%.00") then
+		return "£"..string.sub(str,1,-4)
+	else
+		return "£"..str
+	end
 end
 
 if CLIENT then return end
@@ -17,7 +42,7 @@ function RP:GiveSalary()
 		if v:Team()==0 then continue end
 		hook.Call( "Payday", GAMEMODE, v, RP.Team[v:Team()].salary )
 		v:AddCash(tonumber(RP.Team[v:Team()].salary))
-		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay: ", RP.colors.blue, "$"..tonumber(RP.Team[v:Team()].salary))
+		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay: ", RP.colors.blue, RP:CC(RP.Team[v:Team()].salary))
 	end
 end
 
@@ -88,7 +113,7 @@ hook.Add( "PlayerDeath", "RP-Money", function(victim, weapon, killer)
 			timer.Simple(0.5,function()
 				if IsValid(ent) and ent:IsInWorld() then
 					victim:TakeCash(cash)
-					RP:Notify(victim, RP.colors.white, "You dropped ", RP.colors.red, "$".. cash, RP.colors.white, " on death!")
+					RP:Notify(victim, RP.colors.white, "You dropped ", RP.colors.red, RP:CC(cash), RP.colors.white, " on death!")
 				end
 			end)
 		end

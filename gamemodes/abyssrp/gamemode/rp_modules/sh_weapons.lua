@@ -250,7 +250,7 @@ RP:AddWeapon({
 })
 
 RP:AddWeapon({
-	name="OTs-33 Pernach"
+	name="OTs-33 Pernach",
 	class="fas2_ots33",
 	ammotype="9x18MM",
 	cost=650

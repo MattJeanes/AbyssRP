@@ -87,7 +87,7 @@ function SWEP:Reload()
 	
 	if ent:Owned() and ent.TheOwner == self.Owner and ent:IsDoor() then
 		ent.TheOwner = nil
-		RP:Notify(self.Owner, RP.colors.white, "You sold your door for: ", RP.colors.blue, "$" .. tostring(sellprice))
+		RP:Notify(self.Owner, RP.colors.white, "You sold your door for: ", RP.colors.blue, RP:CC(sellprice))
 		ent:SetNWBool("Owned", false)
 		ent.Ownable = true
 		ent:Fire( "close", "", 0 )
@@ -97,7 +97,7 @@ function SWEP:Reload()
 		RP:Error(self.Owner, RP.colors.white, "This door is owned by: ", RP.colors.blue, ent.TheOwner:Nick(), RP.colors.white, "!")
 	elseif not ent:Owned() and ent.Ownable and ent:IsDoor() then
 		if (self.Owner:GetCash() - doorcost) > -1 then
-			RP:Notify(self.Owner, RP.colors.white, "You have bought this door for: ", RP.colors.blue, "$" .. tostring(doorcost))
+			RP:Notify(self.Owner, RP.colors.white, "You have bought this door for: ", RP.colors.blue, RP:CC(doorcost))
 			ent.Ownable = false
 			ent:SetNWBool("Owned", true)
 			ent:Fire( "unlock", "", 0 )
@@ -110,7 +110,7 @@ function SWEP:Reload()
 	elseif ent:IsVehicle() and ent.TheOwner == self.Owner then
 		local vehiclecost = ent.Cost
 		local sellprice2 = (tonumber(vehiclecost) * tonumber(sellpercent))
-		RP:Notify(self.Owner, RP.colors.white, "You sold your vehicle for: ", RP.colors.blue, "$" .. tostring(sellprice2))
+		RP:Notify(self.Owner, RP.colors.white, "You sold your vehicle for: ", RP.colors.blue, RP:CC(sellprice2))
 		ent:Remove()
 		self.Owner:AddCash(sellprice2)
 	elseif ent:IsVehicle() and ent.TheOwner and ent.TheOwner != self.Owner then

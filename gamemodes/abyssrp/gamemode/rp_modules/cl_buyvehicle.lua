@@ -15,7 +15,7 @@ function SpawnVehicle_Menu( ply )
 		Icon:SetPos( ScrW() * 0.008, ScrH() * 0.01 + (k*(ScrH() * 0.1)) - (ScrH() * 0.07) )
 		Icon:SetSize(ScrW() * 0.06, ScrH() * 0.08 )
 		Icon:SetImage( v.icon )
-		Icon:SetToolTip( "$".. v.cost )
+		Icon:SetToolTip( RP:CC(v.cost) )
 		Icon.DoClick = function()
 			RunConsoleCommand("rp_vehiclespawn", v.name )
 		end

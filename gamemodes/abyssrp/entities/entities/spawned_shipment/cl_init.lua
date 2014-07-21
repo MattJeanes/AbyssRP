@@ -77,7 +77,7 @@ function ENT:Draw()
 	
 	cam.Start3D2D(Pos + Ang:Up() * 17, Ang, 0.14)
 		draw.WordBox(2, -TextWidth*0.5 + -17, -150, "Price:", "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
-		draw.WordBox(2, -TextWidth2*0.5 + -26, -102, "$"..price, "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
+		draw.WordBox(2, -TextWidth2*0.5 + -26, -102, RP:CC(price), "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
 	cam.End3D2D()
 	
 end

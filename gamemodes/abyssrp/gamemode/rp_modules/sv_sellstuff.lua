@@ -23,9 +23,9 @@ function pl:SellDoors(left)
 	
 	if not left then
 		if #DoorTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " door for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " door for: ", RP.colors.blue, RP:CC(SellPrice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " doors for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " doors for: ", RP.colors.blue, RP:CC(SellPrice))
 		end
 	end
 	
@@ -60,9 +60,9 @@ function pl:SellVehicles(left)
 	
 	if not left then
 		if #VehicleTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicle for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicle for: ", RP.colors.blue, RP:CC(SellPrice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicles for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicles for: ", RP.colors.blue, RP:CC(SellPrice))
 		end
 	end
 		
@@ -97,9 +97,9 @@ function pl:SellShipments(left)
 	
 	if not left then
 		if #ShipmentTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipment for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipment for: ", RP.colors.blue, RP:CC(SellPrice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipments for: ", RP.colors.blue, "$" .. tostring(SellPrice))
+			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipments for: ", RP.colors.blue, RP:CC(SellPrice))
 		end
 	end
 		

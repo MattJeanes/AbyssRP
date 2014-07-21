@@ -44,14 +44,14 @@ function PLUGIN:Call( ply, args )
 				ply:TakeCash(cost)
 				timer.Simple(0.1,function()
 					if not (shipment:IsInWorld()) then
-						RP:Error(ply, RP.colors.white, "Shipment spawn failure! Refunded: ", RP.colors.blue, "$".. tostring(cost), RP.colors.white, ".")
+						RP:Error(ply, RP.colors.white, "Shipment spawn failure! Refunded: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
 						ply:AddCash(cost)
 					else
-						RP:Notify(ply, RP.colors.white, "Shipment bought (", RP.colors.blue, v.name, RP.colors.white, "): ", RP.colors.red, "$" .. tostring(cost) )
+						RP:Notify(ply, RP.colors.white, "Shipment bought (", RP.colors.blue, v.name, RP.colors.white, "): ", RP.colors.red, RP:CC(cost) )
 					end
 				end)
 			else
-				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, "$" .. cost, RP.colors.white, " required!" )
+				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, RP:CC(cost), RP.colors.white, " required!" )
 			end
 			return
 		end

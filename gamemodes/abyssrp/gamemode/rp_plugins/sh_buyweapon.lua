@@ -35,17 +35,17 @@ function PLUGIN:Call( ply, args )
 					ply:TakeCash(v.cost)
 					timer.Simple(0.1,function()
 						if not (item:IsInWorld()) then
-							RP:Error(ply, RP.colors.white, "Item spawn failure! Refunded: ", RP.colors.blue, "$".. tostring(v.cost), RP.colors.white, ".")
+							RP:Error(ply, RP.colors.white, "Item spawn failure! Refunded: ", RP.colors.blue, RP:CC(v.cost), RP.colors.white, ".")
 							ply:AddCash(cost)
 						else
-							RP:Notify(ply, RP.colors.white, "Item bought (", RP.colors.blue, v.name, RP.colors.white, "): ", RP.colors.red, "$" .. v.cost )
+							RP:Notify(ply, RP.colors.white, "Item bought (", RP.colors.blue, v.name, RP.colors.white, "): ", RP.colors.red, RP:CC(v.cost) )
 						end
 					end)
 				else
-					RP:Error( ply, RP.colors.white, "You must be a ", team.GetColor(9), "gun dealer", RP.colors.white, "!" )
+					RP:Error( ply, RP.colors.white, "You must be a ", team.GetColor(RP:GetTeamN("gun dealer")), "gun dealer", RP.colors.white, "!" )
 				end			
 			else
-				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, "$" .. cost, RP.colors.white, " required!" )
+				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, RP:CC(cost), RP.colors.white, " required!" )
 			end
 			return
 		end

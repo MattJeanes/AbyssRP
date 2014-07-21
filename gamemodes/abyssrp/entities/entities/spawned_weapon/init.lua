@@ -48,7 +48,7 @@ function ENT:Use(activator,caller)
 		activator:TakeCash(cost)
 		self.Entity.TheOwner:AddCash(cost)
 	else
-		RP:Error(ply, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, "$"..tostring(cost), RP.colors.white, ".")
+		RP:Error(ply, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
 		return false
 	end
 end

@@ -6,7 +6,7 @@ function meta:AddAchievement(t)
 	local n=t.name
 	if not self:GetPData("RPAch-"..t.name, false) then
 		RP:Notify(team.GetColor(self:Team()), self:Nick(), RP.colors.white, " has earned the achievement: '", RP.colors.blue, t.name, RP.colors.white, "'.")
-		RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, "$" .. tostring(t.reward), RP.colors.white, " for earning that achievement!")
+		RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, RP:CC(t.reward), RP.colors.white, " for earning that achievement!")
 		self:AddCash(t.reward)
 		self:SetPData("RPAch-"..t.name, true)
 	end

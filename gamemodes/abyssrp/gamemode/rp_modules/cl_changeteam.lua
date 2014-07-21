@@ -67,7 +67,7 @@ function changeteam_menu( ply )
 				if t == 0 then
 					UText[i]:SetText("Job Title: ".. t.name .. "\nSalary: ".. t.salary )
 				else
-					UText[i]:SetText("Job Title: ".. t.name .. "\nSalary: $".. t.salary..count..votejoin )
+					UText[i]:SetText("Job Title: ".. t.name .. "\nSalary: ".. RP:CC(t.salary)..count..votejoin )
 				end
 			elseif i == 2 then
 				UText[i]:SetText("Description:\n".. t.desc)

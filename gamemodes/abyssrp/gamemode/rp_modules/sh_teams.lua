@@ -93,7 +93,15 @@ RP:AddTeam({
 	salary=30,
 	desc="You are a car dealer. Your job is to sell car's to other people who want them, and make yourself a living from it!",
 	rules="Make sure to use !giveownership <ply> while looking at the vehicle, before letting the client drive off in it!",
-	extra="Special Car Spawn-menu."
+	extra="Special Car Spawn-menu.",
+	func=function(a,b,c)
+		hook.Add("SpawnMenuOpen", b, function()
+			if LocalPlayer():Team()==c then
+				SpawnVehicle_Menu( LocalPlayer() )
+				return false
+			end
+		end)
+	end
 })
 
 RP:AddTeam({

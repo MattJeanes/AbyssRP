@@ -13,7 +13,7 @@ function PLUGIN:Call( ply, args )
 	timer.Simple(0.5,function()
 		for k,v in pairs(RP.Shipments) do
 			timer.Simple(k*0.2, function()
-				RP:Notify(ply, RP.colors.white, v.name .. " for ", RP.colors.blue, "$".. v.cost)
+				RP:Notify(ply, RP.colors.white, v.name .. " for ", RP.colors.blue, RP:CC(v.cost))
 			end)
 		end
 	end)

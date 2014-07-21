@@ -22,8 +22,8 @@ function PLUGIN:Call( ply, args )
 			if A > B then
 				ply:TakeCash(B)
 				players[1]:AddCash(B)
-				RP:Notify( ply, RP.colors.white, "You have given ", RP.colors.red, "$".. tostring(B), RP.colors.white, " to: ", RP.colors.blue, players[1]:Nick() )
-				RP:Notify( players[1], RP.colors.white, "You have received ", RP.colors.red, "$".. tostring(B), RP.colors.white, " from: ", RP.colors.blue, ply:Nick() )
+				RP:Notify( ply, RP.colors.white, "You have given ", RP.colors.red, RP:CC(B), RP.colors.white, " to: ", RP.colors.blue, players[1]:Nick() )
+				RP:Notify( players[1], RP.colors.white, "You have received ", RP.colors.red, RP:CC(B), RP.colors.white, " from: ", RP.colors.blue, ply:Nick() )
 			else
 				RP:Error( ply, RP.colors.white, "You do not have enough money to complete this transaction!" )
 			end

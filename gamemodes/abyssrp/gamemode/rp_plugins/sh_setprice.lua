@@ -41,7 +41,7 @@ function PLUGIN:Call( ply, args )
 	
 	ent.Price = args[1]
 	ent:SetNWInt("price", args[1])
-	RP:Notify(ply, RP.colors.white, "You have set the price of your shipment to: ", RP.colors.blue, "$"..args[1], RP.colors.white, ".")
+	RP:Notify(ply, RP.colors.white, "You have set the price of your shipment to: ", RP.colors.blue, RP:CC(args[1]), RP.colors.white, ".")
 	
 end
 

@@ -21,7 +21,7 @@ function PLUGIN:Call( ply, args )
 		local B = tonumber(args[1])
 		local C = A - B
 		if C > -1 then
-			RP:Notify( ply, RP.colors.white, "You have dropped ", RP.colors.blue, "$".. tostring(B), RP.colors.white, "!")
+			RP:Notify( ply, RP.colors.white, "You have dropped ", RP.colors.blue, RP:CC(B), RP.colors.white, "!")
 			local ent = ents.Create("rp_cash")
 			ent.Cash = B
 			local tr = ply:GetEyeTraceNoCursor()

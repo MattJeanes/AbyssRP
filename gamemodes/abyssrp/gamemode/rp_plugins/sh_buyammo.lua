@@ -36,10 +36,10 @@ function PLUGIN:Call( ply, args )
 			
 			if cash >= cost then			
 				ply:GiveAmmo(tonumber(args[2]), v.ammotype)
-				RP:Notify(ply, RP.colors.white, "Ammo Bought (", RP.colors.blue, args[2], RP.colors.white, ") for your "..v.name.. ": ", RP.colors.red, "$" .. cost, RP.colors.white, ".")
+				RP:Notify(ply, RP.colors.white, "Ammo Bought (", RP.colors.blue, args[2], RP.colors.white, ") for your "..v.name.. ": ", RP.colors.red, RP:CC(cost), RP.colors.white, ".")
 				ply:TakeCash(cost)
 			else
-				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, "$" .. cost, RP.colors.white, " required!" )
+				RP:Error(ply, RP.colors.white, "Not enough cash: ", RP.colors.blue, RP:CC(cost), RP.colors.white, " required!" )
 			end
 			return
 		end

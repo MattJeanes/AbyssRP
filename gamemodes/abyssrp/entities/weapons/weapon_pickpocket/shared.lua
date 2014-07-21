@@ -124,8 +124,8 @@ function SWEP:Succeed()
 			local A=math.floor((trace.Entity:GetPData("cash")*P)*0.1)*10
 			self.Owner:AddCash(A)
 			trace.Entity:TakeCash(A)
-			RP:Notify(self.Owner, RP.colors.white, "You have stolen ", RP.colors.blue, "$"..A, RP.colors.white, " from ", RP.colors.red, trace.Entity:Nick(), RP.colors.white, ".")
-			RP:Notify(trace.Entity, RP.colors.red, "$"..A, RP.colors.white, " has been stolen from you.")
+			RP:Notify(self.Owner, RP.colors.white, "You have stolen ", RP.colors.blue, RP:CC(A), RP.colors.white, " from ", RP.colors.red, trace.Entity:Nick(), RP.colors.white, ".")
+			RP:Notify(trace.Entity, RP.colors.red, RP:CC(A), RP.colors.white, " has been stolen from you.")
 		end
 	end
 	if SERVER and self.snd then

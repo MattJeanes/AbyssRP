@@ -18,10 +18,10 @@ function PLUGIN:Call( ply, args )
 			if ( #players == 1 ) then
 				players[1]:SetCash(tonumber(args[2]))
 				if ply == players[1] then
-					RP:Notify( ply, RP.colors.white, "You have set your own money to: ", RP.colors.blue, "$" .. args[2], RP.colors.white, "!")
+					RP:Notify( ply, RP.colors.white, "You have set your own money to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!")
 				else
-					RP:Notify( ply, RP.colors.white, "You have set ", RP.colors.blue, players[1]:Nick() .. "s", RP.colors.white, " balance to: ", RP.colors.blue, "$".. args[2], RP.colors.white, "!" )
-					RP:Notify( players[1], RP.colors.blue, ply:Nick(), RP.colors.white, " has set your money to: ", RP.colors.blue, "$" .. args[2], RP.colors.white, "!" )
+					RP:Notify( ply, RP.colors.white, "You have set ", RP.colors.blue, players[1]:Nick() .. "s", RP.colors.white, " balance to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!" )
+					RP:Notify( players[1], RP.colors.blue, ply:Nick(), RP.colors.white, " has set your money to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!" )
 				end
 			elseif ( #players > 1 ) then
 				RP:Notify( ply, RP.colors.white, "Did you mean ", RP.colors.red, RP:CreatePlayerList( players, true ), RP.colors.white, "?" )

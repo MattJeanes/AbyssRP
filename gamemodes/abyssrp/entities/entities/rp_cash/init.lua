@@ -29,13 +29,13 @@ function ENT:Use(activator, caller)
 		if activator:IsPlayer() and activator:Alive() then
 			activator:AddCash(tonumber(self.Cash))
 			if activator == self.Owner then
-				RP:Notify(self.Owner, RP.colors.white, "You picked up your own dropped money: ", RP.colors.blue, "$".. tostring(self.Cash), RP.colors.white, "!")
+				RP:Notify(self.Owner, RP.colors.white, "You picked up your own dropped money: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 			else
 				if IsValid(self.Owner) then
-					RP:Notify(activator, RP.colors.white, "You have picked up ", team.GetColor(self.Owner:Team()), self.Owner:Nick(), RP.colors.white, "'s Cash: ", RP.colors.blue, "$".. tostring(self.Cash), RP.colors.white, "!")
+					RP:Notify(activator, RP.colors.white, "You have picked up ", team.GetColor(self.Owner:Team()), self.Owner:Nick(), RP.colors.white, "'s Cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 					RP:Notify(self.Owner, RP.colors.blue, activator:Nick(), RP.colors.white, " picked up your dropped money!")
 				else
-					RP:Notify(activator, RP.colors.white, "You have picked up ", RP.colors.red, "someone", RP.colors.white, "'s Cash: ", RP.colors.blue, "$".. tostring(self.Cash), RP.colors.white, "!")
+					RP:Notify(activator, RP.colors.white, "You have picked up ", RP.colors.red, "someone", RP.colors.white, "'s Cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 				end
 			end
 			self:Remove()

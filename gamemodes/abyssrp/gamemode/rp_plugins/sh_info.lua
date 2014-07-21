@@ -27,9 +27,9 @@ function PLUGIN:Call( ply, args )
 	local C = A - B
 	
 	RP:Notify( ply, RP.colors.white, "Name: ", RP.colors.blue, Shipments.Name[i] )
-	RP:Notify( ply, RP.colors.white, "Price: ", RP.colors.blue, "$" .. tostring( B ) )
-	RP:Notify( ply, RP.colors.white, "Current Balance: ", RP.colors.blue, "$" .. tostring( A ) )
-	RP:Notify( ply, RP.colors.white, "Balance after purchase: ", RP.colors.blue, "$" .. tostring( C ) )
+	RP:Notify( ply, RP.colors.white, "Price: ", RP.colors.blue, RP:CC( B ) )
+	RP:Notify( ply, RP.colors.white, "Current Balance: ", RP.colors.blue, RP:CC( A ) )
+	RP:Notify( ply, RP.colors.white, "Balance after purchase: ", RP.colors.blue, RP:CC( C ) )
 	ShipmentFound = false
 	ShipmentNum = nil
 end

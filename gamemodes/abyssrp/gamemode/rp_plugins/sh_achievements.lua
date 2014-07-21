@@ -30,7 +30,7 @@ function PLUGIN:Call( ply, args )
 		if string.lower(arg) == string.lower(v.name) then
 			RP:Notify(ply, RP.colors.white, "Name: ", RP.colors.blue, v.name)
 			RP:Notify(ply, RP.colors.white, "Description: ", RP.colors.blue, v.desc)
-			RP:Notify(ply, RP.colors.white, "Reward: ", RP.colors.blue,  "$" .. v.reward)
+			RP:Notify(ply, RP.colors.white, "Reward: ", RP.colors.blue,  RP:CC(v.reward))
 			if v.total then
 				RP:Notify(ply, RP.colors.white, "Progress: ", RP.colors.blue, tostring(ply:GetPData("RPAch-"..v.name.."-Progress", 0)), RP.colors.white, "/", RP.colors.blue, tostring(v.total))
 			end
