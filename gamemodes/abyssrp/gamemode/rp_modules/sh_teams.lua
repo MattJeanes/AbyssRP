@@ -202,7 +202,7 @@ RP:AddTeam({
 	color=Color( 99, 99, 99 ),
 	model="models/player/odessa.mdl",
 	salary=30,
-	desc="You are a gun dealer.	You sell guns to people to make your living.",
+	desc="You are a gun dealer. You sell guns to people to make your living.",
 	rules="You must actually sell guns to people, you cannot be this class for just your own personal gain.",
 	extra="You can access the gun shop with !shop.",
 	votejoin=true,
