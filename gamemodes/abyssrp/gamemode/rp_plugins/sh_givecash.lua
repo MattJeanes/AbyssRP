@@ -21,7 +21,7 @@ function PLUGIN:Call( ply, args )
 			local B = tonumber(args[2])
 			if B<=0 then
 				RP:Error( ply, RP.colors.white, "You must enter an amount greater than zero!" )
-			elseif A > B then
+			elseif A >= B then
 				ply:TakeCash(B)
 				players[1]:AddCash(B)
 				RP:Notify( ply, RP.colors.white, "You have given ", RP.colors.red, RP:CC(B), RP.colors.white, " to: ", RP.colors.blue, players[1]:Nick() )

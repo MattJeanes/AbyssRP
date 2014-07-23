@@ -55,16 +55,12 @@ local function SetDoorData(data)
 	end
 end
 
-local OldCleanup=game.CleanUpMap
+if not OldCleanup then
+	OldCleanup=game.CleanUpMap
+end
 function game.CleanUpMap()
-
-	local D=GetDoorData()
+	local data=GetDoorData()
 	OldCleanup()
-	timer.Simple(1, function()
-		hook.Call("RP-EntStartup", GAMEMODE)
-	end)
-	timer.Simple(2, function()
-		SetDoorData(D)
-	end)
-	
+	RP:EntStartup()
+	SetDoorData(data)
 end

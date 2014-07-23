@@ -146,18 +146,17 @@ RP:AddTeam({
 })
 
 RP:AddTeam({
-	name="Pedophile",
+	name="Drug Dealer",
 	color=Color( 160, 82, 45 ),
 	model="models/player/monk.mdl",
 	salary=20,
-	desc="You are a pedophile. Everyone in society looks down upon you. Abduct people and do what you will with them.",
-	rules="You don't have any rules, but it's recommended to keep away from authority.",
-	extra="You are similar to the thief, except you are not after their cash or possessions.",
-	maxplayers=3,
-	weps={
-		"weapon_rape",
-		"fas2_dv2"
-	}
+	desc="You are a drug dealer. You illegally sell drugs to those who want them and avoid detection.",
+	rules="You must actually deal drugs, you're not allowed to use this class just to buy yourself drugs.",
+	extra="You can access the drug shop with !menu.",
+	maxplayers=2,
+	menu=function()
+		RP:DrugShop()
+	end
 })
 
 RP:AddTeam({
@@ -197,6 +196,7 @@ RP:AddTeam({
 	votejoin=true,
 	maxplayers=1,
 	police=true,
+	armor=100,
 	weps={
 		"arrest_stick",
 		"weapon_stunstick",
@@ -213,8 +213,8 @@ RP:AddTeam({
 	model="models/player/odessa.mdl",
 	salary=30,
 	desc="You are a gun dealer. You sell guns to people to make your living.",
-	rules="You must actually deal guns, you're not allowed to use to class just to buy yourself weapons.",
-	extra="You can access the gun shop with !shop.",
+	rules="You must actually deal guns, you're not allowed to use this class just to buy yourself weapons.",
+	extra="You can access the gun shop with !menu.",
 	votejoin=true,
 	maxplayers=2,
 	menu=function()
@@ -234,17 +234,16 @@ RP:AddTeam({
 	maxplayers=1,
 	armor=100,
 	weps={
-		"arrest_stick",
-		"fas2_p226"
+		"arrest_stick"
 	}
 })
 
 RP:AddTeam({
 	name="Medic",
 	color=Color( 255, 0, 170 ),
-	model={"models/player/group03/female_0",".mdl"},
+	model={"models/player/group03m/male_0",".mdl"},
 	modelrand=true,
-	modelrandn={1,4},
+	modelrandn={1,9},
 	salary=150,
 	desc="You are the medic. Your job is to heal those who have been injured.",
 	rules="Make sure to respond to 'medic' requests wherever possible.",

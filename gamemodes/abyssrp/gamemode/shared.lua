@@ -10,6 +10,29 @@ GM.Website 	= "http://mattjeanes.com"
 
 RP = RP or {}
 
+RP.Constants={}
+
+function RP:AddConstant(type,name)
+	if not RP.Constants[type] then
+		RP.Constants[type]={}
+	end
+	local n=table.Count(RP.Constants[type])+1
+	RP.Constants[type][n]=name
+	return n
+end
+
+function RP:GetConstant(type,n)
+	if not RP.Constants[type] then
+		return false
+	end
+	for k,v in pairs(RP.Constants[type]) do
+		if k==n then
+			return v
+		end
+	end
+	return false
+end	
+
 local modules = file.Find( "abyssrp/gamemode/rp_modules/*.lua", "LUA" )
 for _, plugin in ipairs( modules ) do
 	local prefix = string.Left( plugin, string.find( plugin, "_" ) - 1 )

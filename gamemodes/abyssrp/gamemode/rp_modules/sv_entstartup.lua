@@ -19,7 +19,15 @@ function RP:AddJailPos(pos)
 	RP.JailPoses[n]=pos
 end
 
-hook.Add("RP-EntStartup", "RP-DefaultStartup", function()
+function RP:EntStartup()
+	local maps = file.Find( "abyssrp/gamemode/rp_maps/*.lua", "LUA" )
+	local found=false
+	for _, map in ipairs( maps ) do
+		local s=string.gsub(map, ".lua", "")
+		if string.lower(s)==string.lower(game.GetMap()) then
+			include( "abyssrp/gamemode/rp_maps/" .. map )
+		end
+	end
 
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
 		if v:GetSaveTable().m_bLocked then
@@ -84,21 +92,8 @@ hook.Add("RP-EntStartup", "RP-DefaultStartup", function()
 			ent:Spawn()
 		end
 	end
-	game.ConsoleCommand("sbox_godmode 0\n")
-	game.ConsoleCommand("sbox_playershurtplayers 1\n")
-	game.ConsoleCommand("sbox_noclip 0\n")
-end)
+end
 
-hook.Add( "InitPostEntity", "MapStartTrigger", function()
-	local maps = file.Find( "abyssrp/gamemode/rp_maps/*.lua", "LUA" )
-	local found=false
-	for _, map in ipairs( maps ) do
-		local s=string.gsub(map, ".lua", "")
-		if string.lower(s)==string.lower(game.GetMap()) then
-			include( "abyssrp/gamemode/rp_maps/" .. map )
-		end
-	end
-	timer.Simple(2, function()
-		hook.Call("RP-EntStartup", GAMEMODE)
-	end)
+hook.Add( "InitPostEntity", "RP-EntStartup", function()
+	RP:EntStartup()
 end)
