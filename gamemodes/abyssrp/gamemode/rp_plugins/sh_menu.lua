@@ -1,17 +1,17 @@
 /*-------------------------------------------------------------------------------------------------------------------------
-	Show the shop!
+	Show the menu!
 -------------------------------------------------------------------------------------------------------------------------*/
 
 local PLUGIN = {}
-PLUGIN.Title = "Shop"
-PLUGIN.Description = "The Shop!"
+PLUGIN.Title = "Menu"
+PLUGIN.Description = "Class specific menu"
 PLUGIN.Author = "Dr. Matt"
-PLUGIN.ChatCommand = "shop"
+PLUGIN.ChatCommand = "menu"
 
 function PLUGIN:Call( ply, args )
-	local success=hook.Call("RP-Shop", GAMEMODE, ply)
-	if success==false then
-		RP:Error(ply, RP.colors.white, "There is no shop assigned to your class!")
+	local success=ply:ShowMenu()
+	if not success then
+		RP:Error(ply, RP.colors.white, "There is no menu assigned to your class!")
 	end
 end
 

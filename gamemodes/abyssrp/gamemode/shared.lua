@@ -28,6 +28,5 @@ modules=nil
 
 RP:LoadPlugins()
 
-CreateConVar( "rp_adminspawnmenu", "1", { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE } )
-CreateConVar( "rp_costtobail", "1000", { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE } )
-CreateConVar( "rp_localchat", "1", { FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE } )
+CreateConVar( "rp_adminspawnmenu", "1", { FCVAR_NOTIFY, FCVAR_REPLICATED } )
+CreateConVar( "rp_costtobail", "1000", { FCVAR_NOTIFY, FCVAR_REPLICATED } )

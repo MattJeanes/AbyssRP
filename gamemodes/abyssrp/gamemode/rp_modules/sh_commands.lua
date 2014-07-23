@@ -62,6 +62,24 @@ function RP:PluginSafeCall(cmd, ply, args, silent)
 	end
 end
 
+function RP:FormatTime( t )
+	if ( t < 0 ) then
+		return "Forever"
+	elseif ( t < 60 ) then
+		if ( t == 1 ) then return "one second" else return t .. " seconds" end
+	elseif ( t < 3600 ) then
+		if ( math.ceil( t / 60 ) == 1 ) then return "one minute" else return math.ceil( t / 60 ) .. " minutes" end
+	elseif ( t < 24 * 3600 ) then
+		if ( math.ceil( t / 3600 ) == 1 ) then return "one hour" else return math.ceil( t / 3600 ) .. " hours" end
+	elseif ( t < 24 * 3600 * 7 ) then
+		if ( math.ceil( t / ( 24 * 3600 ) ) == 1 ) then return "one day" else return math.ceil( t / ( 24 * 3600 ) ) .. " days" end
+	elseif ( t < 24 * 3600 * 30 ) then
+		if ( math.ceil( t / ( 24 * 3600 * 7 ) ) == 1 ) then return "one week" else return math.ceil( t / ( 24 * 3600 * 7 ) ) .. " weeks" end
+	else
+		if ( math.ceil( t / ( 24 * 3600 * 30 ) ) == 1 ) then return "one month" else return math.ceil( t / ( 24 * 3600 * 30 ) )  .. " months" end
+	end
+end
+
 if SERVER then
 	RP.SilentNotify = false
 	

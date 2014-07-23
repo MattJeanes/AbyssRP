@@ -35,18 +35,21 @@ function RP:CC(value) -- Cash convert
 	end
 end
 
+RP.SalaryTime = 300
+
 if CLIENT then return end
 
 function RP:GiveSalary()
 	for k,v in pairs(player.GetAll()) do
 		if v:Team()==0 then continue end
-		hook.Call( "Payday", GAMEMODE, v, RP.Team[v:Team()].salary )
-		v:AddCash(tonumber(RP.Team[v:Team()].salary))
-		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay: ", RP.colors.blue, RP:CC(RP.Team[v:Team()].salary))
+		local salary=v:GetTeamValue("salary")
+		hook.Call( "Payday", GAMEMODE, v, salary)
+		v:AddCash(salary)
+		RP:Notify(v, RP.colors.white, "Payday! You have recieved your pay: ", RP.colors.blue, RP:CC(salary))
 	end
 end
 
-timer.Create("RP-GiveSalary", 300, 0, function()
+timer.Create("RP-GiveSalary", RP.SalaryTime, 0, function()
 	RP:GiveSalary()
 end)
 

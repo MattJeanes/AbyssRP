@@ -19,7 +19,7 @@ function ENT:Use(activator,caller)
 	local class = self.Entity.Class
 	local ammohax = self.Entity.ammohacked
 	local weapon = ents.Create(tostring(class))
-	local cost = self.Entity.Price
+	local cost = self.Entity.Cost
 	
 	if not weapon:IsValid() then return false end
 	
@@ -48,7 +48,7 @@ function ENT:Use(activator,caller)
 		activator:TakeCash(cost)
 		self.Entity.TheOwner:AddCash(cost)
 	else
-		RP:Error(ply, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
+		RP:Error(activator, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
 		return false
 	end
 end

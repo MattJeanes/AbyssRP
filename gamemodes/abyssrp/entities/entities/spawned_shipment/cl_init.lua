@@ -70,14 +70,14 @@ function ENT:Draw()
 	
 	Ang:RotateAroundAxis(Ang:Up(), 180)
 	
-	local price = self.Entity:GetNWInt("price")
+	local cost = self.Entity:GetNWInt("cost")
 	
-	local TextWidth = surface.GetTextSize("Price:")
-	local TextWidth2 = surface.GetTextSize(tostring(price))
+	local TextWidth = surface.GetTextSize("Cost:")
+	local TextWidth2 = surface.GetTextSize(tostring(cost))
 	
 	cam.Start3D2D(Pos + Ang:Up() * 17, Ang, 0.14)
-		draw.WordBox(2, -TextWidth*0.5 + -17, -150, "Price:", "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
-		draw.WordBox(2, -TextWidth2*0.5 + -26, -102, RP:CC(price), "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
+		draw.WordBox(2, -TextWidth*0.5 + -17, -150, "Cost:", "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
+		draw.WordBox(2, -TextWidth2*0.5 + -26, -102, RP:CC(cost), "HUDNumber5", Color(140, 0, 0, 100), Color(255,255,255,255))
 	cam.End3D2D()
 	
 end

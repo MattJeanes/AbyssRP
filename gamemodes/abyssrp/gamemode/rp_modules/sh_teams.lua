@@ -35,6 +35,16 @@ function RP:GetTeamN(str)
 	return false
 end
 
+local meta = FindMetaTable("Player")
+
+function meta:GetTeam()
+	return RP.Team[self:Team()]
+end
+
+function meta:GetTeamValue(value)
+	return RP.Team[self:Team()][value]
+end
+
 // Team 0 info - Don't delete this one please! //
 
 RP:AddTeam({
@@ -165,7 +175,7 @@ RP:AddTeam({
 	weps={
 		"weapon_climb"
 	},
-	func=function(a,b,c)		
+	func=function(a,b,c)
 		hook.Add("SetupMove", b, function(ply)
 			if ply:Team()==c then
 				ply:SetWalkSpeed(250)
@@ -207,13 +217,8 @@ RP:AddTeam({
 	extra="You can access the gun shop with !shop.",
 	votejoin=true,
 	maxplayers=2,
-	func=function(a,b,c)
-		hook.Add("RP-Shop", b, function(ply)
-			if ply:Team()==c then
-				ply:SendLua('RP:GunShop()')
-				return true
-			end
-		end)
+	menu=function()
+		RP:GunShop()
 	end
 })
 

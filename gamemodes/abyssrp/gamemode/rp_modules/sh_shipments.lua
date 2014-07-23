@@ -39,7 +39,7 @@ if SERVER then
 		shipment:SetPos(tr.HitPos)
 		shipment.Name = t.name
 		shipment.Count = q
-		shipment.DefaultPrice = t.cost
+		shipment.DefaultCost = t.cost
 		shipment.Class = t.class
 		shipment.Model = t.model or "models/items/boxmrounds.mdl"
 		shipment.TheOwner = ply
@@ -63,7 +63,7 @@ if SERVER then
 		weapon.ShareGravgun = true
 		weapon.Class = t.class
 		weapon.TheOwner = ply
-		weapon.Price = cost
+		weapon.Cost = cost
 		weapon.nodupe = true
 		weapon:Spawn()
 		weapon:Activate()

@@ -83,7 +83,7 @@ elseif SERVER then
     local CanLastVel2 = false
     local NextExp = CurTime()
 	local function DoWallJump(ply, key)
-		if not RP.Team[ply:Team()].freerun then return end
+		if not ply:GetTeamValue("freerun") then return end
 		if (ply:Alive() and key == IN_JUMP and ply:WaterLevel() <= 1 and !ply:InVehicle() ) then
 		
 		local pos = ply:GetShootPos();
@@ -92,8 +92,6 @@ elseif SERVER then
 		local right = ply:GetRight();
 		local forward = ply:GetForward();
 		local back = (ply:GetForward() * -1);
-		local MinDamage = 5
-		local MaxDamage = 10
 		local MinForcevalue = GetConVarNumber("Parkour_MinForceAdd") * GetConVarNumber("Parkour_ForceMul")
 		local MaxForcevalue = GetConVarNumber("Parkour_MaxForceAdd") * GetConVarNumber("Parkour_ForceMul")
 		local WallJumpComboMax = GetConVarNumber("Parkour_MaxWallCombo")
@@ -114,7 +112,6 @@ elseif SERVER then
 				local WallFireFix = tr.Entity
 				ply.Hanging = false
 				WallJumpSound(ply)
-				util.BlastDamage(ply, ply, tr.HitPos, 4, math.random( MinDamage, MaxDamage ) )
 				if tr.Entity == WallFireFix and WallFireFix:IsOnFire() then
 					tr.Entity:Extinguish()		
 				end
@@ -133,7 +130,6 @@ elseif SERVER then
 			    local WallFireFix = tr.Entity
 				ply.Hanging = false
 				WallJumpSound(ply)
-				util.BlastDamage(ply, ply, tr.HitPos, 4, math.random( MinDamage, MaxDamage ) )
 				if tr.Entity == WallFireFix and WallFireFix:IsOnFire() then
 					tr.Entity:Extinguish()		
 				end
@@ -151,7 +147,6 @@ elseif SERVER then
 				local WallFireFix = tr.Entity
 				ply.Hanging = false
 				WallJumpSound(ply)
-				util.BlastDamage(ply, ply, tr.HitPos, 4, math.random( MinDamage, MaxDamage ) )
 				if tr.Entity == WallFireFix and WallFireFix:IsOnFire() then
 					tr.Entity:Extinguish()		
 				end
@@ -174,7 +169,6 @@ elseif SERVER then
 				end	
 			    local WallFireFix = tr.Entity
 				WallJumpSound(ply)
-				util.BlastDamage(ply, ply, tr.HitPos, 4, math.random( MinDamage, MaxDamage ) )
 				if tr.Entity == WallFireFix and WallFireFix:IsOnFire() then
 					tr.Entity:Extinguish()		
 				end
@@ -192,7 +186,7 @@ elseif SERVER then
 	hook.Add("KeyPress", "DoWallJump", DoWallJump);
 	
 	function DoRoll( ply, vel )
-		if not RP.Team[ply:Team()].freerun then return end
+		if not ply:GetTeamValue("freerun") then return end
 		local weapon  = ply:GetActiveWeapon()
 		ply.lookangle = ply:GetUp() - ply:GetAimVector()
 		ply.lookingdown = false
@@ -266,7 +260,7 @@ elseif SERVER then
 		
 	function ParkourThink()
 		for k, v in pairs(player.GetAll()) do
-			if not RP.Team[v:Team()].freerun then continue end
+			if not v:GetTeamValue("freerun") then continue end
 			local pos = v:GetShootPos();
 			local up = v:GetUp();
 			local down = v:GetUp() * -1;

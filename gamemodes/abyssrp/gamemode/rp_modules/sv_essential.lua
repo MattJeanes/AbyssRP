@@ -23,6 +23,10 @@ function GM:PlayerSpawn( ply )
 	ply:StripWeapons()
 	hook.Call( "PlayerLoadout", GAMEMODE, ply )
 end
+
+function GM:ShowSpare1( ply )
+    ply:ShowMenu()
+end
  
 function GM:ShowSpare2( ply )
     ply:ConCommand( "team_menu" )
@@ -40,7 +44,7 @@ end
 ---------------------------------------------------------*/
 function GM:PlayerLoadout( ply )
 	if ply.RP_Jailed then return end
-	local t=RP.Team[ply:Team()]
+	local t=ply:GetTeam()
 	
 	if not t.nohands then ply:Give( "hands" ) end
 	

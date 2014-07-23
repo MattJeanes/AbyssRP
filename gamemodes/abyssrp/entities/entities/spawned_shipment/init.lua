@@ -11,7 +11,7 @@ function ENT:Initialize()
 	self.Entity:SetSolid(SOLID_VPHYSICS)
 	self.Entity:SetNWString("name", self.Entity.Name)
 	self.Entity:SetNWInt("count", self.Entity.Count)
-	self.Entity:SetNWInt("price", self.Entity.DefaultPrice)
+	self.Entity:SetNWInt("cost", self.Entity.DefaultCost)
 	self.Entity:SetNWString("Owner", "Shared")
 	self.locked = true
 	self.IsShipment = true
@@ -45,7 +45,7 @@ function ENT:SpawnItem()
 	self.sparking = false
 	local count = self.Entity.Count
 	local pos = self:GetPos()
-	local cost = tonumber(self.Entity.Price) or tonumber(self.Entity.DefaultPrice)
+	local cost = tonumber(self.Entity.Cost) or tonumber(self.Entity.DefaultCost)
 	local owner = self.Entity.TheOwner
 	local class = self.Entity.Class
 	local model = self.Entity.Model
@@ -74,7 +74,7 @@ function ENT:SpawnItem()
 		weapon.ShareGravgun = true
 		weapon.Class = class
 		weapon.TheOwner = owner
-		weapon.Price = cost
+		weapon.Cost = cost
 		weapon:SetPos(pos + self:GetAngles():Up()*40)
 		weapon:SetAngles(self:GetAngles() + Angle(0,0,0))
 		weapon.nodupe = true
@@ -112,7 +112,7 @@ function ENT:Destruct()
 	local count = tonumber(self.Entity.Count)
 	local class = self.Entity.Class
 	local vPoint = self.Entity:GetPos()
-	local cost = tonumber(self.Entity.Price) or tonumber(self.Entity.DefaultPrice)
+	local cost = tonumber(self.Entity.Cost) or tonumber(self.Entity.DefaultCost)
 	local model = self.Entity.Model
 	local owner = self.Entity.TheOwner
 	
@@ -138,7 +138,7 @@ function ENT:Destruct()
 		local weapon = ents.Create("spawned_weapon")
 		weapon:SetModel(model)
 		weapon.Class = class
-		weapon.Price = cost
+		weapon.Cost = cost
 		weapon.TheOwner = owner
 		weapon.ShareGravgun = true
 		weapon:SetPos(Vector(vPoint.x, vPoint.y, vPoint.z + (i*5)))

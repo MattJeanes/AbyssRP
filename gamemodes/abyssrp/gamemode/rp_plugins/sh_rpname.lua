@@ -6,7 +6,7 @@ local PLUGIN = {}
 PLUGIN.Title = "Roleplay Name"
 PLUGIN.Description = "Give yourself a roleplay nickname."
 PLUGIN.Author = "Dr. Matt"
-PLUGIN.ChatCommand = "nick"
+PLUGIN.ChatCommand = "rpname"
 PLUGIN.Usage = "<name>"
 PLUGIN.Privileges = { "RP Name" }
 
