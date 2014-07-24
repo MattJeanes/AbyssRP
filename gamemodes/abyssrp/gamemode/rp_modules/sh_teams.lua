@@ -153,10 +153,7 @@ RP:AddTeam({
 	desc="You are a drug dealer. You illegally sell drugs to those who want them, and avoid detection.",
 	rules="You must actually deal drugs; you're not allowed to use this class just to buy yourself drugs.",
 	extra="You can access the drug shop with !menu.",
-	maxplayers=2,
-	menu=function()
-		RP:DrugShop()
-	end
+	maxplayers=2
 })
 
 RP:AddTeam({
@@ -209,10 +206,7 @@ RP:AddTeam({
 	rules="You must actually deal guns; you're not allowed to use this class just to buy yourself weapons.",
 	extra="You can access the gun shop with !menu.",
 	votejoin=true,
-	maxplayers=2,
-	menu=function()
-		RP:GunShop()
-	end
+	maxplayers=2
 })
 
 RP:AddTeam({

@@ -80,7 +80,8 @@ RP:AddDrug({
 local drug=RP:AddConstant("shop","drug")
 
 if CLIENT then
-	function RP:DrugShop()
+	hook.Add("RP-Menu", "RP-Drugs", function(sheet,x,y)
+		if not (LocalPlayer():Team()==RP:GetTeamN("drug dealer")) then return end
 		local function send(t,n,q,s)
 			if t and n and q then
 				net.Start("RP-Shipments")
@@ -97,23 +98,12 @@ if CLIENT then
 
 		local function GenerateView(Panel)
 			local PrevMins, PrevMaxs = Panel.Entity:GetRenderBounds()
-			Panel:SetCamPos(PrevMins:Distance(PrevMaxs)*Vector(0,2,0))
+			Panel:SetCamPos(PrevMins:Distance(PrevMaxs)*Vector(1,1,1))
 			Panel:SetLookAt((PrevMaxs + PrevMins)/2)
 		end
-
-		local frame = vgui.Create("DFrame")
-		frame:SetSize(480,300)
-		frame:SetPos((ScrW()/2)-(frame:GetWide()/2), (ScrH()/2)-(frame:GetTall()/2))
-		frame:SetTitle("Shop")
-		frame:ShowCloseButton(true)
-		frame:MakePopup()
-		
-		local sheet = vgui.Create("DPropertySheet",frame)
-		sheet:SetSize(frame:GetWide()-10,frame:GetTall()-35)
-		sheet:SetPos(5,30)
 		
 		local panel = vgui.Create("Panel")	
-		panel:SetSize(sheet:GetWide()-15,sheet:GetTall()-35)
+		panel:SetSize(x,y)
 		
 		local selected,selectedn,update
 		local quantity=1
@@ -183,7 +173,7 @@ if CLIENT then
 		local icon = vgui.Create("DModelPanel",panel)
 		icon:SetPos(listview:GetWide()+5,numberwang:GetTall()+5)
 		icon:SetSize(panel:GetWide()-icon:GetPos(),panel:GetTall()-numberwang:GetTall()-buy:GetTall()-cost:GetTall()-10)
-		icon.LayoutEntity = function() end -- TODO: On/Off?
+		--icon.LayoutEntity = function() end -- TODO: On/Off?
 		
 		function update()
 			cost:SetText(RP:CC(selected.cost*quantity))
@@ -195,5 +185,5 @@ if CLIENT then
 		listview:SelectFirstItem()
 		
 		sheet:AddSheet("Drugs",panel)
-	end
+	end)
 end

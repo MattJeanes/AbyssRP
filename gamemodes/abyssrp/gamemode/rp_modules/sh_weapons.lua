@@ -493,7 +493,8 @@ local ammotype=RP:AddConstant("shop","ammotype")
 local attachment=RP:AddConstant("shop","attachment")
 
 if CLIENT then
-	function RP:GunShop()
+	hook.Add("RP-Menu", "RP-Weapons", function(sheet,x,y)
+		if not (LocalPlayer():Team()==RP:GetTeamN("gun dealer")) then return end
 		local function send(t,n,q,s)
 			if t and n and q then
 				net.Start("RP-Shipments")
@@ -513,20 +514,9 @@ if CLIENT then
 			Panel:SetCamPos(PrevMins:Distance(PrevMaxs)*Vector(0,1,0))
 			Panel:SetLookAt((PrevMaxs + PrevMins)/2)
 		end
-
-		local frame = vgui.Create("DFrame")
-		frame:SetSize(480,300)
-		frame:SetPos((ScrW()/2)-(frame:GetWide()/2), (ScrH()/2)-(frame:GetTall()/2))
-		frame:SetTitle("Shop")
-		frame:ShowCloseButton(true)
-		frame:MakePopup()
-		
-		local sheet = vgui.Create("DPropertySheet",frame)
-		sheet:SetSize(frame:GetWide()-10,frame:GetTall()-35)
-		sheet:SetPos(5,30)
 		
 		local panel = vgui.Create("Panel")	
-		panel:SetSize(sheet:GetWide()-15,sheet:GetTall()-35)
+		panel:SetSize(x,y)
 		
 		local selected,selectedn,update
 		local quantity=1
@@ -610,7 +600,7 @@ if CLIENT then
 		sheet:AddSheet("Weapons",panel)
 		
 		local panel = vgui.Create("Panel")	
-		panel:SetSize(sheet:GetWide()-15,sheet:GetTall()-35)
+		panel:SetSize(x,y)
 		
 		local selected,selectedn,update
 		local quantity=1
@@ -694,7 +684,7 @@ if CLIENT then
 		sheet:AddSheet("Ammo",panel)
 		
 		local panel = vgui.Create("Panel")	
-		panel:SetSize(sheet:GetWide()-15,sheet:GetTall()-35)
+		panel:SetSize(x,y)
 		
 		local selected,selectedn,update
 		local quantity=1
@@ -776,5 +766,5 @@ if CLIENT then
 		listview:SelectFirstItem()
 		
 		sheet:AddSheet("Attachments",panel)
-	end
+	end)
 end
