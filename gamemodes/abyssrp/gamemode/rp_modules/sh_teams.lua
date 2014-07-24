@@ -219,10 +219,7 @@ RP:AddTeam({
 	extra="!wanted <player> <reason> - Allows someone to be arrested.\n!warrant <player> [1/0] - Allows police force to search a player's house.",
 	votejoin=true,
 	maxplayers=1,
-	armor=100,
-	weps={
-		"arrest_stick"
-	}
+	armor=100
 })
 
 RP:AddTeam({
