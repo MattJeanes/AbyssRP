@@ -32,12 +32,6 @@ function GM:ShowSpare2( ply )
     ply:ConCommand( "team_menu" )
 end
 
-function GM:SetupMove( ply )
-
-	GAMEMODE:SetPlayerSpeed(ply, 125, 250)	
-	
-end
-
 /*---------------------------------------------------------
    Name: gamemode:PlayerLoadout( )
    Desc: Give the player the default spawning weapons/ammo
@@ -65,6 +59,18 @@ function GM:PlayerLoadout( ply )
 	
 	if t.armor then
 		ply:SetArmor(t.armor)
+	end
+	
+	if t.walkspeed then
+		ply:SetWalkSpeed(t.walkspeed)
+	else
+		ply:SetWalkSpeed(125)
+	end
+	
+	if t.runspeed then
+		ply:SetRunSpeed(t.runspeed)
+	else
+		ply:SetRunSpeed(250)
 	end
 end
 

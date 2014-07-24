@@ -71,7 +71,7 @@ RP:AddTeam({
 	salary=50,
 	desc="You are a citizen. You have no special benefits or abilities but are free to roam the world.",
 	rules="No specific rules, just follow the law.",
-	extra="You earn an fair salary, higher than the lawbreakers but lower than authority figures."
+	extra="You earn a fair salary, higher than the lawbreakers but lower than authority figures."
 })
 
 RP:AddTeam({
@@ -171,18 +171,11 @@ RP:AddTeam({
 	extra="You are like a citizen, but you can move faster and use obstacles to your aid.",
 	nohands=true,
 	freerun=true,
+	walkspeed=250,
+	runspeed=500,
 	weps={
 		"weapon_climb"
-	},
-	func=function(a,b,c)
-		hook.Add("SetupMove", b, function(ply)
-			if ply:Team()==c then
-				ply:SetWalkSpeed(250)
-				ply:SetRunSpeed(500)
-				return true
-			end
-		end)
-	end
+	}
 })
 
 RP:AddTeam({

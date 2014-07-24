@@ -1,12 +1,4 @@
 if SERVER then
-	hook.Add("PlayerSay", "RP-Localchat", function(ply, text)
-		if GetConVarNumber("rp_localchat")==1 then
-			RP:TalkToRange(ply, text, 250)
-			print(ply:Nick()..": "..text)
-			return ""
-		end
-	end)
-
 	function RP:TalkToRange(ply, text, size, mode)
 		local ents = ents.FindInSphere(ply:EyePos(), size)
 		for k, v in pairs(ents) do
@@ -19,6 +11,12 @@ if SERVER then
 			end
 		end
 	end
+	
+	hook.Add("PlayerCanSeePlayersChat", "RP-Localchat", function(text,teamonly,listener,speaker)
+		if listener != speaker and listener:GetPos():Distance(speaker:GetPos()) > 250 then
+			return false
+		end
+	end)
 elseif CLIENT then
 	function GM:OnPlayerChat( ply, txt, teamchat, dead )
 		local tab = {}
