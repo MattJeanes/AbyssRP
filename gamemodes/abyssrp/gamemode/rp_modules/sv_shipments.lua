@@ -44,7 +44,7 @@ function RP:BuyShipment(ply,t,q)
 	shipment.DefaultCost = t.cost
 	shipment.Class = t.class
 	shipment.Model = t.model or "models/items/boxmrounds.mdl"
-	shipment.TheOwner = ply
+	shipment.Owner = ply
 	shipment:Spawn()
 	shipment:Activate()
 	ply:TakeCash(cost)
@@ -64,7 +64,7 @@ function RP:BuySingle(ply,t)
 	weapon:SetModel(t.model)
 	weapon.ShareGravgun = true
 	weapon.Class = t.class
-	weapon.TheOwner = ply
+	weapon.Owner = ply
 	weapon.Cost = cost
 	weapon.nodupe = true
 	weapon:Spawn()

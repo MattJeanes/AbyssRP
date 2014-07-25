@@ -121,8 +121,7 @@ function SWEP:tasePlayer(ply)
 	ply:SpectateEntity(rag)
 	ply.Tased = true
 	
-	rag:SetNWString("Owner", "World")
-	rag:SetNWEntity("OwnerEnt", game.GetWorld())
+	rag:SetWorldOwner()
 	
 	-- finalize ragdoll
     rag:Spawn()

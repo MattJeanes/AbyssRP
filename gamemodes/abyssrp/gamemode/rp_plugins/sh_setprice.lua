@@ -19,7 +19,7 @@ function PLUGIN:Call( ply, args )
 		return
 	end
 	
-	if not ent.TheOwner == ply then
+	if not ent.Owner == ply then
 		RP:Error(ply, RP.colors.white, "This is not your shipment!")
 		return
 	end

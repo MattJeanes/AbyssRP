@@ -8,6 +8,7 @@ function GM:PlayerInitialSpawn( ply )
 	if ply:GetNWInt("bank") == nil then
 		ply:SetBank(100)
 	end
+	ply:SetTeam(1)
 	ply:ConCommand( "team_menu" )
 end
 
@@ -42,6 +43,12 @@ function GM:PlayerLoadout( ply )
 	
 	if not t.nohands then ply:Give( "hands" ) end
 	
+	if t.weps then
+		for k,v in pairs(t.weps) do
+			ply:Give(v)
+		end
+	end
+	
 	ply:Give( "weapon_physcannon" )
 	ply:Give( "gmod_camera" )
 	ply:Give( "weapon_keys" )
@@ -49,12 +56,6 @@ function GM:PlayerLoadout( ply )
 	if ply:RP_IsAdmin() and GetConVarNumber("rp_admingivetools")==1 then
 		ply:Give( "gmod_tool" )
 		ply:Give( "weapon_physgun" )
-	end
-	
-	if t.weps then
-		for k,v in pairs(t.weps) do
-			ply:Give(v)
-		end
 	end
 	
 	if t.armor then

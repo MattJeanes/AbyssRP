@@ -32,7 +32,7 @@ end
 
 function ent:GetDoorOwner()
 	if not IsValid(self) then return end
-	return self.TheOwner
+	return self.Owner
 end
 
 

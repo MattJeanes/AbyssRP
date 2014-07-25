@@ -40,14 +40,14 @@ function ENT:Initialize()
 	self.LACED = {};
 	
 	if( self.MASS )then
-		self.Entity:GetPhysicsObject():SetMass( self.MASS );
+		self:GetPhysicsObject():SetMass( self.MASS );
 	end
 	
 end
 
  function ENT:OnTakeDamage( dmginfo ) 
    
- 	self.Entity:TakePhysicsDamage( dmginfo ) 
+ 	self:TakePhysicsDamage( dmginfo ) 
  	 
  end 
 
@@ -124,7 +124,7 @@ function ENT:Use(activator,caller)
 		drug:Remove();
 	end
 	
-    self.Entity:Remove()
+    self:Remove()
 end
 
 --this is pretty much a function you call if you want the person taking the drug to say something, all this function does is check if the console command is a ok.

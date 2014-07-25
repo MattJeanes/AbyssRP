@@ -44,7 +44,7 @@ local function spawnShipment(self,name,pos,angles,count1,price)
 		shipment.Class = Shipments.Class[num]
 		shipment.Count = count
 		shipment.Name = Shipments.Name[num]
-		shipment.TheOwner = self.player
+		shipment.Owner = self.player
 		shipment.Model = Shipments.Model[num]
 		shipment:SetPos(pos)
 		shipment:SetAngles(angles)

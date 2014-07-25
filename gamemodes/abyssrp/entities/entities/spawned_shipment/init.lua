@@ -4,21 +4,21 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 function ENT:Initialize()
-	self.Entity.Destructed = false
-	self.Entity:SetModel("models/Items/item_item_crate.mdl")
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:SetNWString("name", self.Entity.Name)
-	self.Entity:SetNWInt("count", self.Entity.Count)
-	self.Entity:SetNWInt("cost", self.Entity.DefaultCost)
-	self.Entity:SetNWString("Owner", "Shared")
+	self.Destructed = false
+	self:SetModel("models/Items/item_item_crate.mdl")
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:SetNWString("name", self.Name)
+	self:SetNWInt("count", self.Count)
+	self:SetNWInt("cost", self.DefaultCost)
+	self:SetSharedOwner()
 	self.locked = true
 	self.IsShipment = true
 	timer.Simple( GetConVarNumber( "rp_shipmentspawntime" ), function() if IsValid( self ) then self.locked = false end end )
 	self.damage = 100
-	self.Entity.ShareGravgun = true
-	local phys = self.Entity:GetPhysicsObject()
+	self.ShareGravgun = true
+	local phys = self:GetPhysicsObject()
 	if phys and phys:IsValid() then phys:Wake() end
 end
 
@@ -26,7 +26,7 @@ function ENT:OnTakeDamage(dmg)
 	if not self.locked then
 		self.damage = self.damage - dmg:GetDamage()
 		if self.damage <= 0 then
-			self.Entity:Destruct()
+			self:Destruct()
 		end
 	end
 end
@@ -35,21 +35,21 @@ function ENT:Use()
 	if not self.locked then
 		self.locked = true -- One activation per second
 		self.sparking = true
-		timer.Create(self.Entity:EntIndex() .. "crate", 1, 1, function() self.SpawnItem(self) end)
+		timer.Create(self:EntIndex() .. "crate", 1, 1, function() self.SpawnItem(self) end)
 	end
 end
 
 function ENT:SpawnItem()
-	if not IsValid(self.Entity) then return end
-	timer.Destroy(self.Entity:EntIndex() .. "crate")
+	if not IsValid(self) then return end
+	timer.Destroy(self:EntIndex() .. "crate")
 	self.sparking = false
-	local count = self.Entity.Count
+	local count = self.Count
 	local pos = self:GetPos()
-	local cost = tonumber(self.Entity.Cost) or tonumber(self.Entity.DefaultCost)
-	local owner = self.Entity.TheOwner
-	local class = self.Entity.Class
-	local model = self.Entity.Model
-	if count <= 1 then self.Entity:Remove() end
+	local cost = tonumber(self.Cost) or tonumber(self.DefaultCost)
+	local owner = self.Owner
+	local class = self.Class
+	local model = self.Model
+	if count <= 1 then self:Remove() end
 		/*
 		if string.find(class, "weapon") then
 			local weapon = ents.Create("spawned_weapon")
@@ -73,7 +73,7 @@ function ENT:SpawnItem()
 		weapon:SetModel(model)
 		weapon.ShareGravgun = true
 		weapon.Class = class
-		weapon.TheOwner = owner
+		weapon.Owner = owner
 		weapon.Cost = cost
 		weapon:SetPos(pos + self:GetAngles():Up()*40)
 		weapon:SetAngles(self:GetAngles() + Angle(0,0,0))
@@ -88,15 +88,15 @@ function ENT:SpawnItem()
 		end)
 			
 	count = count - 1
-	self.Entity.Count = count
-	self.Entity:SetNWInt("count", count)
+	self.Count = count
+	self:SetNWInt("count", count)
 	self.locked = false
 end
 
 function ENT:Think()
 	if self.sparking then
 		local effectdata = EffectData()
-		effectdata:SetOrigin(self.Entity:GetPos())
+		effectdata:SetOrigin(self:GetPos())
 		effectdata:SetMagnitude(1)
 		effectdata:SetScale(1)
 		effectdata:SetRadius(2)
@@ -106,15 +106,15 @@ end
 
 
 function ENT:Destruct()
-	if self.Entity.Destructed then return end
-	self.Entity.Destructed = true
+	if self.Destructed then return end
+	self.Destructed = true
 	
-	local count = tonumber(self.Entity.Count)
-	local class = self.Entity.Class
-	local vPoint = self.Entity:GetPos()
-	local cost = tonumber(self.Entity.Cost) or tonumber(self.Entity.DefaultCost)
-	local model = self.Entity.Model
-	local owner = self.Entity.TheOwner
+	local count = tonumber(self.Count)
+	local class = self.Class
+	local vPoint = self:GetPos()
+	local cost = tonumber(self.Cost) or tonumber(self.DefaultCost)
+	local model = self.Model
+	local owner = self.Owner
 	
 	for i=1, count, 1 do
 		/*
@@ -139,11 +139,11 @@ function ENT:Destruct()
 		weapon:SetModel(model)
 		weapon.Class = class
 		weapon.Cost = cost
-		weapon.TheOwner = owner
+		weapon.Owner = owner
 		weapon.ShareGravgun = true
 		weapon:SetPos(Vector(vPoint.x, vPoint.y, vPoint.z + (i*5)))
 		weapon.nodupe = true
 		weapon:Spawn()
 	end
-	self.Entity:Remove()
+	self:Remove()
 end

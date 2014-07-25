@@ -14,7 +14,7 @@ function pl:SellDoors(left)
 	
 	for k,v in pairs(DoorTable) do
 		v.Ownable = true
-		v.TheOwner = nil
+		v.Owner = nil
 		v:Fire( "close", "", 0 );
 		v:Fire( "lock", "", 0 );
 	end
@@ -110,7 +110,7 @@ end
 function pl:CountDoors()
 	local Count = 0
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
-		if v.TheOwner == self then
+		if v.Owner == self then
 			Count = Count + 1
 		end
 	end
@@ -120,7 +120,7 @@ end
 function pl:OwnedDoors()
 	local doors = {}
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
-		if v.TheOwner == self then
+		if v.Owner == self then
 			table.insert(doors,v)
 		end
 	end
@@ -130,7 +130,7 @@ end
 function pl:OwnedVehicles()
 	local vehicles2 = {}
 	for k,v in pairs(ents.GetAll()) do
-		if (v:IsVehicle()) and (v.TheOwner == self) then
+		if (v:IsVehicle()) and (v.Owner == self) then
 			table.insert(vehicles2,v)
 		end
 	end
@@ -140,7 +140,7 @@ end
 function pl:CountVehicles()
 	local Count = 0
 	for k,v in pairs(ents.GetAll()) do
-		if (v:IsVehicle()) and (v.TheOwner == self) then
+		if (v:IsVehicle()) and (v.Owner == self) then
 			Count = Count + 1
 		end
 	end
@@ -150,7 +150,7 @@ end
 function pl:CountShipments()
 	local Count = 0
 	for k, v in pairs(ents.GetAll()) do
-		if v.IsShipment and (v.TheOwner == self) then
+		if v.IsShipment and (v.Owner == self) then
 			Count = Count + 1
 		end
 	end
@@ -160,7 +160,7 @@ end
 function pl:OwnedShipments()
 	local shipments2 = {}
 	for k, v in pairs(ents.GetAll()) do
-		if v.IsShipment and (v.TheOwner == self) then
+		if v.IsShipment and (v.Owner == self) then
 			table.insert(shipments2,v)
 		end
 	end

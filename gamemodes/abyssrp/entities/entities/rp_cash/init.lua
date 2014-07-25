@@ -4,24 +4,30 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
 function ENT:Initialize()
-	self.Entity:SetModel("models/props/cs_assault/Money.mdl")
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:SetCollisionGroup(COLLISION_GROUP_NPC)
+	self:SetModel("models/props/cs_assault/Money.mdl")
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetSolid(SOLID_VPHYSICS)
+	self:SetCollisionGroup(COLLISION_GROUP_NPC)
 	timer.Simple(300,function()
-		if self.Entity then
-			self.Entity:Remove()
+		if IsValid(self) then
+			self:Remove()
 		end
 	end)
 	
-	local phys = self.Entity:GetPhysicsObject()
+	self:SetSharedOwner()
+	
+	local phys = self:GetPhysicsObject()
 	
 	if phys and phys:IsValid() then
 		phys:Wake()
 	end
 	
-	self.Entity:SetNWInt("cash", self.Entity.Cash)
+	if not self.Cash then
+		self:Remove()
+	end
+	
+	self:SetNWInt("cash", self.Cash)
 end
 
 function ENT:Use(activator, caller)
@@ -35,7 +41,7 @@ function ENT:Use(activator, caller)
 					RP:Notify(activator, RP.colors.white, "You have picked up ", team.GetColor(self.Owner:Team()), self.Owner:Nick(), RP.colors.white, "'s Cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 					RP:Notify(self.Owner, RP.colors.blue, activator:Nick(), RP.colors.white, " picked up your dropped cash!")
 				else
-					RP:Notify(activator, RP.colors.white, "You have picked up ", RP.colors.red, "someone", RP.colors.white, "'s Cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
+					RP:Notify(activator, RP.colors.white, "You have picked up ", RP.colors.red, "Someone", RP.colors.white, "'s Cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 				end
 			end
 			self:Remove()

@@ -23,7 +23,7 @@ end
 
 concommand.Add( "bank_deposit", function( ply, cmd, args )
 	local amount = tonumber(args[1])
-	if (not amount) or (amount < 1) then return end
+	if (not amount) or (amount <= 0) then return end
 	if not (ply:GetCash() >= amount) then
 		amount=ply:GetCash()
 	end
@@ -41,7 +41,7 @@ end )
 
 concommand.Add( "bank_withdraw", function( ply, cmd, args )
 	local amount = tonumber(args[1])
-	if (not amount) or (amount < 1) then return end
+	if (not amount) or (amount <= 0) then return end
 	if not (ply:GetBank() >= amount)then
 		amount = ply:GetBank()
 	end

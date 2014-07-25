@@ -30,52 +30,28 @@ function RP:EntStartup()
 	end
 
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
-		if v:GetSaveTable().m_bLocked then
-			v.TheOwner = nil
-			v.Ownable = true
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		else
-			v.TheOwner = nil
-			v.Ownable = false
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		end
+		v.Ownable = tobool(v:GetSaveTable().m_bLocked)
+		v.Owner = nil
+		v:SetWorldOwner()
 	end
 	
 	for k, v in pairs(ents.FindByClass("func_door")) do
-		if v:GetSaveTable().m_bLocked then
-			v.TheOwner = nil
-			v.Ownable = true
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		else
-			v.TheOwner = nil
-			v.Ownable = false
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		end
+		v.Ownable = tobool(v:GetSaveTable().m_bLocked)
+		v.Owner = nil
+		v:SetWorldOwner()
 	end
 	
 	for k, v in pairs(ents.FindByClass("func_door_rotating")) do
-		if v:GetSaveTable().m_bLocked then
-			v.TheOwner = nil
-			v.Ownable = true
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		else
-			v.TheOwner = nil
-			v.Ownable = false
-			v:SetNetworkedString("Owner", "World")
-			v:SetNetworkedEntity("OwnerObj", game.GetWorld())
-		end
+		v.Ownable = tobool(v:GetSaveTable().m_bLocked)
+		v.Owner = nil
+		v:SetWorldOwner()
 	end
 	
 	if RP.PoliceDoors then
 		for a,b in ipairs(ents.GetAll()) do
 			for c,d in pairs(RP.PoliceDoors) do
 				if b:GetPos() == d then
-					b.OwnedByTeam = {2, 8}
+					b.PoliceOwned = true
 					b:SetNWBool("Owned", true)
 					b.Ownable = false
 				end
@@ -87,8 +63,7 @@ function RP:EntStartup()
 			local ent = ents.Create("atmmachine")
 			ent:SetPos(v.pos)
 			ent:SetAngles(v.ang)
-			ent:SetNetworkedString("Owner", "World")
-			ent:SetNetworkedEntity("OwnerObj", game.GetWorld())
+			ent:SetWorldOwner()
 			ent:Spawn()
 		end
 	end

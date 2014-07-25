@@ -5,9 +5,9 @@ ENT.RenderGroup = RENDERGROUP_BOTH
 surface.CreateFont("TabLarge", {font="Tahoma", size=72, weight=700, shadow=true})
 
 function ENT:Draw()
-    self.Entity:DrawModel()
-	local pos = self.Entity:GetPos()
-	local ang = self.Entity:GetAngles()
+    self:DrawModel()
+	local pos = self:GetPos()
+	local ang = self:GetAngles()
 	local right = ang:Right()
 	local dir = ang:Forward():Angle()
 	local fwd = ang:Forward()
@@ -79,7 +79,7 @@ local function BankMenu()
 			if DTextEntry1:GetValue() == "Enter a number here!" then
 				RP:Error(LocalPlayer(), RP.colors.white, "Please enter an amount!")
 			else
-				RP:Error(LocalPlayer(), RP.colors.white, "Only numbers please!")
+				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
 			LocalPlayer():ConCommand("bank_deposit " .. tonumber(DTextEntry1:GetValue()))
@@ -95,7 +95,7 @@ local function BankMenu()
 			if DTextEntry1:GetValue() == "Enter a number here!" then
 				RP:Error(LocalPlayer(), RP.colors.white, "Please enter an amount!")
 			else
-				RP:Error(LocalPlayer(), RP.colors.white, "Only numbers please!")
+				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
 			LocalPlayer():ConCommand("bank_withdraw " .. tonumber(DTextEntry1:GetValue()))

@@ -1,3 +1,14 @@
+surface.CreateFont( "LargeFont", {size=48} )
+surface.CreateFont( "MediumFont", {size=24} )
+surface.CreateFont( "SmallFont", {size=16} )
+
+function round(x)
+  if x%2 ~= 0.5 then
+	return math.floor(x+0.5)
+  end
+	return x-0.5
+end
+
 function changeteam_menu( ply )
 
 	local DermaPanel = vgui.Create( "DFrame" )
@@ -27,8 +38,6 @@ function changeteam_menu( ply )
 		draw.RoundedBox( 8, ScrW() * 0.005, ScrH() * 0.005, ScrW() * 0.09, ScrH() * 0.89, Color( 0, 0, 0, 150 ) )
 	end
 	
-	
-	
 	local TestingPanel = {}
 
 	for i=1,4 do
@@ -45,64 +54,42 @@ function changeteam_menu( ply )
 		end
 	end
 	
-	surface.CreateFont( "LargeFont", {font="Ariel", size=48} )
-	surface.CreateFont( "MediumFont", {font="Ariel", size=24} )
-	surface.CreateFont( "SmallFont", {font="Ariel", size=16} )
+	local t=LocalPlayer():GetTeam()
 	
-	UText = {}
+	IText = {}
+	for i=1,4 do
+		IText[i] = vgui.Create("DTextEntry", TestingPanel[i])
+		IText[i]:SetPos(ScrW()*0.005,ScrH()*0.005)
+		IText[i]:SetSize(TestingPanel[i]:GetWide() - 10, TestingPanel[i]:GetTall() - 10)
+		IText[i]:SetMultiline(true)
+		IText[i]:SetWrap(true)
+		
+		IText[i]:SetTextColor(color_white)
+		IText[i]:SetFont("MediumFont")
+		IText[i]:SetDrawBackground(false)
+		IText[i]:SetDrawBorder(false)
+		IText[i]:SetEditable(false)
+	end
 	
-	function UpdateText(teamn)
-		local t = RP.Team[teamn]
+	IText[1].Update = function(self)
 		local count=""
 		local votejoin="\nVote to join: No"
-		if t.maxplayers then count="\nPlayers: "..team.NumPlayers(teamn).."/"..t.maxplayers end
+		if t.maxplayers then count="\nPlayers: "..team.NumPlayers(SelectedTeam).."/"..t.maxplayers end
 		if t.votejoin then votejoin="\nVote to join: Yes" end
-		for i=1,4 do
-			UText[i] = vgui.Create("DTextEntry", TestingPanel[i])
-			UText[i]:SetPos(ScrW()*0.005,ScrH()*0.005)
-			UText[i]:SetSize(TestingPanel[i]:GetWide() - 10, TestingPanel[i]:GetTall() - 10)
-			UText[i]:SetMultiline(true)
-			UText[i]:SetWrap(true)
-			if i == 1 then
-				if t == 0 then
-					UText[i]:SetText("Job Title: ".. t.name .. "\nSalary: ".. t.salary )
-				else
-					UText[i]:SetText("Job Title: ".. t.name .. "\nSalary: ".. RP:CC(t.salary)..count..votejoin )
-				end
-			elseif i == 2 then
-				UText[i]:SetText("Description:\n".. t.desc)
-			elseif i == 3 then
-				UText[i]:SetText("Rules:\n".. t.rules)
-			elseif i == 4 then
-				UText[i]:SetText("Extra Information:\n" .. t.extra)
-			end
-			UText[i]:SetTextColor(color_white)
-			UText[i]:SetFont("MediumFont")
-			UText[i]:SetDrawBackground(false)
-			UText[i]:SetDrawBorder(false)
-			UText[i]:SetEditable(false)
-		end
+		self:SetText("Job Title: ".. t.name .. "\nSalary: ".. RP:CC(t.salary)..count..votejoin )
 	end
-	hook.Add("TextUpdate", "Update the text!", UpdateText)
+	IText[2].Update = function(self)
+		self:SetText("Description:\n".. t.desc)
+	end
+	IText[3].Update = function(self)
+		self:SetText("Rules:\n".. t.rules)
+	end
+	IText[4].Update = function(self)
+		self:SetText("Extra Information:\n" .. t.extra)
+	end
 	
-	hook.Call("TextUpdate", GAMEMODE, LocalPlayer():Team())
-
-
-	function round(x)
-	  if x%2 ~= 0.5 then
-		return math.floor(x+0.5)
-	  end
-		return x-0.5
-	end
-
-	function Aspect()
-		if (ScrW()/ScrH() < 1.74) and (ScrW()/ScrH() > 1.5) then
-			return 3
-		elseif round(ScrW()/ScrH()) == 2 then
-			return 1
-		elseif round(ScrW()/ScrH()) == 1 then
-			return 2
-		end
+	for i=1,4 do
+		IText[i]:Update()
 	end
 	
 	local DermaList = vgui.Create( "DPanelList", ChangeTeamSheet )
@@ -118,34 +105,23 @@ function changeteam_menu( ply )
 
 	if teamicon:IsValid() then teamicon:Remove() end
 	teamicon = vgui.Create( "DModelPanel", ChangeTeamSheet )
-	if Aspect() == 1 then
-		teamicon:SetPos( ScrW()*0.45, ScrH()*0.02 )
-	elseif Aspect() == 2 then
-		teamicon:SetPos( ScrW()*0.34, ScrH()*0.02 )
-	elseif Aspect() == 3 then
-		teamicon:SetPos( ScrW()*0.42, ScrH()*0.02 )
-	end
 	teamicon:SetModel( LocalPlayer():GetModel() )
-	teamicon:SetSize( ScrH() * 1.4, ScrH() * 1.4 )
-	teamicon:SetCamPos( Vector( 120, 0, 50 ) )
-	teamicon:SetLookAt( Vector( 50, 0, 30 ) )
+	teamicon:SetPos(ScrW() * 0.74, ScrH() * 0.01)
+	teamicon:SetSize(ScrW() * 0.2, ScrH() * 0.68)
+	teamicon:SetCamPos(Vector(80,0,40))
+	teamicon:SetLookAt(Vector(0,0,35))
+	teamicon:SetFOV(30)
+	teamicon:GetEntity():SetEyeTarget(Vector(100,0,65))
+	teamicon.LayoutEntity = function() end -- TODO: On/Off?
 
-	button = vgui.Create("DButton", ChangeTeamSheet)
-	button:Remove()
-
-	local function UpdateJoinButton()
-		if RPJoinTeamButton then RPJoinTeamButton:Remove() end
-		RPJoinTeamButton = vgui.Create("DButton", ChangeTeamSheet)
-		RPJoinTeamButton:SetPos( ScrW() * 0.74, ScrH() * 0.72 )
-		RPJoinTeamButton:SetSize( ScrW() * 0.2, ScrH() * 0.15 )
-		RPJoinTeamButton:SetText( "Join this team!" )
-		RPJoinTeamButton.DoClick = function()
-			RunConsoleCommand("rp_changeteam", tostring(SelectedTeam) )
-			DermaPanel:Close()
-		end
+	RPJoinTeamButton = vgui.Create("DButton", ChangeTeamSheet)
+	RPJoinTeamButton:SetPos( ScrW() * 0.74, ScrH() * 0.72 )
+	RPJoinTeamButton:SetSize( ScrW() * 0.2, ScrH() * 0.15 )
+	RPJoinTeamButton:SetText( "Join this team!" )
+	RPJoinTeamButton.DoClick = function()
+		RunConsoleCommand("rp_changeteam", tostring(SelectedTeam) )
+		DermaPanel:Close()
 	end
-	
-	UpdateJoinButton()
 	
 	for i=1,#team.GetAllTeams() do
 		local teams = vgui.Create( "DButton" ) 
@@ -153,26 +129,14 @@ function changeteam_menu( ply )
 		teams:SetSize( ScrW() * 0.07, ScrH() * 0.065 ) 
 		teams:SetText( RP.Team[i].name )
 		//DermaList:AddItem(teams[i])
-		teams.DoClick = function() //Make the player join the team 
-			teamicon:Remove()
+		teams.DoClick = function() //Make the player join the team
+			SelectedTeam = i
+			t=RP.Team[i]
 			for i=1,4 do
-				UText[i]:Remove()
-			end
-			teamicon = vgui.Create( "DModelPanel", ChangeTeamSheet )
-			if Aspect() == 1 then
-				teamicon:SetPos( ScrW()*0.45, ScrH()*0.02 )
-			elseif Aspect() == 2 then
-				teamicon:SetPos( ScrW()*0.34, ScrH()*0.02 )
-			elseif Aspect() == 3 then
-				teamicon:SetPos( ScrW()*0.42, ScrH()*0.02 )
+				IText[i]:Update()
 			end
 			teamicon:SetModel( RP:GetTeamModel(i) )
-			teamicon:SetSize( ScrH() * 1.4, ScrH() * 1.4 )
-			teamicon:SetCamPos( Vector( 120, 0, 50 ) )
-			teamicon:SetLookAt( Vector( 50, 0, 30 ) )
-			SelectedTeam = i
-			hook.Call( "TextUpdate", GAMEMODE, i )
-			UpdateJoinButton()
+			teamicon:GetEntity():SetEyeTarget(Vector(100,0,65))
 		end
 		
 		DermaList:AddItem(teams)

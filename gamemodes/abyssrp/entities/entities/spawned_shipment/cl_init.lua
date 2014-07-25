@@ -15,7 +15,7 @@ function ENT:Draw()
 		
 		render.SetColorModulation(self.colr, self.colg, 0)
 		
-		self.Entity:DrawModel()
+		self:DrawModel()
 		
 		self.colr = 1 / ((CurTime() - self.StartTime ) / GetConVarNumber( "shipmentspawntime"))
 		self.colg = (CurTime() - self.StartTime ) / GetConVarNumber( "shipmentspawntime")
@@ -31,17 +31,17 @@ function ENT:Draw()
 		render.EnableClipping(true)
 		render.PushCustomClipPlane(normal, distance);
 		
-		self.Entity:DrawModel()
+		self:DrawModel()
 		
 		render.PopCustomClipPlane()
 	else
-		self.Entity:DrawModel()
+		self:DrawModel()
 	end
 	
 	local Pos = self:GetPos()
 	local Ang = self:GetAngles()
 	
-	local name = self.Entity:GetNWString("name")
+	local name = self:GetNWString("name")
 	
 	
 	surface.SetFont("HUDNumber5")
@@ -56,7 +56,7 @@ function ENT:Draw()
 	
 	Ang:RotateAroundAxis(Ang:Forward(), 90)
 	
-	local count = self.Entity:GetNWInt("count")
+	local count = self:GetNWInt("count")
 	
 	local TextWidth = surface.GetTextSize("Amount left:")
 	local TextWidth2 = surface.GetTextSize(tostring(count))
@@ -70,7 +70,7 @@ function ENT:Draw()
 	
 	Ang:RotateAroundAxis(Ang:Up(), 180)
 	
-	local cost = self.Entity:GetNWInt("cost")
+	local cost = self:GetNWInt("cost")
 	
 	local TextWidth = surface.GetTextSize("Cost:")
 	local TextWidth2 = surface.GetTextSize(tostring(cost))

@@ -19,9 +19,9 @@ local function VehicleSpawn(ply, command, args)
 				//ent:SetAngles(Vector(0, 0, 0))
 				ent:Activate()
 				ent:Spawn()
-				ent:SetNWString("Owner", "Shared")
+				ent:SetSharedOwner()
 				ent.Cost = v.cost
-				ent.TheOwner = ply
+				ent.Owner = ply
 				ent.Ownable = false
 				if SPropProtection then
 					SPropProtection.PlayerMakePropOwner(ply, ent)

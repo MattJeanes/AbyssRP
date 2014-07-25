@@ -7,5 +7,5 @@ language.Add("ent_rp_medic", "Medic Kit")
 ---------------------------------------------------------*/
 function ENT:Draw()
 
-	self.Entity:DrawModel() 
+	self:DrawModel() 
 end

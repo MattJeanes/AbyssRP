@@ -34,7 +34,7 @@ local function PlayerDropWeapon( ply, attacker, dmginfo )
 			if CPPI then
 				wep:CPPISetOwner(ply)
 			end
-			wep.TheOwner = ply
+			wep.Owner = ply
 			ply:DropWeapon(wep)
 		end
 	end

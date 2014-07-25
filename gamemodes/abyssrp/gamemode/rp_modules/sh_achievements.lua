@@ -56,7 +56,7 @@ RP:AddAchievement({
 	func=function(a,b)
 		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
 			if killer:IsPlayer() and IsValid(killer:GetActiveWeapon()) then
-				if killer:GetActiveWeapon().TheOwner == victim then
+				if killer:GetActiveWeapon().Owner == victim then
 					killer:AddAchievement(a)
 				end
 			end

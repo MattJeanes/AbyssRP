@@ -14,11 +14,11 @@ function PLUGIN:Call( ply, args )
 	if not ply:RP_IsAdmin() then RP:Error(ply, RP.colors.white, "You are not an admin!") return end
 	if ( #args == 2 ) then
 		local players = RP:FindPlayer( args, ply, true, true )
-		if not string.find(args[2], "[^%d]") then
+		if tonumber(args[2]) then
 			if ( #players == 1 ) then
 				players[1]:SetCash(tonumber(args[2]))
 				if ply == players[1] then
-					RP:Notify( ply, RP.colors.white, "You have set your own cash to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!")
+					RP:Notify( ply, RP.colors.white, "You have set your own cash to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, ".")
 				else
 					RP:Notify( ply, RP.colors.white, "You have set ", RP.colors.blue, players[1]:Nick() .. "s", RP.colors.white, " balance to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!" )
 					RP:Notify( players[1], RP.colors.blue, ply:Nick(), RP.colors.white, " has set your cash to: ", RP.colors.blue, RP:CC(args[2]), RP.colors.white, "!" )
@@ -29,10 +29,10 @@ function PLUGIN:Call( ply, args )
 				RP:Notify( ply, RP.colors.red, "No matching players with an equal or lower immunity found." )
 			end
 		else
-			RP:Notify( ply, RP.colors.red, "ERROR: ", RP.colors.white, "You cannot set someones balance to a word!")
+			RP:Notify( ply, RP.colors.red, "ERROR: ", RP.colors.white, "Invalid arguments!")
 		end
 	else
-		RP:Notify( ply, RP.colors.red, "ERROR: ", RP.colors.white, "Invalid Arguments!" )
+		RP:Notify( ply, RP.colors.red, "ERROR: ", RP.colors.white, "Invalid arguments!" )
 	end
 end
 

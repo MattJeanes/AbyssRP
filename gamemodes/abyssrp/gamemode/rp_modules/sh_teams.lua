@@ -45,22 +45,16 @@ function meta:GetTeamValue(value)
 	return RP.Team[self:Team()][value]
 end
 
-// Team 0 info - Don't delete this one please! //
-
 RP:AddTeam({
 	num=0,
 	nosetup=true,
-	model={"models/player/group01/male_0",".mdl"},
-	modelrand=true,
-	modelrandn={1,9},
+	model="models/player/group01/male_01",
 	name="No Class",
-	salary="0\n\nYou're not even a person why would you earn cash?",
-	desc="You aren't any class! You need to select one to the left.",
-	rules="This isn't even a team what are you doing.",
-	extra="You are not a person."
+	salary=0,
+	desc="",
+	rules="",
+	extra=""
 })
-
-// begin other teams - feel free to delete/modify any of these.
 
 RP:AddTeam({
 	name="Citizen",
@@ -218,6 +212,7 @@ RP:AddTeam({
 	rules="You are of extremely high authority and you must never warrant/arrest players with no reason.",
 	extra="!wanted <player> <reason> - Allows someone to be arrested.\n!warrant <player> [1/0] - Allows police force to search a player's house.",
 	votejoin=true,
+	police=true,
 	maxplayers=1,
 	armor=100
 })

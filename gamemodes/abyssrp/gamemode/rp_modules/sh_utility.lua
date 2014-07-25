@@ -13,6 +13,18 @@ function pl:RP_IsAdmin()
 	end
 end
 
+local ent = FindMetaTable( "Entity" )
+
+function ent:SetWorldOwner()
+	self:SetNWString("Owner", "World")
+	self:SetNWEntity("OwnerObj", game.GetWorld())
+end
+
+function ent:SetSharedOwner()
+	self:SetNWString("Owner", "Shared")
+	self:SetNWEntity("OwnerObj", nil)
+end
+
 function GetVectors( ply )
 	local pos = ply:GetEyeTraceNoCursor().Entity:GetPos()
 	local ang = ply:GetEyeTraceNoCursor().Entity:GetAngles()

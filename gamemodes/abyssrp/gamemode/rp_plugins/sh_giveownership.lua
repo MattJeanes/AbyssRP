@@ -14,18 +14,18 @@ function PLUGIN:Call( ply, args )
 	if not entity:IsVehicle() and not entity:IsDoor() then
 		RP:Error(ply, RP.colors.white, "You need to be looking at a door/vehicle!")
 		return
-	elseif entity.TheOwner != ply then
+	elseif entity.Owner != ply then
 		RP:Error(ply, RP.colors.white, "You are not the owner of this!")
 		return
 	else
 		local players = RP:FindPlayer( args, ply, true, true )
 		if ( #players == 1 ) then
 			if entity:IsDoor() then
-				entity.TheOwner = players[1]
+				entity.Owner = players[1]
 				RP:Notify(ply, RP.colors.white, "You have given ownership of your door to: ", RP.colors.blue, players[1]:Nick(), RP.colors.white, "!")
 				RP:Notify(players[1], RP.colors.white, "You have recieved a door from: ", RP.colors.blue, ply:Nick(), RP.colors.white, ". Oh Joy!")
 			elseif entity:IsVehicle() then
-				entity.TheOwner = players[1]
+				entity.Owner = players[1]
 				if SPropProtection then
 					SPropProtection.PlayerMakePropOwner(players[1], entity)
 				end

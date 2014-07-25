@@ -21,7 +21,7 @@ function PLUGIN:Call( ply, args )
 		end
 	end
 	
-	ply:GetActiveWeapon().TheOwner = ply
+	ply:GetActiveWeapon().Owner = ply
 	ply:DropWeapon(ply:GetActiveWeapon())
 	RP:Notify(ply, RP.colors.white, "You have dropped your current weapon!")	
 end

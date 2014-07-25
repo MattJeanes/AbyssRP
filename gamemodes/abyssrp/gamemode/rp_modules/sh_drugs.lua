@@ -11,56 +11,56 @@ RP:AddDrug({
 	name="Alcohol",
 	class="durgz_alcohol",
 	model="models/drug_mod/alcohol_can.mdl",
-	cost=5
+	cost=25
 })
 
 RP:AddDrug({
 	name="Aspirin",
 	class="durgz_aspirin",
 	model="models/jaanus/aspbtl.mdl",
-	cost=5
+	cost=110
 })
 
 RP:AddDrug({
 	name="Cigarette",
 	class="durgz_cigarette",
 	model="models/boxopencigshib.mdl",
-	cost=5
+	cost=30
 })
 
 RP:AddDrug({
 	name="Cocaine",
 	class="durgz_cocaine",
 	model="models/cocn.mdl",
-	cost=5
+	cost=225
 })
 
 RP:AddDrug({
 	name="Heroine",
 	class="durgz_heroine",
 	model="models/katharsmodels/syringe_out/syringe_out.mdl",
-	cost=5
+	cost=45
 })
 
 RP:AddDrug({
 	name="LSD",
 	class="durgz_lsd",
 	model="models/smile/smile.mdl",
-	cost=5
+	cost=45
 })
 
 RP:AddDrug({
 	name="Mushroom",
 	class="durgz_mushroom",
 	model="models/ipha/mushroom_small.mdl",
-	cost=5
+	cost=45
 })
 
 RP:AddDrug({
 	name="PCP",
 	class="durgz_pcp",
 	model="models/marioragdoll/Super Mario Galaxy/star/star.mdl",
-	cost=5
+	cost=35
 })
 
 RP:AddDrug({
@@ -74,7 +74,7 @@ RP:AddDrug({
 	name="Weed",
 	class="durgz_weed",
 	model="models/katharsmodels/contraband/zak_wiet/zak_wiet.mdl",
-	cost=5
+	cost=175
 })
 
 local drug=RP:AddConstant("shop","drug")

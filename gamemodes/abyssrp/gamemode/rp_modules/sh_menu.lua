@@ -9,7 +9,7 @@ elseif CLIENT then
 	function meta:ShowMenu()
 		local frame = vgui.Create("DFrame")
 		frame:SetSize(480,300)
-		frame:SetPos((ScrW()/2)-(frame:GetWide()/2), (ScrH()/2)-(frame:GetTall()/2))
+		frame:Center()
 		frame:SetTitle("Menu")
 		frame:ShowCloseButton(true)
 		frame:MakePopup()

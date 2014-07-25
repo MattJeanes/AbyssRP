@@ -35,7 +35,7 @@ function PLUGIN:Call( ply, args )
 				shipment.Class = v.class
 				shipment.Count = count
 				shipment.Name = v.name
-				shipment.TheOwner = ply
+				shipment.Owner = ply
 				shipment.Model = v.model
 				shipment:SetPos(trace.HitPos + Vector(0,0,35))
 				shipment.nodupe = true
