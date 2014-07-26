@@ -90,7 +90,7 @@ if SERVER then
 		if ( type( arg[1] ) == "Player" or arg[1] == NULL ) then ply = arg[1] end
 		if ( arg[1] == 1 ) then
 				for _, pl in ipairs( player.GetAll() ) do
-				if ( pl:IsAdmin() ) then
+				if ( pl:RP_IsAdmin() ) then
 					table.remove( arg, 1 )
 					RP:Notify( pl, unpack( arg ) )
 				end
@@ -180,9 +180,9 @@ end
 function RP:IsNameMatch( ply, str )
 	if ( str == "*" ) then
 		return true
-	elseif ( str == "@" and ply:IsAdmin() ) then
+	elseif ( str == "@" and ply:RP_IsAdmin() ) then
 		return true
-	elseif ( str == "!@" and !ply:IsAdmin() ) then
+	elseif ( str == "!@" and !ply:RP_IsAdmin() ) then
 		return true
 	elseif ( string.match( str, "STEAM_[0-5]:[0-9]:[0-9]+" ) ) then
 		return ply:SteamID() == str

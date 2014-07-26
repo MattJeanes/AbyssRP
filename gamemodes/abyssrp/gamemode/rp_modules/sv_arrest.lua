@@ -27,6 +27,11 @@ function RP:UnarrestPlayer( ply, bailed )
 	local jailer = ply.Jailer
 	if !ply:IsValid() then return end
 	
+	if timer.Exists("RP-Wanted-"..ply:UniqueID()) then
+		timer.Remove("RP-Wanted-"..ply:UniqueID())
+	end
+	ply.Wanted = false
+	
 	ply.RP_Jailed = nil
 	ply:Spawn()
 	timer.Simple( 0.1, function() ply:SetPos( ply.RP_RestorePos ) end )

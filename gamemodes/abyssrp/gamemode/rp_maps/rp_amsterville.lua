@@ -1,36 +1,17 @@
-ATM = {}
+RP:AddATM(Vector(-1538, 2728, -3039.6875),Angle(0, 90, 0))
+RP:AddATM(Vector(-1664, -225, -95.6875),Angle(0, 0, 0))
+RP:AddATM(Vector(-192, 2988, 96.3125),Angle(0, 0, 0))
+RP:AddATM(Vector(2176, 1357, -63.6875),Angle(0, 0, 0))
+RP:AddATM(Vector(-816, 685, 288.3125),Angle(0, 0, 0))
 
-ATM.Vectors = {
-	Vector(-1538, 2728, -3039.6875),
-	Vector(-1664, -225, -95.6875),
-	Vector(-192, 2988, 96.3125),
-	Vector(2176, 1357, -63.6875),
-	Vector(-816, 685, 288.3125)
-}
+RP:AddPoliceDoor(Vector(3554.5, 2655.5, 128))
+RP:AddPoliceDoor(Vector(3554.5, 2720.5, 128))
+RP:AddPoliceDoor(Vector(2732.5, 2964, 6))
+RP:AddPoliceDoor(Vector(3886, 3152, 256))
+RP:AddPoliceDoor(Vector(3886, 3024, 256))
+RP:AddPoliceDoor(Vector(3886, 2914, 256))
+RP:AddPoliceDoor(Vector(3720, 2939.5, 248))
 
-ATM.Angles = {
-	Angle(0.000, 90.000, 0.000),
-	Angle(0.000, 0.000, 0.000),
-	Angle(0.000, 0.000, 0.000),
-	Angle(0.000, 0.000, 0.000),
-	Angle(0.000, 0.000, 0.000)
-}
-		
-PoliceDoors = {
-	Vector(3554.5, 2655.5, 128),
-	Vector(3554.5, 2720.5, 128),
-	Vector(2732.5, 2964, 6),
-	Vector(2732.5, 2964, 6),
-	Vector(3886, 3152, 256),
-	Vector(3886, 3024, 256),
-	Vector(3886, 2914, 256),
-	Vector(3720, 2939.5, 248)
-}
-		
-JailPoses = {
-	Vector(3954.6853, 3121.3630, 192.0313),
-	Vector(3952.3096, 2999.3845, 192.0313),
-	Vector(3958.9375, 2868.7444, 192.0313)
-}
-		
-JailSupport = true
+RP:AddJailPos(Vector(3954.6853, 3121.3630, 192.0313))
+RP:AddJailPos(Vector(3952.3096, 2999.3845, 192.0313))
+RP:AddJailPos(Vector(3958.9375, 2868.7444, 192.0313))

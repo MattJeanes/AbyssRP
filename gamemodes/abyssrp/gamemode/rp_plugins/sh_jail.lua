@@ -10,7 +10,7 @@ PLUGIN.ChatCommand = "setjail"
 PLUGIN.Usage = nil
 
 function PLUGIN:Call( ply, args )
-	if (ply:IsAdmin() or ply:IsSuperAdmin()) or ply:Team()==RP:GetTeamN("police chief") and not JailSupport then
+	if ply:RP_IsAdmin() or ply:Team()==RP:GetTeamN("police chief") and not JailSupport then
 		RP.jailPos = ply:GetEyeTraceNoCursor().HitPos
 		RP:Notify( RP.colors.blue, ply:Nick(), RP.colors.white, " has set the jail position." )
 		RP.jailPosCount = 1

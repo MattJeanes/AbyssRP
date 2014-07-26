@@ -2,88 +2,80 @@ DEFINE_BASECLASS( "player_default" )
 
 local PLAYER = {}
 
-
-PLAYER.DuckSpeed			= 0.1		-- How fast to go from not ducking, to ducking
-PLAYER.UnDuckSpeed			= 0.1		-- How fast to go from ducking, to not ducking
-
---
--- Creates a Taunt Camera
---
 PLAYER.TauntCam = TauntCamera()
 
---
--- See gamemodes/base/player_class/player_default.lua for all overridable variables
---
-PLAYER.WalkSpeed 			= nil
-PLAYER.RunSpeed				= nil
-
---
--- Set up the network table accessors
---
-function PLAYER:SetupDataTables()
-
-	BaseClass.SetupDataTables( self )
-
-end
-
---
--- Called when the player spawns
---
 function PLAYER:Spawn()
 	BaseClass.Spawn( self )
 	
-	local oldhands = self.Player:GetHands();
-	if ( IsValid( oldhands ) ) then
-		oldhands:Remove()
-	end
-
-	local hands = ents.Create( "gmod_hands" )
-	if ( IsValid( hands ) ) then
-		hands:DoSetup( self.Player )
-		hands:Spawn()
-	end	
-
+	self.Player:RemoveAllAmmo()
+	self.Player:StripWeapons()
+	
 	local col = team.GetColor( self.Player:Team() )
 	local colvec = Vector( col.r, col.g, col.b ) / 255
 	self.Player:SetPlayerColor( colvec )
 	self.Player:SetWeaponColor( colvec )
 end
 
---
--- Return true to draw local (thirdperson) camera - false to prevent - nothing to use default behaviour
---
-function PLAYER:ShouldDrawLocal() 
-
-	if ( self.TauntCam:ShouldDrawLocalPlayer( self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
+function PLAYER:Loadout()
+	if self.Player.RP_Jailed then return end
+	local t=self.Player:GetTeam()
+	
+	if not t.nohands then self.Player:Give( "hands" ) end
+	
+	if t.weps then
+		for k,v in pairs(t.weps) do
+			self.Player:Give(v)
+		end
+	end
+	
+	self.Player:Give( "weapon_physcannon" )
+	self.Player:Give( "gmod_camera" )
+	self.Player:Give( "weapon_keys" )
+	
+	-- This doesn't work on first spawn as all variables have not been initialised yet, which is why all players must respawn on first join. TODO: Look for a better fix.
+	if self.Player:RP_IsAdmin() and GetConVarNumber("rp_admingivetools")==1 then
+		self.Player:Give( "gmod_tool" )
+		self.Player:Give( "weapon_physgun" )
+	end
+	
+	if t.armor then
+		self.Player:SetArmor(t.armor)
+	end
+	
+	if t.walkspeed then
+		self.Player:SetWalkSpeed(t.walkspeed)
+	else
+		self.Player:SetWalkSpeed(125)
+	end
+	
+	if t.runspeed then
+		self.Player:SetRunSpeed(t.runspeed)
+	else
+		self.Player:SetRunSpeed(250)
+	end
 end
 
---
--- Allow player class to create move
---
-function PLAYER:CreateMove( cmd )
-
-	if ( self.TauntCam:CreateMove( cmd, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
-end
-
---
--- Allow changing the player's view
---
-function PLAYER:CalcView( view )
-
-	if ( self.TauntCam:CalcView( view, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
-
-	-- Your stuff here
-
+function PLAYER:SetModel()
+	local m = RP:GetTeamModel( self.Player:Team() )
+	util.PrecacheModel( m )
+	self.Player:SetModel( m )
 end
 
 function PLAYER:GetHandsModel()
+	local playermodel = player_manager.TranslateToPlayerModelName( RP:GetTeamModel( self.Player:Team() ) )
+	return player_manager.TranslatePlayerHands( playermodel )
+end
 
-	-- return { model = "models/weapons/c_arms_cstrike.mdl", skin = 1, body = "0100000" }
+function PLAYER:ShouldDrawLocal() 
+	if ( self.TauntCam:ShouldDrawLocalPlayer( self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
+end
 
-	return player_manager.TranslatePlayerHands( player_manager.TranslateToPlayerModelName(self.Player:GetModel()) )
+function PLAYER:CreateMove( cmd )
+	if ( self.TauntCam:CreateMove( cmd, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
+end
 
+function PLAYER:CalcView( view )
+	if ( self.TauntCam:CalcView( view, self.Player, self.Player:IsPlayingTaunt() ) ) then return true end
 end
 
 player_manager.RegisterClass( "player_abyssrp", PLAYER, "player_default" )

@@ -39,6 +39,17 @@ RP.SalaryTime = 300
 
 if CLIENT then return end
 
+hook.Add("PlayerInitialSpawn", "RP-Money", function(ply)
+	ply:LoadPlayerData()
+	ply:SavePlayerData()
+	if ply:GetNWInt("cash") == nil then
+		ply:SetCash(1000)
+	end
+	if ply:GetNWInt("bank") == nil then
+		ply:SetBank(100)
+	end
+end)
+
 function RP:GiveSalary()
 	for k,v in pairs(player.GetAll()) do
 		if v:Team()==0 then continue end

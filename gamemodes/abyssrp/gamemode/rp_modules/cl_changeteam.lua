@@ -9,19 +9,14 @@ function round(x)
 	return x-0.5
 end
 
-function changeteam_menu( ply )
-
+local function changeteam_menu( close )
 	local DermaPanel = vgui.Create( "DFrame" )
 	DermaPanel:SetSize( ScrW()-(ScrW()*0.02),ScrH()-(ScrH()*0.02) )
 	DermaPanel:Center()
 	DermaPanel:SetTitle( "Main Menu" )
-	DermaPanel:SetVisible( true )
 	DermaPanel:SetDraggable( false )
-	DermaPanel:SetDeleteOnClose( true )
-	if LocalPlayer():Team() == 0 then
+	if not close then
 		DermaPanel:ShowCloseButton( false )
-	else
-		DermaPanel:ShowCloseButton( true )
 	end
 	DermaPanel:MakePopup()
 
@@ -114,21 +109,23 @@ function changeteam_menu( ply )
 	teamicon:GetEntity():SetEyeTarget(Vector(100,0,65))
 	teamicon.LayoutEntity = function() end -- TODO: On/Off?
 
-	RPJoinTeamButton = vgui.Create("DButton", ChangeTeamSheet)
-	RPJoinTeamButton:SetPos( ScrW() * 0.74, ScrH() * 0.72 )
-	RPJoinTeamButton:SetSize( ScrW() * 0.2, ScrH() * 0.15 )
-	RPJoinTeamButton:SetText( "Join this team!" )
-	RPJoinTeamButton.DoClick = function()
-		RunConsoleCommand("rp_changeteam", tostring(SelectedTeam) )
+	local join = vgui.Create("DButton", ChangeTeamSheet)
+	join.jointext = "Join this class!"
+	join.spawntext = "Respawn!"
+	join:SetPos( ScrW() * 0.74, ScrH() * 0.72 )
+	join:SetSize( ScrW() * 0.2, ScrH() * 0.15 )
+	join:SetText( join.spawntext )
+	join.DoClick = function()
+		net.Start("RP-ChangeTeam")
+			net.WriteFloat(SelectedTeam)
+		net.SendToServer()
 		DermaPanel:Close()
 	end
 	
 	for i=1,#team.GetAllTeams() do
 		local teams = vgui.Create( "DButton" ) 
-		//teams:SetPos( ScrW() * 0.012, ScrH() * 0.02 + ((ScrH() * 0.08 * i) - ScrH() * 0.08 ))
 		teams:SetSize( ScrW() * 0.07, ScrH() * 0.065 ) 
 		teams:SetText( RP.Team[i].name )
-		//DermaList:AddItem(teams[i])
 		teams.DoClick = function() //Make the player join the team
 			SelectedTeam = i
 			t=RP.Team[i]
@@ -137,22 +134,27 @@ function changeteam_menu( ply )
 			end
 			teamicon:SetModel( RP:GetTeamModel(i) )
 			teamicon:GetEntity():SetEyeTarget(Vector(100,0,65))
+			if LocalPlayer():Team()==i then
+				join:SetText(join.spawntext)
+			else
+				join:SetText(join.jointext)
+			end
 		end
 		
 		DermaList:AddItem(teams)
 	end
 
-/*
-	local InventorySheet = vgui.Create( "DPanel", DermaPanel ) -- We create a panel so we can draw shit on; if we use the frame, it comes up transparent for some reason
-	InventorySheet:SetPos( 125, 50 )
-	InventorySheet:SetSize( ScrW()-(ScrW()*0.04),ScrH()-(ScrH()*0.06) )
-	*/
-
-
-	PropertySheet:AddSheet( "Change Team", ChangeTeamSheet, "icon16/group.png", false, false )
-	//PropertySheet:AddSheet( "Inventory", InventorySheet, "icon16/inventory.png", false, false )
-
-	
+	PropertySheet:AddSheet( "Change Team", ChangeTeamSheet, "icon16/group.png", false, false )	
 end
 
-concommand.Add( "team_menu", changeteam_menu )
+concommand.Add("team_menu", function()
+	changeteam_menu(true)
+end)
+
+hook.Add("InitPostEntity", "RP-ChangeTeam", function()
+	changeteam_menu(false)
+end)
+
+net.Receive("RP-TeamMenu", function(len)
+	changeteam_menu(tobool(net.ReadBit()))
+end)

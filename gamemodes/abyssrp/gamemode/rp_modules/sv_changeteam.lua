@@ -1,5 +1,4 @@
-local function changeteam( ply, command, args )
-	local n = tonumber(args[1])
+local function changeteam( ply, n )
 	local t = RP.Team[n]
 	if ply:InVehicle() then
 		RP:Error(ply, RP.colors.white, "You cannot change class in a vehicle!")
@@ -12,7 +11,8 @@ local function changeteam( ply, command, args )
 		end)
 		return
 	elseif ply:Team()==n then
-		RP:Error(ply, RP.colors.white, "You are already on class '", team.GetColor(n), string.lower(team.GetName(n)), RP.colors.white, "'.")
+		--RP:Error(ply, RP.colors.white, "You are already on class '", team.GetColor(n), string.lower(team.GetName(n)), RP.colors.white, "'.")
+		ply:Spawn()
 	elseif RP.Team[n].maxplayers and (team.NumPlayers(n) >= RP.Team[n].maxplayers) then
 		RP:Error(ply, RP.colors.white, "Sorry, the server is at maximum players on class '", team.GetColor(n), string.lower(team.GetName(n)), RP.colors.white, "'.")
 		if ply:Team() == 0 then
@@ -65,6 +65,19 @@ local function changeteam( ply, command, args )
 	end
 end
 concommand.Add( "rp_changeteam", changeteam )
+
+util.AddNetworkString("RP-TeamMenu")
+util.AddNetworkString("RP-ChangeTeam")
+
+function GM:ShowSpare2( ply )
+    net.Start("RP-TeamMenu")
+		net.WriteBit(false)
+	net.Send(ply)
+end
+
+net.Receive("RP-ChangeTeam", function(len,ply)
+	changeteam(ply,net.ReadFloat())
+end)
 
 CreateConVar( "rp_admindemote", "0", FCVAR_NOTIFY )
 CreateConVar( "rp_adminteamvote", "0", FCVAR_NOTIFY )

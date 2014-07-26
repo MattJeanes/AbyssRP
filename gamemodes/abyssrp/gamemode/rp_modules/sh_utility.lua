@@ -25,26 +25,23 @@ function ent:SetSharedOwner()
 	self:SetNWEntity("OwnerObj", nil)
 end
 
-function GetVectors( ply )
+concommand.Add("getpolicedoor", function(ply)
 	local pos = ply:GetEyeTraceNoCursor().Entity:GetPos()
-	local ang = ply:GetEyeTraceNoCursor().Entity:GetAngles()
-	ply:ChatPrint(pos.x ..", " ..pos.y..", ".. pos.z)
-	ply:ChatPrint(tostring(ang))
-end
-concommand.Add("fvector", GetVectors)
+	ply:ChatPrint("RP:AddPoliceDoor(Vector("..pos.x ..", " ..pos.y..", ".. pos.z.."))")
+end)
 
-function getpos(ply)
-    local trace = ply:GetEyeTraceNoCursor()
-    local ent = trace.Entity
-    
-    ply:ChatPrint(tostring(trace.HitPos))
-end
+concommand.Add("getclass", function(ply)
+	local ent = ply:GetEyeTraceNoCursor().Entity
+	ply:ChatPrint(ent:GetClass())
+end)
 
-concommand.Add("hitpos",getpos)
+concommand.Add("hitpos",function(ply)
+	local pos = ply:GetEyeTraceNoCursor().HitPos
+	ply:ChatPrint("Vector("..pos.x ..", " ..pos.y..", ".. pos.z..")")
+end)
 
 function ScreenNotify(msg)
-	local msg1 = tostring(msg)
 	for k,v in pairs(player.GetAll()) do
-		v:PrintMessage(HUD_PRINTCENTER, msg1)
+		v:PrintMessage(HUD_PRINTCENTER, tostring(msg))
 	end
 end

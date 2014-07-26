@@ -17,7 +17,7 @@ RP:AddATM(Vector(-1992, -160, -195.5), Angle(0, -90, 0))
 RP:AddATM(Vector(-2552, -2465, -200), Angle(0, -180, 0))
 RP:AddATM(Vector(-288, 370, -203.6875), Angle(0, 180, 0))
 RP:AddATM(Vector(-43, -1624, -188), Angle(0, 90, 0))
-		
+
 RP:AddJailPos(Vector(-1901.9425, 193.9865, -195.9688))
 RP:AddJailPos(Vector(-1997.0541, 197.7970, -195.9688))
 RP:AddJailPos(Vector(-2099.8928, 196.5997, -195.9688))

@@ -13,6 +13,7 @@ if SERVER then
 	end
 	
 	hook.Add("PlayerCanSeePlayersChat", "RP-Localchat", function(text,teamonly,listener,speaker)
+		if GetConVarNumber("rp_localchat") == 0 then return end
 		if listener != speaker and listener:GetPos():Distance(speaker:GetPos()) > 250 then
 			return false
 		end

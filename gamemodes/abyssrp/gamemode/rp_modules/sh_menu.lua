@@ -5,6 +5,9 @@ if SERVER then
 	function meta:ShowMenu()
 		net.Start("RP-ShowMenu") net.Send(self)
 	end
+	function GM:ShowSpare1( ply )
+		ply:ShowMenu()
+	end
 elseif CLIENT then
 	function meta:ShowMenu()
 		local frame = vgui.Create("DFrame")
