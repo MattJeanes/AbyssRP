@@ -9,6 +9,22 @@ if SERVER then
 		ply:ShowMenu()
 	end
 elseif CLIENT then
+	local acts={
+		robot="Robot",
+		dance="Dance",
+		zombie="Zombie",
+		cheer="Cheer",
+		laugh="Laugh",
+		muscle="Muscle",
+		pers="Pers",
+		halt="Halt",
+		salute="Salute",
+		disagree="Disagree",
+		bow="Bow",
+		becon="Becon",
+		agree="Agree",
+		wave="Wave"
+	}
 	function meta:ShowMenu()
 		local frame = vgui.Create("DFrame")
 		frame:SetSize(480,300)
@@ -30,6 +46,25 @@ elseif CLIENT then
 		label:SetFont("DermaLarge")
 		label:SizeToContents()
 		label:SetPos(0,0)
+		
+		local listview = vgui.Create("DListView",panel)
+		listview:SetSize(100,panel:GetTall())
+		listview:SetPos(panel:GetWide()-listview:GetWide()-1,0)
+		listview:AddColumn("Gestures")
+		listview:SetMultiSelect(false)
+		for k,v in pairs(acts) do
+			listview:AddLine(v)
+		end
+		listview:SortByColumn(1)
+		listview.OnRowSelected = function(self,id,line)
+			local name=line:GetValue(1)
+			for k,v in pairs(acts) do
+				if v==name then
+					RunConsoleCommand("act",k)
+					frame:Close()
+				end
+			end
+		end
 		
 		sheet:AddSheet("Home",panel)
 		

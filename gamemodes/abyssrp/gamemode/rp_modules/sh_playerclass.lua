@@ -2,6 +2,9 @@ DEFINE_BASECLASS( "player_default" )
 
 local PLAYER = {}
 
+PLAYER.TeammateNoCollide 	= false		-- Do we collide with teammates or run straight through them
+PLAYER.AvoidPlayers			= true		-- Automatically swerves around other players
+
 PLAYER.TauntCam = TauntCamera()
 
 function PLAYER:Spawn()

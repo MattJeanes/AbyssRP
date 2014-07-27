@@ -140,13 +140,13 @@ RP:AddTeam({
 })
 
 RP:AddTeam({
-	name="Drug Dealer",
+	name="Black Market Dealer",
 	color=Color( 160, 82, 45 ),
 	model="models/player/monk.mdl",
 	salary=20,
-	desc="You are a drug dealer. You illegally sell drugs to those who want them, and avoid detection.",
-	rules="You must actually deal drugs; you're not allowed to use this class just to buy yourself drugs.",
-	extra="You can access the drug shop with !menu.",
+	desc="You are a black market dealer. You illegally sell stuff to those who want them, and avoid detection.",
+	rules="You must actually deal stuff; you're not allowed to use this class just to buy yourself stuff.",
+	extra="You can access the black market with !menu.",
 	maxplayers=2
 })
 
