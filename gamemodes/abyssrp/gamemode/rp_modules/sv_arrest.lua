@@ -5,11 +5,12 @@ function RP:ArrestPlayer( ply, jailer )
 	ply:StripWeapons()
 	ply.RP_RestorePos = ply:GetPos()
 	if #RP.JailPoses > 0 then
-		ply.JailNum = math.random(1,#RP.JailPoses)
-		ply.JailPos = RP.JailPoses[ply.JailNum]
-	else
-		ply.JailPos = RP.jailPos
+		ply.JailPos = table.Random(RP.JailPoses)
+	elseif RP.JailPos then
+		ply.JailPos = RP.JailPos
 	end
+	if not ply.JailPos then return false end
+	
 	ply:SetPos( ply.JailPos )
 	
 	ply:SetMoveType( MOVETYPE_WALK )
@@ -21,11 +22,12 @@ function RP:ArrestPlayer( ply, jailer )
 	RP:Notify(jailer, RP.colors.white, "You've arrested: ", RP.colors.blue, ply:Nick(), RP.colors.white, "!")
 	ply.Jailer = jailer
 	RP:Notify(ply, RP.colors.white, "You will be released in: ", RP.colors.blue, tostring(jailtime), RP.colors.white, " seconds.")
+	return true
 end
 
 function RP:UnarrestPlayer( ply, bailed )
 	local jailer = ply.Jailer
-	if !ply:IsValid() then return end
+	if !ply:IsValid() then return false end
 	
 	if timer.Exists("RP-Wanted-"..ply:UniqueID()) then
 		timer.Remove("RP-Wanted-"..ply:UniqueID())
@@ -45,6 +47,7 @@ function RP:UnarrestPlayer( ply, bailed )
 	end
 	ply.Wanted = nil
 	ply.Jailer = nil
+	return true
 end
 
 hook.Add("PlayerSpawn", "RP-Jail", function(ply)

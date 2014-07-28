@@ -10,10 +10,9 @@ PLUGIN.ChatCommand = "setjail"
 PLUGIN.Usage = nil
 
 function PLUGIN:Call( ply, args )
-	if ply:RP_IsAdmin() or ply:Team()==RP:GetTeamN("police chief") and not JailSupport then
-		RP.jailPos = ply:GetEyeTraceNoCursor().HitPos
+	if ply:RP_IsAdmin() or ply:Team()==RP:GetTeamN("police chief") and #RP.JailPoses > 0 then
+		RP.JailPos = ply:GetEyeTraceNoCursor().HitPos
 		RP:Notify( RP.colors.blue, ply:Nick(), RP.colors.white, " has set the jail position." )
-		RP.jailPosCount = 1
 	else
 		RP:Error( ply, RP.colors.white, "This map has built in jail positions!")
 	end

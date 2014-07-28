@@ -25,17 +25,16 @@ function RP:AddJailPos(pos)
 	RP.JailPoses[n]=pos
 end
 
-function RP:EntStartup()
-	local maps = file.Find( "abyssrp/gamemode/rp_maps/*.lua", "LUA" )
-	table.Add(maps,file.Find( "rp_maps/*.lua", "LUA" )) -- Others can add new maps
-	local found=false
-	for _, map in ipairs( maps ) do
-		local s=string.gsub(map, ".lua", "")
-		if string.lower(s)==string.lower(game.GetMap()) then
-			include( "abyssrp/gamemode/rp_maps/" .. map )
-		end
+local maps = file.Find( "abyssrp/gamemode/rp_maps/*.lua", "LUA" )
+table.Add(maps, file.Find( "rp_maps/*.lua", "LUA" )) -- Others can add new maps
+for _, map in ipairs( maps ) do
+	local s=string.gsub(map, ".lua", "")
+	if string.lower(s)==string.lower(game.GetMap()) then
+		include( "abyssrp/gamemode/rp_maps/" .. map )
 	end
+end
 
+function RP:EntStartup()
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
 		v.Ownable = tobool(v:GetSaveTable().m_bLocked)
 		v.Owner = nil

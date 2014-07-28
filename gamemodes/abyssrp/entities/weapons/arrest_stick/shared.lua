@@ -66,7 +66,6 @@ function SWEP:PrimaryAttack()
 	if CLIENT then return end
 	
 	local trace = self.Owner:GetEyeTrace()
-	local jpc = RP.jailPosCount
 	
 	if (trace.Entity:GetClass() == "prop_ragdoll") and
 	(trace.Entity.taseredply.Wanted) and
@@ -107,19 +106,17 @@ function SWEP:PrimaryAttack()
 	end
 	*/
 	
-	local jpc = RP.jailPosCount
 	local jailtime = GetConVarNumber("rp_jailtime")
 	
-	if (#RP.JailPoses==0 and not jpc) then
+	if (#RP.JailPoses==0) then
 		RP:Error(self.Owner, RP.colors.white, "No jail positions set!")
 	else
 		-- Send NPCs to Jail
 		if trace.Entity:IsNPC() then
 			if RP.JailPoses > 0 then
-				i = math.random(1,#RP.JailPoses)
-				trace.Entity:SetPos(RP.JailPoses[i])
+				trace.Entity:SetPos(table.Random(RP.JailPoses))
 			else
-				trace.Entity:SetPos(RP.jailPos)
+				trace.Entity:SetPos(RP.JailPos)
 			end
 		else
 			RP:ArrestPlayer(trace.Entity, self.Owner)

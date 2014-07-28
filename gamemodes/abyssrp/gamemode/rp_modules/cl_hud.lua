@@ -1,14 +1,14 @@
 surface.CreateFont("AbyssRPHUD",
 	{
 		font="Verdana",
-		size=22,
+		size=ScreenScale(8)
 	}
 )
 
 surface.CreateFont("AbyssRPHUD2",
 	{
 		font="Arial",
-		size=22,
+		size=ScreenScale(7)
 	}
 )
  
@@ -19,7 +19,7 @@ hook.Add("HUDPaint", "CreateAbyssHUD", function()
 	-- HP
 	local hp=math.Clamp(LocalPlayer():Health(),0,100)
 	surface.SetDrawColor( 231, 76, 60, 150 )
-	draw.RoundedBox( 0, ScrW()*0.007, ScrH()*0.948, hp* (ScrW()*0.00147), ScrH()*0.018, Color(231, 76, 60, 150) )
+	surface.DrawRect( ScrW()*0.007, ScrH()*0.948, hp*(ScrW()*0.00147), ScrH()*0.019 )
 	surface.DrawOutlinedRect( ScrW()*0.007, ScrH()*0.948, ScrW()*0.147, ScrH()*0.02)
 	draw.SimpleText("HP: "..hp, "AbyssRPHUD", ScrW()*0.0775, ScrH()*0.946, Color(255,255,255,255),TEXT_ALIGN_CENTER)
 	
@@ -34,7 +34,7 @@ hook.Add("HUDPaint", "CreateAbyssHUD", function()
 	end
 	
 	surface.SetDrawColor( 52, 152, 219, 150 )
-	draw.RoundedBox( 0, ScrW()*0.007, ScrH()*0.97, math.Clamp(LocalPlayer():Armor(), 0, 100)* (ScrW()*0.00147), ScrH()*0.018, Color(52, 152, 219, 150) )
+	surface.DrawRect( ScrW()*0.007, ScrH()*0.97, math.Clamp(LocalPlayer():Armor(), 0, 100)*(ScrW()*0.00147), ScrH()*0.019 )
 	surface.DrawOutlinedRect( ScrW()*0.007, ScrH()*0.97, ScrW()*0.147, ScrH()*0.02)
 	draw.SimpleText(armor, "AbyssRPHUD", ScrW()*0.0775, ScrH()*0.968, Color(255,255,255,255),TEXT_ALIGN_CENTER)
 

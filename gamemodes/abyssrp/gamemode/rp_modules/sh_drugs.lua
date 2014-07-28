@@ -81,7 +81,7 @@ local drug=RP:AddConstant("shop","drug")
 
 if CLIENT then
 	hook.Add("RP-Menu", "RP-Drugs", function(sheet,x,y)
-		if not (LocalPlayer():Team()==RP:GetTeamN("drug dealer")) then return end
+		if not (LocalPlayer():Team()==RP:GetTeamN("black market dealer")) then return end
 		local function send(t,n,q,s)
 			if t and n and q then
 				net.Start("RP-Shipments")
