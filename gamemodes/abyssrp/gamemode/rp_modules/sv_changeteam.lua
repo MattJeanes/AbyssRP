@@ -1,4 +1,4 @@
-local function changeteam( ply, n )
+function RP:ChangeTeam( ply, n )
 	local t = RP.Team[n]
 	if ply:InVehicle() then
 		RP:Error(ply, RP.colors.white, "You cannot change class in a vehicle!")
@@ -64,7 +64,6 @@ local function changeteam( ply, n )
 		ply:Spawn()
 	end
 end
-concommand.Add( "rp_changeteam", changeteam )
 
 util.AddNetworkString("RP-TeamMenu")
 util.AddNetworkString("RP-ChangeTeam")
@@ -76,7 +75,7 @@ function GM:ShowSpare2( ply )
 end
 
 net.Receive("RP-ChangeTeam", function(len,ply)
-	changeteam(ply,net.ReadFloat())
+	RP:ChangeTeam(ply,net.ReadFloat())
 end)
 
 CreateConVar( "rp_admindemote", "0", FCVAR_NOTIFY )

@@ -10,19 +10,19 @@ if SERVER then
 	end
 elseif CLIENT then
 	local acts={
-		robot="Robot",
+		robot="Dance: Robot",
 		dance="Dance",
 		zombie="Zombie",
 		cheer="Cheer",
 		laugh="Laugh",
-		muscle="Muscle",
-		pers="Pers",
+		muscle="Dance: Sexy",
+		pers="I'm a dick",
 		halt="Halt",
 		salute="Salute",
 		disagree="Disagree",
 		bow="Bow",
-		becon="Becon",
-		agree="Agree",
+		becon="Come here",
+		agree="Thumbs up",
 		wave="Wave"
 	}
 	function meta:ShowMenu()

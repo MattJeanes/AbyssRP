@@ -10,23 +10,21 @@ PLUGIN.ChatCommand = "job"
 PLUGIN.Usage = "<name>"
 
 function PLUGIN:Call( ply, args )
-	
+	local job
 	local arg = string.Implode(" ", args)
 	for i=1,#team.GetAllTeams() do
 		if string.lower(arg) == string.lower(team.GetName(i)) then
-			JobFound = true
-			JobNum = i
+			job = i
+			break
 		end
 	end
 
-	if not JobFound then
+	if not job then
 		RP:Notify( ply, RP.colors.white, "ERROR: ", RP.colors.red, "Invalid choice!")
 		return
 	end
 
-	ply:ConCommand("rp_changeteam " .. tostring(JobNum))
-	JobFound = false
-	JobNum = nil
+	RP:ChangeTeam(ply,job)
 end
 
 RP:AddPlugin( PLUGIN )

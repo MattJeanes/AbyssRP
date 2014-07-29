@@ -8,26 +8,46 @@ net.Receive("RP-Shipments", function(len, ply)
 	local q=math.Clamp(net.ReadFloat(),1,100) -- Quantity
 	local s=tobool(net.ReadBit()) -- Is shipment
 	
-	local type=RP:GetConstant("shop",t)
-	local tbl
-	if type=="weapon" then
-		tbl=RP.Weapons[n]
-	elseif type=="ammotype" then
-		tbl=RP.AmmoTypes[n]
-	elseif type=="attachment" then
-		tbl=RP.Attachments[n]
-	elseif type=="drug" then
-		tbl=RP.Drugs[n]
-	else
-		return
-	end
-	
+	local shop=RP:GetShop(RP:GetConstant("shop",t))
 	if s then
-		RP:BuyShipment(ply,tbl,q)
+		RP:BuyShipment(ply,shop.tbl[n],q)
 	else
-		RP:BuySingle(ply,tbl)
+		RP:BuySingle(ply,shop.tbl[n])
 	end
+	return true
 end)
+
+function RP:SpawnItem(ply,info,pos,ang)
+	if not pos then return false end
+	if not ang then ang=Angle(0,0,0) end
+
+	local item=ents.Create("spawned_item")
+	item:SetModel(info.model)
+	item.ShareGravgun = true
+	item.info = info
+	item.Owner = ply
+	item:SetPos(pos)
+	item:SetAngles(ang)
+	item.nodupe = true
+	item:Spawn()
+	item:Activate()
+	return item
+end
+
+function RP:SpawnShipment(ply,info,quantity,pos,ang)
+	if not pos then return false end
+	if not ang then ang=Angle(0,0,0) end
+
+	local shipment=ents.Create("spawned_shipment")
+	shipment:SetPos(pos)
+	shipment:SetAngles(ang)
+	shipment.count = quantity
+	shipment.info = info
+	shipment.Owner = ply
+	shipment:Spawn()
+	shipment:Activate()
+	return shipment
+end
 
 function RP:BuyShipment(ply,t,q)
 	if not (ply or t or q) then return end
@@ -36,20 +56,14 @@ function RP:BuyShipment(ply,t,q)
 		RP:Error(ply, RP.colors.white, "You do not have enough cash to buy this shipment.")
 		return false
 	end
-	local shipment=ents.Create("spawned_shipment")
 	local tr=ply:GetEyeTraceNoCursor()
-	shipment:SetPos(tr.HitPos)
-	shipment.Name = t.name
-	shipment.Count = q
-	shipment.DefaultCost = t.cost
-	shipment.Class = t.class
-	shipment.Model = t.model or "models/items/boxmrounds.mdl"
-	shipment.Owner = ply
-	shipment:Spawn()
-	shipment:Activate()
-	ply:TakeCash(cost)
-	RP:Notify(ply, RP.colors.white, "Shipment bought.")
-	return true
+	local item=RP:SpawnShipment(ply,t,q,tr.HitPos)
+	if IsValid(item) then
+		ply:TakeCash(cost)
+		RP:Notify(ply, RP.colors.white, "Shipment bought.")
+		return true
+	end
+	return false
 end
 
 function RP:BuySingle(ply,t)
@@ -58,18 +72,12 @@ function RP:BuySingle(ply,t)
 		RP:Error(ply, RP.colors.white, "You do not have enough cash to buy this item.")
 		return false
 	end
-	local weapon = ents.Create("spawned_weapon")
 	local tr=ply:GetEyeTraceNoCursor()
-	weapon:SetPos(tr.HitPos)
-	weapon:SetModel(t.model)
-	weapon.ShareGravgun = true
-	weapon.Class = t.class
-	weapon.Owner = ply
-	weapon.Cost = cost
-	weapon.nodupe = true
-	weapon:Spawn()
-	weapon:Activate()
-	ply:TakeCash(cost)
-	RP:Notify(ply, RP.colors.white, "Item bought.")
-	return true
+	local item=RP:SpawnItem(ply,t,tr.HitPos)
+	if IsValid(item) then
+		ply:TakeCash(cost)
+		RP:Notify(ply, RP.colors.white, "Item bought.")
+		return true
+	end
+	return false
 end

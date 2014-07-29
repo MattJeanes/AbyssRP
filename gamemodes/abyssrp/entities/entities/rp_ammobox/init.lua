@@ -13,6 +13,7 @@ function ENT:Initialize()
 	if phys and phys:IsValid() then
 		phys:Wake()
 	end
+	if not self.info then self:Remove() end
 end
 
 function ENT:OnTakeDamage(dmginfo)
@@ -21,7 +22,7 @@ end
 
 function ENT:Use(activator, caller)
 	if activator:IsPlayer() then
-		activator:GiveAmmo(self.Amount, self.AmmoType)
+		activator:GiveAmmo(self.info.clip, self.info.name)
 		self:Remove()
 	end
 end
