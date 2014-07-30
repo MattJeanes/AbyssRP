@@ -1,4 +1,6 @@
 if SERVER then
+	RP:AddSetting("localchat",false)
+	
 	function RP:TalkToRange(ply, text, size, mode)
 		local ents = ents.FindInSphere(ply:EyePos(), size)
 		for k, v in pairs(ents) do
@@ -13,7 +15,7 @@ if SERVER then
 	end
 	
 	hook.Add("PlayerCanSeePlayersChat", "RP-Localchat", function(text,teamonly,listener,speaker)
-		if GetConVarNumber("rp_localchat") == 0 then return end
+		if not RP:GetSetting("localchat") then return end
 		if listener != speaker and listener:GetPos():Distance(speaker:GetPos()) > 250 then
 			return false
 		end
@@ -56,7 +58,7 @@ elseif CLIENT then
 	)
 
 	hook.Add("HUDPaint", "RPWhoCanHear", function()
-		if GetConVarNumber("rp_localchat") == 1 and ChatOpen then
+		if RP:GetSetting("localchat") and ChatOpen then
 			local n=ScrH()*0.023
 			local w, l = ScrW()/80, ScrH()/1.75
 			local h = l - (#CalcHear() * n) - n
@@ -110,5 +112,3 @@ elseif CLIENT then
 		ChatText=text
 	end)
 end
-
-CreateConVar( "rp_localchat", "1", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE, FCVAR_NOTIFY, FCVAR_ARCHIVE} )

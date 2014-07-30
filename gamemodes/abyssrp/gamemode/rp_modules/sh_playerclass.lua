@@ -1,5 +1,9 @@
 DEFINE_BASECLASS( "player_default" )
 
+if SERVER then
+	RP:AddSetting("admingivetools",true)
+end
+
 local PLAYER = {}
 
 PLAYER.TeammateNoCollide 	= false		-- Do we collide with teammates or run straight through them
@@ -8,6 +12,10 @@ PLAYER.AvoidPlayers			= true		-- Automatically swerves around other players
 PLAYER.TauntCam = TauntCamera()
 
 function PLAYER:Spawn()
+	if self.Player:Team()==0 then
+		self.Player:SetTeam(1)
+	end
+	
 	BaseClass.Spawn( self )
 	
 	self.Player:RemoveAllAmmo()
@@ -36,7 +44,7 @@ function PLAYER:Loadout()
 	self.Player:Give( "weapon_keys" )
 	
 	-- This doesn't work on first spawn as all variables have not been initialised yet, which is why all players must respawn on first join. TODO: Look for a better fix.
-	if self.Player:RP_IsAdmin() and GetConVarNumber("rp_admingivetools")==1 then
+	if RP:GetSetting("build") or (self.Player:RP_IsAdmin() and RP:GetSetting("adminbuild")) then
 		self.Player:Give( "gmod_tool" )
 		self.Player:Give( "weapon_physgun" )
 	end

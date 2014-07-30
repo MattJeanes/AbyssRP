@@ -25,100 +25,100 @@ end
 RP:AddAmmoType({
 	name=".357 SIG",
 	clip=30,
-	cost=0.6
+	cost=18
 })
 
 RP:AddAmmoType({
 	name=".380 ACP",
 	clip=60,
-	cost=0.5
+	cost=30
 })
 
 -- Unused apparently
 RP:AddAmmoType({
 	name=".44 Magnum",
 	clip=12,
-	cost=0.45
+	cost=5.5
 })
 
 RP:AddAmmoType({
 	name=".45 ACP",
 	clip=30,
-	cost=0.5
+	cost=15
 })
 
 RP:AddAmmoType({
 	name=".454 Casull",
 	clip=10,
-	cost=1
+	cost=10
 })
 
 RP:AddAmmoType({
 	name=".50 AE",
 	clip=14,
-	cost=5
+	cost=70
 })
 
 -- Unused apparently
 RP:AddAmmoType({
 	name=".50 BMG",
 	clip=20,
-	cost=1
+	cost=20
 })
 
 RP:AddAmmoType({
 	name="10x25MM",
 	clip=60,
-	cost=0.4
+	cost=24
 })
 
 RP:AddAmmoType({
 	name="12 Gauge",
 	clip=16,
-	cost=0.8
+	cost=13
 })
 
 RP:AddAmmoType({
 	name="23x75MMR",
 	clip=20,
-	cost=3
+	cost=60
 })
 
 RP:AddAmmoType({
 	name="5.45x39MM",
 	clip=60,
-	cost=0.2
+	cost=12
 })
 
 RP:AddAmmoType({
 	name="5.56x45MM",
 	clip=60,
-	cost=0.3
+	cost=18
 })
 
 RP:AddAmmoType({
 	name="7.62x39MM",
 	clip=60,
-	cost=0.4
+	cost=24
 })
 
 -- Unused apparently
 RP:AddAmmoType({
 	name="7.62x51MM",
 	clip=40,
-	cost=0.35
+	cost=14
 })
 
 RP:AddAmmoType({
 	name="9x18MM",
 	clip=60,
-	cost=0.4
+	cost=24
 })
 
 RP:AddAmmoType({
 	name="9x19MM",
 	clip=40,
-	cost=0.4
+	cost=16
 })
 
 -- Weapons
@@ -548,7 +548,7 @@ RP:AddShop({
 
 if CLIENT then
 	hook.Add("RP-Menu", "RP-Weapons", function(sheet,x,y)
-		if not (LocalPlayer():Team()==RP:GetTeamN("gun dealer")) then return end
+		if not LocalPlayer():IsTeam("gun dealer") then return end
 		RP:OpenShop(sheet,x,y,"weapon")
 		RP:OpenShop(sheet,x,y,"ammo")
 		RP:OpenShop(sheet,x,y,"attachment")

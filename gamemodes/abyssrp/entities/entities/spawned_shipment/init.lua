@@ -15,7 +15,7 @@ function ENT:Initialize()
 	self:SetSharedOwner()
 	self.locked = true
 	self.IsShipment = true
-	timer.Simple( GetConVarNumber( "rp_shipmentspawntime" ), function() if IsValid( self ) then self.locked = false end end )
+	timer.Simple(2, function() if IsValid( self ) then self.locked = false end end)
 	self.damage = 100
 	self.ShareGravgun = true
 	local phys = self:GetPhysicsObject()

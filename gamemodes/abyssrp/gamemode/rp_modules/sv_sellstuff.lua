@@ -1,3 +1,8 @@
+-- Sell stuff
+
+RP:AddSetting("doorcost",100)
+RP:AddSetting("sellpercent", 0.5)
+
 local pl = FindMetaTable( "Player" )
 
 function pl:SellDoors(left)
@@ -19,7 +24,7 @@ function pl:SellDoors(left)
 		v:Fire( "lock", "", 0 );
 	end
 	
-	local SellPrice = (GetConVarNumber("rp_doorcost") * GetConVarNumber("rp_sellpercent")) * DoorCount
+	local SellPrice = (RP:GetSetting("doorcost") * RP:GetSetting("sellpercent")) * DoorCount
 	
 	if not left then
 		if #DoorTable == 1 then
@@ -56,7 +61,7 @@ function pl:SellVehicles(left)
 		Cost = Cost + tonumber(CarPrice[i])
 	end
 	
-	local SellPrice = (Cost * GetConVarNumber("rp_sellpercent"))
+	local SellPrice = Cost * RP:GetSetting("sellpercent")
 	
 	if not left then
 		if #VehicleTable == 1 then
@@ -93,7 +98,7 @@ function pl:SellShipments(left)
 		Cost = Cost + tonumber(ShipmentPrice[i])
 	end
 	
-	local SellPrice = (Cost * GetConVarNumber("rp_sellpercent"))
+	local SellPrice = Cost * RP:GetSetting("sellpercent")
 	
 	if not left then
 		if #ShipmentTable == 1 then
@@ -167,14 +172,8 @@ function pl:OwnedShipments()
 	return shipments2
 end
 
-function PlayerDisconnect( ply )
-
+hook.Add( "PlayerDisconnected", "RP-SellStuff", function(ply)
 	ply:SellDoors(true)
 	ply:SellVehicles(true)
 	ply:SellShipments(true)
-	
-end
-
-hook.Add( "PlayerDisconnected", "playerdisconnected", PlayerDisconnect )
-
-CreateConVar( "rp_sellpercent", "0.5", FCVAR_NOTIFY )
+end)

@@ -141,7 +141,7 @@ end
 function SWEP:Deploy()
 	timer.Simple(1.0, function()
 		if not IsValid(self) or not IsValid(self.Owner) then return false end
-		if SERVER then
+		if SERVER and self.Owner:GetActiveWeapon()==self then
 			self.Owner:DrawViewModel(false)
 		end
 	end)
@@ -170,7 +170,9 @@ function SWEP:Deploy()
 end
 
 function SWEP:Holster()
-	self.Owner:SetMoveType(MOVETYPE_WALK)
+	if self.Owner:GetMoveType()==MOVETYPE_NONE or self.Owner:GetMoveType()==MOVETYPE_FLY then
+		self.Owner:SetMoveType(MOVETYPE_WALK)
+	end
 	self.Owner.Hanging = false
 	timer.Destroy("HideMyModel")
 	timer.Destroy("0.3SecTimer")

@@ -1,4 +1,6 @@
-local NoDropWeapons = {
+RP:AddSetting("dropweapon",true)
+
+local nodrop = {
 	"weapon_physcannon",
 	"weapon_physgun",
 	"weapon_keys",
@@ -12,20 +14,17 @@ local NoDropWeapons = {
 	"weapon_lockpick",
 	"weapon_pickpocket",
 	"hands",
-	"weapon_rape"
+	"weapon_rape",
+	"weapon_climb"
 }
 
-function RP:NoDropWeapons()
-	return NoDropWeapons
-end
-
-local function PlayerDropWeapon( ply, attacker, dmginfo )
-	if GetConVarNumber("rp_dropweapon") == 1 and not ply.RP_Jailed then
+function RP:PlayerDropWeapon( ply )
+	if RP:GetSetting("dropweapon") and not ply.RP_Jailed then
 		local wep=ply:GetActiveWeapon()
 		if IsValid(wep) and wep:GetClass() then
-			for k,v in pairs(NoDropWeapons) do
+			for k,v in pairs(nodrop) do
 				if wep:GetClass() == v then
-					return
+					return false
 				end
 			end
 		end
@@ -34,9 +33,14 @@ local function PlayerDropWeapon( ply, attacker, dmginfo )
 			if CPPI then
 				wep:CPPISetOwner(ply)
 			end
-			wep.Owner = ply
+			wep.OldOwner = ply
 			ply:DropWeapon(wep)
+			return true
 		end
+		return false
 	end
+	return false
 end
-hook.Add("DoPlayerDeath", "DropWeapons", PlayerDropWeapon)
+hook.Add("DoPlayerDeath", "DropWeapons", function(ply)
+	RP:PlayerDropWeapon(ply)
+end)

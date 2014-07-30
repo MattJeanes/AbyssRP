@@ -1,3 +1,5 @@
+RP:AddSetting("jailtime", 120)
+
 function RP:ArrestPlayer( ply, jailer )
 
 	ply.RP_Jailed = true
@@ -16,18 +18,26 @@ function RP:ArrestPlayer( ply, jailer )
 	ply:SetMoveType( MOVETYPE_WALK )
 	ply:SetCollisionGroup( COLLISION_GROUP_WEAPON )
 	
-	local jailtime = GetConVarNumber("rp_jailtime")
+	local jailtime = RP:GetSetting("jailtime")	
 	RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has been arrested!")
 	RP:Notify(ply, RP.colors.white, "You've been arrested by ", RP.colors.blue, jailer:Nick())
 	RP:Notify(jailer, RP.colors.white, "You've arrested: ", RP.colors.blue, ply:Nick(), RP.colors.white, "!")
 	ply.Jailer = jailer
 	RP:Notify(ply, RP.colors.white, "You will be released in: ", RP.colors.blue, tostring(jailtime), RP.colors.white, " seconds.")
+	
+	timer.Create("JailTimer-"..ply:SteamID(), jailtime, 1, function()
+		RP:UnarrestPlayer(ply)
+	end)
 	return true
 end
 
 function RP:UnarrestPlayer( ply, bailed )
 	local jailer = ply.Jailer
 	if !ply:IsValid() then return false end
+	
+	if timer.Exists("JailTimer-"..ply:SteamID()) then
+		timer.Destroy("JailTimer-"..ply:SteamID())
+	end
 	
 	if timer.Exists("RP-Wanted-"..ply:UniqueID()) then
 		timer.Remove("RP-Wanted-"..ply:UniqueID())
@@ -63,5 +73,3 @@ end)
 hook.Add("PlayerNoClip", "RP-Jail", function(ply)
 	if ( ply.RP_Jailed ) then return false end
 end)
-
-CreateConVar( "rp_jailtime", "120", FCVAR_NOTIFY )

@@ -1,3 +1,5 @@
+-- Cash
+
 local meta = FindMetaTable("Player")
 
 function meta:GetCash()
@@ -39,13 +41,16 @@ RP.SalaryTime = 300
 
 if CLIENT then return end
 
+RP:AddSetting("cashlosspercent", 0.25)
+RP:AddSetting("maxdroppedcash", 5000)
+RP:AddSetting("admindropcash",false)
+
 hook.Add("PlayerInitialSpawn", "RP-Money", function(ply)
 	ply:LoadPlayerData()
-	ply:SavePlayerData()
-	if ply:GetNWInt("cash") == nil then
+	if ply:GetNWFloat("cash") == nil then
 		ply:SetCash(1000)
 	end
-	if ply:GetNWInt("bank") == nil then
+	if ply:GetNWFloat("bank") == nil then
 		ply:SetBank(100)
 	end
 end)
@@ -73,21 +78,18 @@ hook.Add("Payday", "RPPAYDAYTEST", function(ply, salary)
 end)
 */
 
-function meta:SavePlayerData()
-	self:SetPData("cash", self:GetCash())
-	self:SetPData("bank", self:GetBank())
-end
-
 function meta:LoadPlayerData()
-	self:SetNWInt("cash", self:GetPData("cash",0))
-	self:SetNWInt("bank", self:GetPData("bank",100))
+	local uid=self:UniqueID()
+	self:SetNWFloat("cash", self:GetValue("cash",0))
+	self:SetNWFloat("bank", self:GetValue("bank",0))
 end
 
 function meta:SetCash(amount)
 	if not tonumber(amount) then return end;
 	if tonumber(amount) < 0 then return end
-	self:SetNWInt("cash", amount)
-	self:SavePlayerData()
+	self:SetNWFloat("cash", amount)
+	self:SetValue("cash", amount)
+	RP:SavePlayerInfo()
 end
 
 function meta:AddCash(amount)
@@ -103,8 +105,9 @@ end
 function meta:SetBank(amount)
 	if not tonumber(amount) then return end;
 	if tonumber(amount) < 0 then return end
-	self:SetNWInt("bank", amount)
-	self:SavePlayerData()
+	self:SetNWFloat("bank", amount)
+	self:SetValue("bank", amount)
+	RP:SavePlayerInfo()
 end
 
 function meta:AddBank(amount)
@@ -116,11 +119,11 @@ function meta:TakeBank(amount)
 end
 
 hook.Add( "PlayerDeath", "RP-Cash", function(victim, weapon, killer)
-	if (victim:GetCash() * GetConVarNumber("rp_cashlosspercent") > 5) and not (GetConVarNumber("rp_admindropcash")==0 and victim:RP_IsAdmin()) then
+	if (victim:GetCash() * RP:GetSetting("cashlosspercent") > 5) and not (not RP:GetSetting("admindropcash") and victim:RP_IsAdmin()) then
 		if math.random(1,4) == 1 then
 			local ent = ents.Create("rp_cash")
 			local pos = victim:GetPos()
-			local cash = math.Round(math.Clamp(victim:GetCash() * GetConVarNumber("rp_cashlosspercent"), 0, GetConVarNumber("rp_maxdroppedcash")))
+			local cash = math.Round(math.Clamp(victim:GetCash() * RP:GetSetting("cashlosspercent"), 0, RP:GetSetting("maxdroppedcash")))
 			ent.Cash = cash
 			ent:SetPos(pos)
 			ent:Spawn()
@@ -135,6 +138,3 @@ hook.Add( "PlayerDeath", "RP-Cash", function(victim, weapon, killer)
 		end
 	end
 end)
-
-CreateConVar( "rp_cashlosspercent", "0.25", FCVAR_NOTIFY )
-CreateConVar( "rp_maxdroppedcash", "5000", FCVAR_NOTIFY )

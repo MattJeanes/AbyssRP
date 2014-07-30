@@ -1,14 +1,18 @@
 local meta = FindMetaTable("Player")
 
 if SERVER then
-	util.AddNetworkString("RP-ShowMenu")
+	util.AddNetworkString("RP-Menu")
 	function meta:ShowMenu()
-		net.Start("RP-ShowMenu") net.Send(self)
+		net.Start("RP-Menu") net.WriteBit(true) net.Send(self)
+	end
+	function meta:CloseMenu()
+		net.Start("RP-Menu") net.WriteBit(false) net.Send(self)
 	end
 	function GM:ShowSpare1( ply )
 		ply:ShowMenu()
 	end
 elseif CLIENT then
+	local frame
 	local acts={
 		robot="Dance: Robot",
 		dance="Dance",
@@ -26,11 +30,12 @@ elseif CLIENT then
 		wave="Wave"
 	}
 	function meta:ShowMenu()
-		local frame = vgui.Create("DFrame")
+		self:CloseMenu()
+	
+		frame = vgui.Create("DFrame")
 		frame:SetSize(480,300)
 		frame:Center()
 		frame:SetTitle("Menu")
-		frame:ShowCloseButton(true)
 		frame:MakePopup()
 		
 		local sheet = vgui.Create("DPropertySheet",frame)
@@ -42,7 +47,7 @@ elseif CLIENT then
 		panel:SetSize(x,y)
 		
 		local label = vgui.Create("DLabel",panel)
-		label:SetText("Menu.\nHello "..LocalPlayer():Nick()..".")
+		label:SetText("Menu.\nHello "..LocalPlayer():Nick()..".\nWIP.")
 		label:SetFont("DermaLarge")
 		label:SizeToContents()
 		label:SetPos(0,0)
@@ -70,7 +75,16 @@ elseif CLIENT then
 		
 		hook.Call("RP-Menu", GAMEMODE, sheet, x, y)
 	end
-	net.Receive("RP-ShowMenu", function(len)
-		LocalPlayer():ShowMenu()
+	function meta:CloseMenu()
+		if frame and frame.Close then
+			frame:Close()
+		end
+	end
+	net.Receive("RP-Menu", function(len)
+		if tobool(net.ReadBit()) then
+			LocalPlayer():ShowMenu()
+		else
+			LocalPlayer():CloseMenu()
+		end
 	end)
 end

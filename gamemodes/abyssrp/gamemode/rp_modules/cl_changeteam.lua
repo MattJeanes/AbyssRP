@@ -49,7 +49,14 @@ local function changeteam_menu( close )
 		end
 	end
 	
-	local t=LocalPlayer():GetTeam()
+	local t,SelectedTeam
+	if LocalPlayer():Team()==0 then
+		t=RP.Team[1]
+		SelectedTeam=1
+	else
+		t=LocalPlayer():GetTeam()
+		SelectedTeam=LocalPlayer():Team()
+	end
 	
 	IText = {}
 	for i=1,4 do
@@ -95,12 +102,9 @@ local function changeteam_menu( close )
 	DermaList:EnableVerticalScrollbar( true ) -- Allow scrollbar if you exceed the Y axis
 
 	local teamicon = vgui.Create( "DModelPanel", ChangeTeamSheet )
-
-	SelectedTeam = LocalPlayer():Team()
-
 	if teamicon:IsValid() then teamicon:Remove() end
 	teamicon = vgui.Create( "DModelPanel", ChangeTeamSheet )
-	teamicon:SetModel( LocalPlayer():GetModel() )
+	teamicon:SetModel( RP:GetTeamModel(SelectedTeam) )
 	teamicon:SetPos(ScrW() * 0.74, ScrH() * 0.01)
 	teamicon:SetSize(ScrW() * 0.2, ScrH() * 0.68)
 	teamicon:SetCamPos(Vector(80,0,40))

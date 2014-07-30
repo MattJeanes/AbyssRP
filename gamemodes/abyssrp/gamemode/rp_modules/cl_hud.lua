@@ -13,8 +13,7 @@ surface.CreateFont("AbyssRPHUD2",
 )
  
 hook.Add("HUDPaint", "CreateAbyssHUD", function()
-	draw.RoundedBox( 0, ScrW()*0.005, ScrH()*0.855, ScrW()*0.15, ScrH()*0.14, Color( 0, 0, 0, 150 ) )
-	
+	draw.RoundedBox( 0, ScrW()*0.005, ScrH()*0.8525, ScrW()*0.15, ScrH()*0.14, Color( 0, 0, 0, 150 ) )
 	
 	-- HP
 	local hp=math.Clamp(LocalPlayer():Health(),0,100)

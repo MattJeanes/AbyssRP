@@ -27,7 +27,7 @@ function ENT:Initialize()
 		self:Remove()
 	end
 	
-	self:SetNWInt("cash", self.Cash)
+	self:SetNWFloat("cash", self.Cash)
 end
 
 function ENT:Use(activator, caller)

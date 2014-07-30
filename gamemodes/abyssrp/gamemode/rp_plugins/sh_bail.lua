@@ -19,8 +19,8 @@ end
 if SERVER then
 	util.AddNetworkString("RP-Bail")
 	net.Receive("RP-Bail", function(len,ply)
-		if ply:GetCash() >= tonumber(GetConVarNumber("rp_costtobail")) then
-			ply:TakeCash(tonumber(GetConVarNumber("rp_costtobail")))
+		if ply:GetCash() >= RP:GetSetting("bailcost") then
+			ply:TakeCash(RP:GetSetting("bailcost"))
 			RP:UnarrestPlayer( ply, true )
 			if timer.Exists("JailTimer-"..ply:SteamID()) then
 				timer.Stop("JailTimer-"..ply:SteamID())

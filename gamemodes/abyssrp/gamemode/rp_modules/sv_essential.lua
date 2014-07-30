@@ -1,8 +1,8 @@
 -- Essential code
 
 function GM:PlayerInitialSpawn( ply )
-	player_manager.SetPlayerClass(ply, "player_abyssrp")
 	ply:SetTeam(1)
+	player_manager.SetPlayerClass(ply, "player_abyssrp")
 end
 
 function GM:PlayerSpawn( ply )

@@ -20,7 +20,7 @@ function ENT:Use(activator,caller)
 	if not IsValid(item) then return false end
 	
 	if not (self.Owner==activator) and activator:GetCash() < self.info.cost then
-		RP:Error(activator, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(cost), RP.colors.white, ".")
+		RP:Error(activator, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(self.info.cost), RP.colors.white, ".")
 		return false
 	end
 	

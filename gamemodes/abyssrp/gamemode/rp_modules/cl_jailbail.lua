@@ -16,7 +16,7 @@ function jailbail_menu( ply, command, cost )
 	DLabel1 = vgui.Create('DLabel')
 	DLabel1:SetParent(DFrame1)
 	DLabel1:SetPos(ScrW() * 0.01, ScrH() * 0.04)
-	DLabel1:SetText("You are in jail, oh no!\nYou can bail out using the button below!\n\nBailing out costs: "..RP:CC(GetConVarNumber("rp_costtobail")).."!")
+	DLabel1:SetText("You are in jail, oh no!\nYou can bail out using the button below!\n\nBailing out costs: "..RP:CC(RP:GetSetting("bailcost")).."!")
 	DLabel1:SizeToContents()
 
 	DButton1 = vgui.Create('DButton')

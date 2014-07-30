@@ -98,15 +98,6 @@ function SWEP:PrimaryAttack()
 		RP:Error(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " is not wanted by police!")
 		return
 	end
-
-	/*
-	if GetConVarNumber("needwantedforarrest") == 1 and not trace.Entity:IsNPC() and not trace.Entity.DarkRPVars.wanted then
-		Notify(self.Owner, 1, 5, "The player must be wanted in order to be able to arrest them.")
-		return
-	end
-	*/
-	
-	local jailtime = GetConVarNumber("rp_jailtime")
 	
 	if (#RP.JailPoses==0) then
 		RP:Error(self.Owner, RP.colors.white, "No jail positions set!")
@@ -120,9 +111,6 @@ function SWEP:PrimaryAttack()
 			end
 		else
 			RP:ArrestPlayer(trace.Entity, self.Owner)
-			timer.Create("JailTimer-"..trace.Entity:SteamID(), jailtime, 1, function()
-				RP:UnarrestPlayer(trace.Entity)
-			end)
 		end
 	end
 end
@@ -151,10 +139,6 @@ function SWEP:SecondaryAttack()
 	if not ( trace.Entity.RP_Jailed ) then
 		RP:Error(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " has not been arrested!")
 		return
-	end
-	
-	if timer.Exists("JailTimer-"..trace.Entity:SteamID()) then
-		timer.Destroy("JailTimer-"..trace.Entity:SteamID())
 	end
 	
 	RP:UnarrestPlayer(trace.Entity)

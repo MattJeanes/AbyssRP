@@ -79,8 +79,8 @@ function SWEP:Reload()
 	
 	local trace = self.Owner:GetEyeTraceNoCursor()
 	local ent = trace.Entity
-	local doorcost = GetConVarNumber("rp_doorcost")
-	local sellpercent = GetConVarNumber("rp_sellpercent")
+	local doorcost = RP:GetSetting("doorcost")
+	local sellpercent = RP:GetSetting("sellpercent")
 	local sellprice = (tonumber(doorcost) * tonumber(sellpercent))
 	
 	if not IsValid(ent) or (not string.find(ent:GetClass(), "door") and not string.find(ent:GetClass(), "vehicle")) or ent:GetPos():Distance(self.Owner:GetPos()) > 200 then

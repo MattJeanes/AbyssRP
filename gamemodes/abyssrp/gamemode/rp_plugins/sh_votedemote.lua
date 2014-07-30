@@ -10,6 +10,10 @@ PLUGIN.ChatCommand = "demote"
 PLUGIN.Usage = "<ply>"
 PLUGIN.Privileges = { "Vote-demote" }
 
+if SERVER then
+	RP:AddSetting("demotecooldown", 60)
+end
+
 function PLUGIN:Call( ply, args )
 	if not args[1] then
 		RP:Error(ply, RP.colors.white, "Invalid Arguments!")
@@ -26,7 +30,7 @@ function PLUGIN:Call( ply, args )
 			players[1]:Spawn()
 			return
 		end
-		if self.Time then self.TimeR = math.floor(self.Time-CurTime()+GetConVarNumber("rp_demotecooldown")) end
+		if self.Time then self.TimeR = math.floor(self.Time-CurTime()+RP:GetSetting("demotecooldown")) end
 		if self.Time and (self.TimeR > 0) then
 			RP:Error(ply, RP.colors.white, "Vote-demotion is cooling down, try again in ", RP.colors.blue, tostring(self.TimeR).." second(s)", RP.colors.white, ".")
 			return

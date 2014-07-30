@@ -93,7 +93,7 @@ RP:AddShop({
 
 if CLIENT then
 	hook.Add("RP-Menu", "RP-Drugs", function(sheet,x,y)
-		if not (LocalPlayer():Team()==RP:GetTeamN("black market dealer")) then return end
+		if not LocalPlayer():IsTeam("black market dealer") then return end
 		RP:OpenShop(sheet,x,y,"drug")
 	end)
 end

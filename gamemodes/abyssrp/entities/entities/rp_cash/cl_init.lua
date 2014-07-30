@@ -10,7 +10,7 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 function ENT:Draw()
 	self:DrawModel()
 	
-	local str=RP:CC(self:GetNWInt("cash",0))
+	local str=RP:CC(self:GetNWFloat("cash",0))
 	
 	surface.SetFont("TabLarge")
 	local w,h=surface.GetTextSize(str)

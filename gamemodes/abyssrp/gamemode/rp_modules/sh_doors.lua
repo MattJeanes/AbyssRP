@@ -1,3 +1,9 @@
+-- Doors
+
+if SERVER then
+	RP:AddSetting("allowvehicleowning",true)
+end
+
 local ent = FindMetaTable( "Entity" )
 
 function ent:IsOwnable()
@@ -5,7 +11,7 @@ function ent:IsOwnable()
 	local class = self:GetClass()
 
 	if ((class == "func_door" or class == "func_door_rotating" or class == "prop_door_rotating") or
-			(tobool(GetConVarNumber("rp_allowvehicleowning")) and self:IsVehicle()) or self.Ownable) then
+			(RP:GetSetting("allowvehicleowning") and self:IsVehicle()) or self.Ownable) then
 			return true
 		end
 	return false

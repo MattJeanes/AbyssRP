@@ -41,6 +41,10 @@ function meta:GetTeam()
 	return RP.Team[self:Team()]
 end
 
+function meta:IsTeam(str)
+	return self:Team()==RP:GetTeamN(str)
+end
+
 function meta:GetTeamValue(value)
 	return RP.Team[self:Team()][value]
 end
