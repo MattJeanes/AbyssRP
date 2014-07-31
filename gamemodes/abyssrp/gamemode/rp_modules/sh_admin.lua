@@ -65,6 +65,8 @@ hook.Add("CanTool", "RP-Admin", function(ply,_,tool)
 end)
 
 if SERVER then
+	util.AddNetworkString("RP-SetSetting")
+
 	RP:AddSetting("build", true)
 	RP:AddSetting("adminbuild", true)
 	RP:AddSetting("adminnoclip", true)
@@ -89,6 +91,18 @@ if SERVER then
 	hook.Add("PlayerSpawnEffect", "RP-Admin", adminbuild)
 	hook.Add("PlayerSpawnVehicle", "RP-Admin", adminbuild)
 	hook.Add("CanDrive", "RP-Admin", adminbuild)
+	
+	net.Receive("RP-SetSetting", function(len,ply)
+		local k=net.ReadString()
+		local t=net.ReadUInt(8)
+		local v=net.ReadType(t)
+		if RP.Settings[k] ~= v then
+			local success=RP:SetSetting(k,v)
+			if success then
+				RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has changed '", RP.colors.red, k, RP.colors.white, "' to "..tostring(v)..".")
+			end
+		end
+	end)
 elseif CLIENT then
 	hook.Add("SpawnMenuOpen", "RP-Essential", function()
 		return build(LocalPlayer())
@@ -104,25 +118,109 @@ elseif CLIENT then
 	end)
 	
 	hook.Add("RP-Menu", "RP-Admin", function(sheet,x,y)
-		if not LocalPlayer():RP_IsAdmin() then return end
+		if not LocalPlayer():IsSuperAdmin() then return end
+		
+		local selected,selectedv,selectedt,selectedtv
 		
 		local panel = vgui.Create("Panel")	
 		panel:SetSize(x,y)
 		
-		local DScrollPanel = vgui.Create( "DScrollPanel",panel )
-		DScrollPanel:SetSize( panel:GetWide()-161, panel:GetTall() )
-		DScrollPanel:SetPos( 160, 0 )
+		local wang = vgui.Create( "DNumberWang", panel )
+		wang:SetPos( 155, 0 )
+		wang:SetVisible(false)
+		wang:SetMinMax(-10000,10000)
+		wang.OnValueChanged = function(self,value)
+			selectedv=tonumber(value)
+		end
 		
-		local label = vgui.Create("DLabel",panel)
-		label:SetText("WIP")
-		label:SetFont("DermaLarge")
-		label:SizeToContents()
-		label:SetPos(panel:GetWide()-label:GetWide(),0)
+		local check = vgui.Create( "DCheckBoxLabel", panel )
+		check:SetPos( 155, 0 )
+		check:SetVisible(false)
+		check.OnChange = function(self, value)
+			selectedv=tobool(value)
+		end
 		
-		local label = vgui.Create("DLabel",DScrollPanel)
-		label:SetText("")
-		label:SizeToContents()
-		label:SetPos(0,0)
+		local text = vgui.Create( "DTextEntry", panel )
+		text:SetPos( 155, 0 )
+		text:SetWide(150)
+		text:SetVisible(false)
+		text.OnTextChanged = function(self)
+			selectedv=tostring(self:GetValue())
+		end
+		
+		local tableview = vgui.Create("DListView",panel)
+		tableview:SetSize(150,panel:GetTall())
+		tableview:SetPos(155,0)
+		tableview:AddColumn("Table")
+		tableview:SetMultiSelect(false)
+		tableview:SetVisible(false)
+		tableview.build = function(self)
+			if type(selectedv)=="table" then
+				self:Clear()
+				for k,v in pairs(selectedv) do
+					self:AddLine(v)
+				end
+				self:SortByColumn(1)
+			end
+		end
+		tableview.OnRowSelected = function(self,id,line)
+			local name=line:GetValue(1)
+			for k,v in pairs(selectedv) do
+				if v==name then
+					selectedt=k
+					selectedtv=v
+				end
+			end
+		end
+		
+		local addline = vgui.Create( "DButton", panel )
+		addline:SetText("Add line")
+		addline:SetSize(100,50)
+		addline:SetPos(panel:GetWide()-addline:GetWide()-1,0)
+		addline:SetVisible(false)
+		addline.DoClick = function(self)
+			Derma_StringRequest("Add line", "Enter line value", "", function(text)
+				table.insert(selectedv,text)
+				tableview:build()
+			end)
+		end
+		
+		local editline = vgui.Create( "DButton", panel )
+		editline:SetText("Edit line")
+		editline:SetSize(100,50)
+		editline:SetPos(panel:GetWide()-editline:GetWide()-1,55)
+		editline:SetVisible(false)
+		editline.DoClick = function(self)
+			if selectedt and selectedtv then
+				Derma_StringRequest("Edit line", "Enter line value", selectedtv, function(text)
+					selectedv[selectedt]=text
+					tableview:build()
+				end)
+			end
+		end
+		
+		local removeline = vgui.Create( "DButton", panel )
+		removeline:SetText("Remove line")
+		removeline:SetSize(100,50)
+		removeline:SetPos(panel:GetWide()-removeline:GetWide()-1,110)
+		removeline:SetVisible(false)
+		removeline.DoClick = function(self)
+			if selectedt and selectedtv then
+				table.remove(selectedv,selectedt)
+				tableview:build()
+			end
+		end
+		
+		local button = vgui.Create( "DButton", panel )
+		button:SetText("Apply")
+		button:SetSize(100,50)
+		button:SetPos(panel:GetWide()-button:GetWide()-1,panel:GetTall()-button:GetTall()-1)
+		button.DoClick = function(self)
+			net.Start("RP-SetSetting")
+				net.WriteString(selected)
+				net.WriteType(selectedv)
+			net.SendToServer()
+		end
 		
 		local listview = vgui.Create("DListView",panel)
 		listview:SetSize(150,panel:GetTall())
@@ -137,16 +235,37 @@ elseif CLIENT then
 			local name=line:GetValue(1)
 			for k,v in pairs(RP.Settings) do
 				if k==name then
-					if type(v)=="table" then
-						local s=""
-						for a,b in pairs(v) do
-							s=s..tostring(b).."\n"
-						end
-						label:SetText(s)
-					else
-						label:SetText(tostring(v))
+					selected=k
+					selectedv=v
+					selectedt=nil
+					selectedtv=nil
+					wang:SetVisible(false)
+					check:SetVisible(false)
+					text:SetVisible(false)
+					tableview:SetVisible(false)
+					addline:SetVisible(false)
+					editline:SetVisible(false)
+					removeline:SetVisible(false)
+					local t=type(v)
+					if t=="table" then
+						selectedv=table.Copy(v)
+						tableview:build()
+						tableview:SetVisible(true)
+						addline:SetVisible(true)
+						editline:SetVisible(true)
+						removeline:SetVisible(true)
+					elseif t=="number" then
+						wang:SetValue(v)
+						wang:SetVisible(true)
+					elseif t=="boolean" then
+						check:SetText(k)
+						check:SetValue(v)
+						check:SetVisible(true)
+						check:SizeToContents()
+					elseif t=="string" then
+						text:SetValue(v)
+						text:SetVisible(true)
 					end
-					label:SizeToContents()
 				end
 			end
 		end

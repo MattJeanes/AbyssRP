@@ -8,23 +8,21 @@ GM.Website 	= "https://github.com/MattJeanes/AbyssRP"
 
 RP = RP or {}
 
-RP.Settings = RP.Settings or {}
-
-function RP:GetSetting(name,default)
-	return self.Settings[name] or default
-end
-
 if SERVER then
 	util.AddNetworkString("RP-Settings")
 	
+	RP.Settings = {}
+
 	function RP:AddSetting(name,value)
 		self.Settings[name]=value
 	end
 
 	function RP:SetSetting(name,value)
+		--if not self.Settings[name] then return false end
 		self.Settings[name]=value
 		self:SaveSettings()
 		self:BroadcastSettings()
+		return true
 	end
 
 	function RP:SaveSettings()
@@ -32,8 +30,9 @@ if SERVER then
 	end
 
 	function RP:LoadSettings()
-		if not file.Exists("rp_settings.txt", "DATA") then return end
-		table.Merge(self.Settings,von.deserialize(file.Read("rp_settings.txt", "DATA")))
+		if file.Exists("rp_settings.txt", "DATA") then
+			table.Merge(self.Settings,von.deserialize(file.Read("rp_settings.txt", "DATA")))
+		end
 		self:SaveSettings()
 		self:BroadcastSettings()
 	end
@@ -54,9 +53,19 @@ if SERVER then
 		RP:SendSettings(ply)
 	end)
 elseif CLIENT then
+	RP.Settings = RP.Settings or {}
+	
 	net.Receive("RP-Settings",function(len)
 		RP.Settings=von.deserialize(net.ReadString())
 	end)
+end
+
+function RP:GetSetting(name,default)
+	if self.Settings[name] ~= nil then
+		return self.Settings[name]
+	else
+		return default
+	end
 end
 
 RP.Constants={}
