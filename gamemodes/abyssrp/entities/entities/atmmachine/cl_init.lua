@@ -20,18 +20,8 @@ function ENT:Draw()
 	cam.End3D2D()
 end
 
-function ENT:DrawEntityOutline()
-     --DO NOTHING
-end
-
-local function BankMenu()
-	local DButton2
-	local DButton1
-	local DTextEntry1
-	local DLabel1
-	local DFrame1
-	
-	DFrame1 = vgui.Create('DFrame')
+net.Receive("RP-ATM", function(len)	
+	local DFrame1 = vgui.Create('DFrame')
 	DFrame1:SetSize(228, 194)
 	DFrame1:Center()
 	DFrame1:SetTitle('Bank ATM')
@@ -39,22 +29,25 @@ local function BankMenu()
 	DFrame1:SetDeleteOnClose(false)
 	DFrame1:MakePopup()
 
-	DLabel1 = vgui.Create("DTextEntry", DFrame1)
+	local DLabel1 = vgui.Create("DTextEntry", DFrame1)
 	DLabel1:SetPos(13, 41)
 	DLabel1:SetSize(200, 150)
 	DLabel1:SetMultiline(true)
 	DLabel1:SetWrap(true)
-	usermessage.Hook("ATMUpdate", function(data)
-		local BankAmount=data:ReadFloat()
-		DLabel1:SetText("Welcome to your bank account, Please enter the values below on how much you want to withdraw or deposit. You have "..RP:CC(BankAmount).." in your bank account.")
-	end)
-	DLabel1:SetText("Welcome to your bank account, Please enter the values below on how much you want to withdraw or deposit. You have "..RP:CC(LocalPlayer():GetBank()).." in your bank account.")
 	DLabel1:SetTextColor(color_white)
 	DLabel1:SetDrawBackground(false)
 	DLabel1:SetDrawBorder(false)
 	DLabel1:SetEditable(false)
+	DLabel1.Update = function(self,value)
+		self:SetText("Welcome to your bank account, Please enter the values below on how much you want to withdraw or deposit. You have "..RP:CC(value).." in your bank account.")
+	end
+	DLabel1:Update(LocalPlayer():GetBank())
 	
-	DTextEntry1 = vgui.Create('DTextEntry')
+	net.Receive("RP-ATMUpdate", function(len)
+		DLabel1:Update(net.ReadFloat())
+	end)
+	
+	local DTextEntry1 = vgui.Create('DTextEntry')
 	DTextEntry1:SetParent(DFrame1)
 	DTextEntry1:SetSize(185, 25)
 	DTextEntry1:SetPos(19, 115)
@@ -69,7 +62,7 @@ local function BankMenu()
 		end
 	end
 	
-	DButton1 = vgui.Create('DButton')
+	local DButton1 = vgui.Create('DButton')
 	DButton1:SetParent(DFrame1)
 	DButton1:SetSize(70, 25)
 	DButton1:SetPos(25, 148)
@@ -82,10 +75,14 @@ local function BankMenu()
 				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
-			LocalPlayer():ConCommand("bank_deposit " .. tonumber(DTextEntry1:GetValue()))
+			net.Start("RP-ATM")
+				net.WriteBit(false)
+				net.WriteFloat(DTextEntry1:GetValue())
+			net.SendToServer()
 		end
 	end
-	DButton2 = vgui.Create('DButton')
+	
+	local DButton2 = vgui.Create('DButton')
 	DButton2:SetParent(DFrame1)
 	DButton2:SetSize(70, 25)
 	DButton2:SetPos(130, 148)
@@ -98,8 +95,10 @@ local function BankMenu()
 				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
-			LocalPlayer():ConCommand("bank_withdraw " .. tonumber(DTextEntry1:GetValue()))
+			net.Start("RP-ATM")
+				net.WriteBit(true)
+				net.WriteFloat(DTextEntry1:GetValue())
+			net.SendToServer()
 		end
 	end
-end
-usermessage.Hook("ShowBank", BankMenu)
+end)

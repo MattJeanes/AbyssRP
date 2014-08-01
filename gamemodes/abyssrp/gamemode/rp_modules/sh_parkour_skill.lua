@@ -343,7 +343,7 @@ elseif SERVER then
 					v.WallRunStep = v.WallRunStep + 1
 					NextWallRunSound = CurTime() + 0.2
 				end
-			elseif v.WRunning and !v:KeyDown(IN_SPEED) or !v:KeyDown(IN_FORWARD) or vellen < 100 or !CanWallRun(v) or v.WallRunStep >= 4 then
+			elseif v.WRunning and (!v:KeyDown(IN_SPEED) or !v:KeyDown(IN_FORWARD) or vellen < 100 or !CanWallRun(v) or v.WallRunStep >= 4) then
 				v.WRunning = false
 				v:SetGravity(1)
 				v:SetNWBool("WallRunning", false)

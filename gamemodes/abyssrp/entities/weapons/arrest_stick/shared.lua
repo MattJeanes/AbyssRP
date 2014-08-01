@@ -65,37 +65,38 @@ function SWEP:PrimaryAttack()
 	
 	if CLIENT then return end
 	
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self.Owner:GetEyeTraceNoCursor()
+	local ent = trace.Entity
 	
-	if (trace.Entity:GetClass() == "prop_ragdoll") and
-	(trace.Entity.taseredply.Wanted) and
-	(self.Owner:EyePos():Distance(trace.Entity:GetPos()) < 115) then
-		taserevive(trace.Entity)
-		trace.Entity:Remove()
+	if (ent:GetClass() == "prop_ragdoll") and
+	(ent.taseredply.Wanted) and
+	(self.Owner:EyePos():Distance(ent:GetPos()) < 115) then
+		taserevive(ent)
+		ent:Remove()
 	end
 	
-	if IsValid(trace.Entity) and trace.Entity:IsPlayer() and (trace.Entity:Team() == RP:GetTeamN("officer")) then
+	if IsValid(ent) and ent:IsPlayer() and (ent:Team() == RP:GetTeamN("officer")) then
 		RP:Error(self.Owner, RP.colors.white, "You can not arrest other CPs!")
 		return
 	end
 		
-	if not IsValid(trace.Entity) or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 115) or (not trace.Entity:IsPlayer() and not trace.Entity:IsNPC()) or (not trace.Entity:IsPlayer() and not trace.Entity.Tased) then
+	if not IsValid(ent) or (self.Owner:EyePos():Distance(ent:GetPos()) > 115) or (not ent:IsPlayer() and not ent:IsNPC()) or (not ent:IsPlayer() and not ent.Tased) then
 		return
 	end
 	
-	if not tobool(GetConVarNumber("npcarrest")) and trace.Entity:IsNPC() then
+	if not tobool(GetConVarNumber("npcarrest")) and ent:IsNPC() then
 		return
 	end
 	
-	if ( trace.Entity.RP_Jailed ) then
-		RP:Notify(trace.Entity, RP.colors.white, "You have been moved back to your cell!")
-		RP:Notify(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " was moved back to their cell!")
-		trace.Entity:SetPos(trace.Entity.JailPos)
+	if ( ent.RP_Jailed ) then
+		RP:Notify(ent, RP.colors.white, "You have been moved back to your cell!")
+		RP:Notify(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " was moved back to their cell!")
+		ent:SetPos(ent.JailPos)
 		return
 	end
 	
-	if not ( trace.Entity.Wanted ) then
-		RP:Error(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " is not wanted by police!")
+	if not ( ent.Wanted ) then
+		RP:Error(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " is not wanted by police!")
 		return
 	end
 	
@@ -103,14 +104,29 @@ function SWEP:PrimaryAttack()
 		RP:Error(self.Owner, RP.colors.white, "No jail positions set!")
 	else
 		-- Send NPCs to Jail
-		if trace.Entity:IsNPC() then
+		if ent:IsNPC() then
 			if RP.JailPoses > 0 then
-				trace.Entity:SetPos(table.Random(RP.JailPoses))
+				ent:SetPos(table.Random(RP.JailPoses))
 			else
-				trace.Entity:SetPos(RP.JailPos)
+				ent:SetPos(RP.JailPos)
 			end
 		else
-			RP:ArrestPlayer(trace.Entity, self.Owner)
+			local success=ent:Arrest()
+			if success then
+				local jailtime = RP:GetSetting("jailtime")	
+				RP:Notify(RP.colors.blue, ent:Nick(), RP.colors.white, " has been arrested!")
+				RP:Notify(ent, RP.colors.white, "You've been arrested by ", RP.colors.blue, self.Owner:Nick())
+				RP:Notify(self.Owner, RP.colors.white, "You've arrested: ", RP.colors.blue, ent:Nick(), RP.colors.white, "!")
+				RP:Notify(ent, RP.colors.white, "You will be released in: ", RP.colors.blue, tostring(jailtime), RP.colors.white, " seconds.")
+				
+				timer.Create("JailTimer-"..ent:SteamID(), jailtime, 1, function()
+					if IsValid(ent) then
+						ent:Unarrest()
+					end
+				end)
+			else
+				RP:Error(self.Owner, RP.colors.white, "Failed to arrest ", RP.colors.red, ent:Nick(), RP.colors.white, ".")
+			end
 		end
 	end
 end
@@ -130,17 +146,23 @@ function SWEP:SecondaryAttack()
 
 	if CLIENT then return end
 	
-	local trace = self.Owner:GetEyeTrace()
+	local trace = self.Owner:GetEyeTraceNoCursor()
+	local ent = trace.Entity
 
-	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or (self.Owner:EyePos():Distance(trace.Entity:GetPos()) > 115) then
+	if not IsValid(ent) or not ent:IsPlayer() or (self.Owner:EyePos():Distance(ent:GetPos()) > 115) then
 		return
 	end
 	
-	if not ( trace.Entity.RP_Jailed ) then
-		RP:Error(self.Owner, RP.colors.blue, trace.Entity:Nick(), RP.colors.white, " has not been arrested!")
+	if not ( ent.RP_Jailed ) then
+		RP:Error(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " has not been arrested!")
 		return
 	end
 	
-	RP:UnarrestPlayer(trace.Entity)
-	
+	local success=ent:Unarrest()
+	if success then
+		RP:Notify(ent, RP.colors.white, "You have been released!")
+		RP:Notify(RP.colors.blue, ent:Nick(), RP.colors.white, " has been released!")
+	else
+		RP:Error(self.Owner, RP.colors.white, "Failed to unarrest ", RP.colors.red, ent:Nick(), RP.colors.white, ".")
+	end
 end

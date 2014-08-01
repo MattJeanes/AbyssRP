@@ -1,6 +1,6 @@
 RP:AddSetting("dropweapon",true)
 
-local nodrop = {
+RP:AddSetting("dropweaponblacklist",{
 	"weapon_physcannon",
 	"weapon_physgun",
 	"weapon_keys",
@@ -14,15 +14,15 @@ local nodrop = {
 	"weapon_lockpick",
 	"weapon_pickpocket",
 	"hands",
-	"weapon_rape",
-	"weapon_climb"
-}
+	"weapon_climb",
+	"weapon_stunstick"
+})
 
 function RP:PlayerDropWeapon( ply )
 	if RP:GetSetting("dropweapon") and not ply.RP_Jailed then
 		local wep=ply:GetActiveWeapon()
 		if IsValid(wep) and wep:GetClass() then
-			for k,v in pairs(nodrop) do
+			for k,v in pairs(RP:GetSetting("dropweaponblacklist")) do
 				if wep:GetClass() == v then
 					return false
 				end

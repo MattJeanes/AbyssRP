@@ -30,6 +30,14 @@ concommand.Add("getpolicedoor", function(ply)
 	ply:ChatPrint("RP:AddPoliceDoor(Vector("..pos.x ..", " ..pos.y..", ".. pos.z.."))")
 end)
 
+concommand.Add("getentpos", function(ply)
+	local ent = ply:GetEyeTraceNoCursor().Entity
+	local pos=ent:GetPos()
+	local ang=ent:GetAngles()
+	ply:ChatPrint("Vector("..pos.x ..", " ..pos.y..", ".. pos.z..")")
+	ply:ChatPrint("Angle("..ang.p ..", " ..ang.y..", ".. ang.r..")")
+end)
+
 concommand.Add("getclass", function(ply)
 	local ent = ply:GetEyeTraceNoCursor().Entity
 	ply:ChatPrint(ent:GetClass())

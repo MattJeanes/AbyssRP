@@ -7,20 +7,6 @@ ENT.MASS = 2; --the model is too heavy so we have to override it with THIS
 
 ENT.LASTINGEFFECT = 45; --how long the high lasts in seconds
 
---get default walk/run speed
-local DEFAULT_WALK_SPEED = 0
-local DEFAULT_RUN_SPEED = 0
-
-local hook_name = "durgzmod_getwalkrunspeed"
-hook.Add("PlayerSpawn", hook_name, function(pl)
-    DEFAULT_WALK_SPEED = pl:GetWalkSpeed()
-    DEFAULT_RUN_SPEED = pl:GetRunSpeed()
-    DURGZ_DEFAULT_WALK_SPEED = DEFAULT_WALK_SPEED
-    DURGZ_DEFAULT_RUN_SPEED = DEFAULT_RUN_SPEED
-    hook.Remove("PlayerSpawn", hook_name)
-end)
-
-
 function ENT:High(activator,caller)
 	--cut health in half and double the speed
     if not self:Realistic() then
@@ -38,8 +24,6 @@ function ENT:High(activator,caller)
             self.MakeHigh = true;
         end
     end
-
-
 end
 
 function ENT:AfterHigh(activator, caller)
@@ -54,8 +38,10 @@ function ENT:AfterHigh(activator, caller)
 	
 	if( self.MakeHigh )then
         activator.durgz_cocaine_fast = true
-		activator:SetRunSpeed(DEFAULT_RUN_SPEED*6)
-		activator:SetWalkSpeed(DEFAULT_WALK_SPEED*6)
+		activator.durgz_cocaine_walkspeed=activator:GetWalkSpeed()
+		activator.durgz_cocaine_runspeed=activator:GetRunSpeed()
+		activator:SetWalkSpeed(activator.durgz_cocaine_walkspeed*4)
+		activator:SetRunSpeed(activator.durgz_cocaine_runspeed*4)
 	end
 end
 
@@ -63,9 +49,11 @@ end
 hook.Add("Think", "durgz_cocaine_resetspeed", function()
     for id,pl in pairs(player.GetAll())do
         if  pl.durgz_cocaine_fast and pl:GetNetworkedFloat("durgz_cocaine_high_end") < CurTime() then
-            pl:SetWalkSpeed(DEFAULT_WALK_SPEED)
-            pl:SetRunSpeed(DEFAULT_RUN_SPEED)
+            pl:SetWalkSpeed(pl.durgz_cocaine_walkspeed)
+            pl:SetRunSpeed(pl.durgz_cocaine_runspeed)
             pl.durgz_cocaine_fast = false
+            pl.durgz_cocaine_walkspeed = nil
+            pl.durgz_cocaine_runspeed = nil
         end
     end
 end)

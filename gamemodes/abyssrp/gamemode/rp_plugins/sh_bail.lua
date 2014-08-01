@@ -17,13 +17,18 @@ function PLUGIN:Call( ply, args )
 end
 
 if SERVER then
+	RP:AddSetting("bailcost",1000)
+	
 	util.AddNetworkString("RP-Bail")
 	net.Receive("RP-Bail", function(len,ply)
 		if ply:GetCash() >= RP:GetSetting("bailcost") then
 			ply:TakeCash(RP:GetSetting("bailcost"))
-			RP:UnarrestPlayer( ply, true )
-			if timer.Exists("JailTimer-"..ply:SteamID()) then
-				timer.Stop("JailTimer-"..ply:SteamID())
+			local success=ply:Unarrest()
+			if success then
+				RP:Notify(ply, RP.colors.white, "You have bailed out of jail!")
+				RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " bailed themselves out of jail!")
+			else
+				RP:Notify(ply, RP.colors.white, "Failure to bail out of jail!")
 			end
 		else
 			RP:Error(ply, RP.colors.white, "You do not have enough cash!")

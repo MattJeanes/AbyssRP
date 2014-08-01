@@ -1,28 +1,33 @@
+RP.VendingMachines = {}
 RP.ATMs = {}
 RP.PoliceDoors = {}
 RP.PoliceDoorsH = {}
 RP.JailPoses = {}
 
+function RP:AddVendingMachine(vec,ang)
+	table.insert(self.VendingMachines,{
+		pos=vec,
+		ang=ang
+	})
+end
+
 function RP:AddATM(vec,ang)
-	local n=#RP.ATMs+1
-	RP.ATMs[n]={}
-	RP.ATMs[n].pos=vec
-	RP.ATMs[n].ang=ang
+	table.insert(self.ATMs,{
+		pos=vec,
+		ang=ang
+	})
 end
 
 function RP:AddPoliceDoor(pos,hacky)
 	if hacky then
-		local n=#RP.PoliceDoorsH+1
-		RP.PoliceDoorsH[n]=pos
+		table.insert(self.PoliceDoorsH,pos)
 	else
-		local n=#RP.PoliceDoors+1
-		RP.PoliceDoors[n]=pos
+		table.insert(self.PoliceDoors,pos)
 	end
 end
 
 function RP:AddJailPos(pos)
-	local n=#RP.JailPoses+1
-	RP.JailPoses[n]=pos
+	table.insert(self.JailPoses,pos)
 end
 
 local maps = file.Find( "abyssrp/gamemode/rp_maps/*.lua", "LUA" )
@@ -53,9 +58,9 @@ function RP:EntStartup()
 		v:SetWorldOwner()
 	end
 	
-	if RP.PoliceDoors then
+	if self.PoliceDoors then
 		for a,b in ipairs(ents.GetAll()) do
-			for c,d in pairs(RP.PoliceDoors) do
+			for c,d in pairs(self.PoliceDoors) do
 				if b:GetPos() == d then
 					b:Fire( "lock", "", 0 );
 					b.PoliceOwned = true
@@ -64,7 +69,7 @@ function RP:EntStartup()
 				end
 			end
 		end
-		for c,d in pairs(RP.PoliceDoorsH) do
+		for c,d in pairs(self.PoliceDoorsH) do
 			local e=ents.FindInSphere(d,1) -- why map why
 			if IsValid(e[1]) then
 				e[1]:Fire( "lock", "", 0 );
@@ -74,9 +79,18 @@ function RP:EntStartup()
 			end
 		end
 	end
-	if RP.ATMs then
-		for k,v in pairs(RP.ATMs) do
+	if self.ATMs then
+		for k,v in pairs(self.ATMs) do
 			local ent = ents.Create("atmmachine")
+			ent:SetPos(v.pos)
+			ent:SetAngles(v.ang)
+			ent:SetWorldOwner()
+			ent:Spawn()
+		end
+	end
+	if self.VendingMachines then
+		for k,v in pairs(self.VendingMachines) do
+			local ent = ents.Create("vendingmachine")
 			ent:SetPos(v.pos)
 			ent:SetAngles(v.ang)
 			ent:SetWorldOwner()

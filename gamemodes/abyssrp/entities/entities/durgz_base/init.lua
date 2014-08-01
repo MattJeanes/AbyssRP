@@ -206,9 +206,11 @@ local function SoberUp(pl, x, y, z, ndeath, didntdie)
     --set speed back to normal
     
     if pl.durgz_cocaine_fast then
-        pl:SetWalkSpeed(DURGZ_DEFAULT_WALK_SPEED)
-        pl:SetRunSpeed(DURGZ_DEFAULT_RUN_SPEED)
-        pl.durgz_cocaine_fast = false
+		pl:SetWalkSpeed(pl.durgz_cocaine_walkspeed)
+		pl:SetRunSpeed(pl.durgz_cocaine_runspeed)
+		pl.durgz_cocaine_fast = false
+		pl.durgz_cocaine_walkspeed = nil
+		pl.durgz_cocaine_runspeed = nil
     end
     
     --set sound to normal
