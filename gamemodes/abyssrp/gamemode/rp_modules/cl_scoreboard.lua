@@ -1,9 +1,13 @@
+-- Scoreboard
+
 hook.Add("ScoreboardShow", "RP-Scoreboard", function()
 	GAMEMODE.ShowScoreboard = true
+	return false
 end)
 
 hook.Add("ScoreboardHide", "RP-Scoreboard", function()
 	GAMEMODE.ShowScoreboard = false
+	return false
 end)
 
 // TODO: CLEAN THIS CODE
@@ -119,7 +123,7 @@ function GM:HUDDrawScoreBoard()
 	end
 	
 	local txWidth, txHeight = surface.GetTextSize( hostname )
-	local y = yOffset + 15
+	local y = yOffset + 10
 	surface.SetTextPos(xOffset + (boardWidth / 2) - (txWidth/2), y)
 	surface.DrawText( hostname )
 	
@@ -131,7 +135,7 @@ function GM:HUDDrawScoreBoard()
 	surface.SetTextPos(xOffset + (boardWidth / 2) - (txWidth/2), y)
 	surface.DrawText( gamemodeName )
 	
-	y = y + txHeight + 4
+	y = y + txHeight + 10
 	GAMEMODE.ScoreDesign.HeaderY = y - yOffset
 	
 	surface.SetDrawColor( 0, 0, 0, 100 )

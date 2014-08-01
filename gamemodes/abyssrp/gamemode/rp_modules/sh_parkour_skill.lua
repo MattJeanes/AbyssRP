@@ -3,10 +3,9 @@ CreateConVar( "Parkour_SpeedDivider", 5, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_ForceMul", 15, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_MinForceAdd", 10, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 CreateConVar( "Parkour_MaxForceAdd", 20, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
-CreateConVar( "Parkour_MaxWallCombo", 999, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
+--CreateConVar( "Parkour_MaxWallCombo", 5, { FCVAR_REPLICATED, FCVAR_ARCHIVE } )
 
-	
-if CLIENT then	
+if CLIENT then
 	function ParkourRoll( um )
 		local ply = LocalPlayer()
 		ply.IsRolling = true
@@ -79,7 +78,9 @@ if CLIENT then
 	end
 	hook.Add("CalcView", "ParkourCalcView", ParkourCalcView)
 
-elseif SERVER then 
+elseif SERVER then
+	RP:AddSetting("maxwalljumps", 5)
+
     local CanLastVel2 = false
     local NextExp = CurTime()
 	local function DoWallJump(ply, key)
@@ -94,7 +95,8 @@ elseif SERVER then
 		local back = (ply:GetForward() * -1);
 		local MinForcevalue = GetConVarNumber("Parkour_MinForceAdd") * GetConVarNumber("Parkour_ForceMul")
 		local MaxForcevalue = GetConVarNumber("Parkour_MaxForceAdd") * GetConVarNumber("Parkour_ForceMul")
-		local WallJumpComboMax = GetConVarNumber("Parkour_MaxWallCombo")
+		--local WallJumpComboMax = GetConVarNumber("Parkour_MaxWallCombo")
+		local WallJumpComboMax = RP:GetSetting("maxwalljumps",0)
 		local upforce = (up * (math.random(MinForcevalue * 2, MaxForcevalue * 2) + (ply:GetVelocity():Length() / 2) / GetConVarNumber("Parkour_SpeedDivider")))
 		
 		ply.PushForce = (math.random(MinForcevalue, MaxForcevalue) + ((ply:GetVelocity():Length() * 2) / GetConVarNumber("Parkour_SpeedDivider")))

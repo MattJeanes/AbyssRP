@@ -5,6 +5,7 @@ GM.Name 	= "AbyssRP"
 GM.Author 	= "Dr. Matt"
 GM.Email 	= "mattjeanes23@gmail.com"
 GM.Website 	= "https://github.com/MattJeanes/AbyssRP"
+GM.IsSandboxDerived = false
 
 RP = RP or {}
 
