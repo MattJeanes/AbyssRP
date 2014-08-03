@@ -1,6 +1,4 @@
-/*-------------------------------------------------------------------------------------------------------------------------
-	Send some files to the client
--------------------------------------------------------------------------------------------------------------------------*/
+-- Resources
 
 resource.AddFile("materials/vgui/vehicles/jeep.vmt")
 resource.AddFile("materials/vgui/vehicles/airboat.vmt")

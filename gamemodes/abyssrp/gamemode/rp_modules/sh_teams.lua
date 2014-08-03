@@ -1,3 +1,5 @@
+-- Teams
+
 RP.Team={}
 function RP:AddTeam(t)
 	if not (t.name or t.color) and not t.nosetup then
@@ -15,7 +17,7 @@ function RP:AddTeam(t)
 	end
 end
 
-//Convinience functions!
+-- Convinience functions!
 function RP:GetTeamModel(n)
 	local t=RP.Team[n]
 	if t.modelrand then

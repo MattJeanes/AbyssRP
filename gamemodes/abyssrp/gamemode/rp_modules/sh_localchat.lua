@@ -1,3 +1,5 @@
+-- Local chat
+
 if SERVER then
 	RP:AddSetting("localchat",false)
 	

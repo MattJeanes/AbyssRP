@@ -1,3 +1,5 @@
+-- Achievements
+
 RP.Achievements = {}
 
 local meta = FindMetaTable("Player")
@@ -121,3 +123,95 @@ RP:AddAchievement({
 		end)
 	end
 })
+
+if CLIENT then
+	hook.Add("RP-Menu", "Achievements", function(sheet,x,y)
+		local panel = vgui.Create("Panel")	
+		panel:SetSize(x,y)
+		
+		local selected,update
+		
+		local listview = vgui.Create("DListView",panel)
+		listview:SetSize(100,panel:GetTall())
+		listview:SetPos(0,0)
+		listview:AddColumn("Achievement")
+		listview:SetMultiSelect(false)
+		for k,v in pairs(RP.Achievements) do
+			listview:AddLine(v.name)
+		end
+		listview:SortByColumn(1)
+		listview.OnRowSelected = function(self,id,line)
+			local name=line:GetValue(1)
+			for k,v in pairs(RP.Achievements) do
+				if v.name==name then
+					selected=v
+					update()
+				end
+			end
+		end
+		
+		local label = vgui.Create("DLabel",panel)
+		label:SetText("Description:")
+		label:SetFont("DermaLarge")
+		label:SizeToContents()
+		label:SetPos(listview:GetWide()+5,0)
+		
+		local desc = vgui.Create("DLabel",panel)
+		desc:SetPos(listview:GetPos()+listview:GetWide()+5,label:GetTall())
+		desc:SetText("")
+		
+		local label = vgui.Create("DLabel",panel)
+		label:SetText("Reward:")
+		label:SetFont("DermaLarge")
+		label:SizeToContents()
+		label:SetPos(listview:GetWide()+5,50)
+		
+		local reward = vgui.Create("DLabel",panel)
+		reward:SetPos(listview:GetPos()+listview:GetWide()+5,50+label:GetTall())
+		reward:SetText("")
+		
+		local label = vgui.Create("DLabel",panel)
+		label:SetText("Achieved:")
+		label:SetFont("DermaLarge")
+		label:SizeToContents()
+		label:SetPos(listview:GetWide()+5,100)
+		
+		local ach = vgui.Create("DLabel",panel)
+		ach:SetPos(listview:GetPos()+listview:GetWide()+5,100+label:GetTall())
+		ach:SetText("")
+		
+		local totallabel = vgui.Create("DLabel",panel)
+		totallabel:SetText("Progress:")
+		totallabel:SetFont("DermaLarge")
+		totallabel:SizeToContents()
+		totallabel:SetPos(listview:GetWide()+5,150)
+		totallabel:SetVisible(false)
+		
+		local total = vgui.Create("DLabel",panel)
+		total:SetPos(listview:GetPos()+listview:GetWide()+5,150+label:GetTall())
+		total:SetText("")
+		
+		function update()
+			if not selected then return end
+			totallabel:SetVisible(false)
+			total:SetVisible(false)
+			
+			desc:SetText(selected.desc)
+			desc:SizeToContents()
+			
+			reward:SetText(RP:CC(selected.reward))
+			reward:SizeToContents()
+			
+			ach:SetText(LocalPlayer():Achieved(selected) and "Yes" or "No")
+			ach:SizeToContents()
+			
+			if selected.total then
+				total:SetText(tostring(LocalPlayer():GetAchievementValue(selected,"c",0)).."/"..tostring(selected.total))
+				totallabel:SetVisible(true)
+				total:SetVisible(true)
+			end
+		end
+		
+		sheet:AddSheet("Achievements", panel)
+	end)
+end

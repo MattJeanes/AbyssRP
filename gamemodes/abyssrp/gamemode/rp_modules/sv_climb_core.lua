@@ -1,3 +1,5 @@
+-- Climb core
+
 resource.AddFile("sound/climbswep/rolls/roll_1.mp3") -- Using a wav that is 170 kb? No thanks, it has the same quality even if it's in MP3 format.
 
 local function CSWEP_UpdateSettings(ply)

@@ -1,3 +1,5 @@
+-- Weapons
+
 RP.AmmoTypes = {}
 RP.Weapons = {}
 RP.Attachments = {}

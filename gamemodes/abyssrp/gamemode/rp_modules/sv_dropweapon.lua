@@ -1,3 +1,5 @@
+-- Drop weapon
+
 RP:AddSetting("dropweapon",true)
 
 RP:AddSetting("dropweaponblacklist",{

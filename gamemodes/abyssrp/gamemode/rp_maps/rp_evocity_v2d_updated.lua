@@ -4,7 +4,6 @@ RP:AddATM(Vector(1972, 4607, 100),Angle(0,90,0))
 RP:AddATM(Vector(5295, -4377, 75),Angle(0,-90,0))
 
 RP:AddVendingMachine(Vector(1860, 4629, 116),Angle(0,90,0))
-RP:AddVendingMachine(Vector(1634,4629,116),Angle(0,90,0))
 RP:AddVendingMachine(Vector(-5233,-4834,120),Angle(0,90,0))
 RP:AddVendingMachine(Vector(-6827,-7334,112),Angle(0,-90,0))
 

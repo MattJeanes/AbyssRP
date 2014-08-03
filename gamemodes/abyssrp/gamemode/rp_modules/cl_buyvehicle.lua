@@ -1,3 +1,5 @@
+-- Buy vehicle
+
 function SpawnVehicle_Menu( ply )
 	
 	local Frame = vgui.Create( "DFrame" )

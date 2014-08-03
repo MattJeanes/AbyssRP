@@ -1,3 +1,5 @@
+-- Ent startup
+
 RP.VendingMachines = {}
 RP.ATMs = {}
 RP.PoliceDoors = {}

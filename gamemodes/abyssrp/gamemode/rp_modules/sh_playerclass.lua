@@ -1,3 +1,5 @@
+-- Player class
+
 DEFINE_BASECLASS( "player_default" )
 
 if SERVER then

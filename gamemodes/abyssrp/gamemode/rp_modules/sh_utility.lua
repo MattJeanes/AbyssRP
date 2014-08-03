@@ -1,3 +1,5 @@
+-- Utility
+
 RP.colors = {}
 RP.colors.blue = Color( 98, 176, 255, 255 )
 RP.colors.red = Color( 255, 62, 62, 255 )

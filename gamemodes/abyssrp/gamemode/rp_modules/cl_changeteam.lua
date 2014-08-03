@@ -1,13 +1,8 @@
+-- Change team
+
 surface.CreateFont( "LargeFont", {size=48} )
 surface.CreateFont( "MediumFont", {size=24} )
 surface.CreateFont( "SmallFont", {size=16} )
-
-function round(x)
-  if x%2 ~= 0.5 then
-	return math.floor(x+0.5)
-  end
-	return x-0.5
-end
 
 local function changeteam_menu( close )
 	local DermaPanel = vgui.Create( "DFrame" )

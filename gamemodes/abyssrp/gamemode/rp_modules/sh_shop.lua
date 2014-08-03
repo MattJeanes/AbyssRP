@@ -33,10 +33,45 @@ if CLIENT then
 				return false
 			end
 		end
-
+		
+		local items={}
+		local entlist=scripted_ents.GetList()
+		local weplist=weapons.GetList()
+		local ammolist=game.BuildAmmoTypes()
+		for k,v in pairs(shop.tbl) do
+			if v.class=="rp_ammobox" then
+				for a,b in pairs(ammolist) do
+					if v.name==b.name then
+						table.insert(items,v)
+						break
+					end
+				end
+			elseif entlist[v.class] then
+				table.insert(items,v)
+			end
+			
+			for a,b in pairs(weplist) do
+				if v.class==b.ClassName then
+					table.insert(items,v)
+					break
+				end
+			end
+		end
+		entlist=nil
+		
 		local panel = vgui.Create("Panel")	
 		panel:SetSize(x,y)
-
+		sheet:AddSheet(shop.name,panel)
+		
+		if table.Count(items) == 0 then -- Show warning message if no items found
+			local label = vgui.Create("DLabel",panel)
+			label:SetPos(0,0)
+			label:SetText("Sorry, no valid items are installed on\nthe server.")
+			label:SetFont("DermaLarge")
+			label:SizeToContents()
+			return
+		end
+		
 		local selected,selectedn,update
 		local quantity=1
 
@@ -45,13 +80,13 @@ if CLIENT then
 		listview:AddColumn(shop.column or shop.name)
 		listview:AddColumn("Cost"):SetFixedWidth(50)
 		listview:SetMultiSelect(false)
-		for k,v in pairs(shop.tbl) do
+		for k,v in pairs(items) do
 			listview:AddLine(v.name,RP:CC(v.cost))
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
 			local name=line:GetValue(1)
-			for k,v in pairs(shop.tbl) do
+			for k,v in pairs(items) do
 				if v.name==name then
 					selected=v
 					selectedn=k
@@ -117,8 +152,6 @@ if CLIENT then
 		end
 
 		listview:SelectFirstItem()
-
-		sheet:AddSheet(shop.name,panel)
 	end
 end
 

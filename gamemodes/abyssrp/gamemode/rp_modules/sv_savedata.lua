@@ -1,3 +1,5 @@
+-- Save data
+
 local function GetDoorData()
 
 	local DoorRotating={}

@@ -2,9 +2,9 @@ AbyssRP
 =
 A new type of roleplay gamemode developed by Dr. Matt for Garry's Mod.
 
-Requirements
+Recommended addons
 =
-The gamemode requires the following addons:
+The gamemode utilises the following addons:
 - [FA:S 2.0 Alpha SWEPs](http://steamcommunity.com/sharedfiles/filedetails/?id=180507408)
 - [FA:S 2.0 Alpha SWEPs - Misc](http://steamcommunity.com/sharedfiles/filedetails/?id=201027186)
 - [FA:S 2.0 Alpha SWEPs - Shotguns](http://steamcommunity.com/sharedfiles/filedetails/?id=183140076)
@@ -12,6 +12,8 @@ The gamemode requires the following addons:
 - [FA:S 2.0 Alpha SWEPs - Rifles](http://steamcommunity.com/sharedfiles/filedetails/?id=181656972)
 - [FA:S 2.0 Alpha SWEPs - Pistols](http://steamcommunity.com/sharedfiles/filedetails/?id=181283903)
 - [Drugs Mod](http://steamcommunity.com/sharedfiles/filedetails/?id=112986621) (Only clients need for materials/models)
+
+Without these some features may be limited.
 
 Installation
 =

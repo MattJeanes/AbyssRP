@@ -1,11 +1,11 @@
+-- Drugs
+
 RP.Drugs={}
 
 function RP:AddDrug(t)
 	local n = #RP.Drugs+1
 	RP.Drugs[n]=table.Copy(t)
 end
-
--- Drugs
 
 RP:AddDrug({
 	name="Alcohol",

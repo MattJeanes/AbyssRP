@@ -1,3 +1,5 @@
+-- Spawn vehicle
+
 local function VehicleSpawn(ply, command, args)
 	local cardealer=RP:GetTeamN("car dealer")
 	if ply:Team()!=cardealer then

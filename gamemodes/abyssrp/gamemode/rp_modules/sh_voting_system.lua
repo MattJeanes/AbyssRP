@@ -1,3 +1,5 @@
+-- Voting system
+
 if not Vote then Vote = {} end
 
 usermessage.Hook("StartVote", function(data)

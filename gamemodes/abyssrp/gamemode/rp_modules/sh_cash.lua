@@ -3,12 +3,12 @@
 local meta = FindMetaTable("Player")
 
 function meta:GetCash()
-	local amount=self:GetNWFloat("cash",0)
+	local amount=self:GetValue("cash",0)
 	return tonumber(amount)
 end
 
 function meta:GetBank()
-	local amount=self:GetNWFloat("bank",0)
+	local amount=self:GetValue("bank",0)
 	return tonumber(amount)
 end
 
@@ -46,11 +46,10 @@ RP:AddSetting("maxdroppedcash", 5000)
 RP:AddSetting("admindropcash",false)
 
 hook.Add("PlayerInitialSpawn", "RP-Money", function(ply)
-	ply:LoadPlayerData()
-	if ply:GetNWFloat("cash") == nil then
+	if ply:GetValue("cash",nil) == nil then
 		ply:SetCash(1000)
 	end
-	if ply:GetNWFloat("bank") == nil then
+	if ply:GetValue("bank",nil) == nil then
 		ply:SetBank(100)
 	end
 end)
@@ -78,18 +77,10 @@ hook.Add("Payday", "RPPAYDAYTEST", function(ply, salary)
 end)
 */
 
-function meta:LoadPlayerData()
-	local uid=self:UniqueID()
-	self:SetNWFloat("cash", self:GetValue("cash",0))
-	self:SetNWFloat("bank", self:GetValue("bank",0))
-end
-
 function meta:SetCash(amount)
 	if not tonumber(amount) then return end;
 	if tonumber(amount) < 0 then return end
-	self:SetNWFloat("cash", amount)
 	self:SetValue("cash", amount)
-	RP:SavePlayerInfo()
 end
 
 function meta:AddCash(amount)
@@ -105,9 +96,7 @@ end
 function meta:SetBank(amount)
 	if not tonumber(amount) then return end;
 	if tonumber(amount) < 0 then return end
-	self:SetNWFloat("bank", amount)
 	self:SetValue("bank", amount)
-	RP:SavePlayerInfo()
 end
 
 function meta:AddBank(amount)
