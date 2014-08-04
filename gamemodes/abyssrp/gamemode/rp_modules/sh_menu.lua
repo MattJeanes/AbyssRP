@@ -39,6 +39,11 @@ elseif CLIENT then
 		frame:Center()
 		frame:SetTitle("Menu")
 		frame:MakePopup()
+		frame.OnKeyCodePressed = function(self,key)
+			if input.GetKeyName(key)==input.LookupBinding("gm_showspare1") then
+				self:Close()
+			end
+		end
 		
 		local sheet = vgui.Create("DPropertySheet",frame)
 		sheet:SetSize(frame:GetWide()-10,frame:GetTall()-35)
@@ -60,13 +65,12 @@ elseif CLIENT then
 		listview:AddColumn("Gestures")
 		listview:SetMultiSelect(false)
 		for k,v in pairs(acts) do
-			listview:AddLine(v)
+			listview:AddLine(v).v=k
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
-			local name=line:GetValue(1)
 			for k,v in pairs(acts) do
-				if v==name then
+				if line.v==k then
 					RunConsoleCommand("act",k)
 					frame:Close()
 				end

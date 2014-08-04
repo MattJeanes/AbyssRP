@@ -69,15 +69,10 @@ function SWEP:PrimaryAttack()
 	local ent = trace.Entity
 	
 	if (ent:GetClass() == "prop_ragdoll") and
-	(ent.taseredply.Wanted) and
+	(ent.taseredply.RP_Wanted) and
 	(self.Owner:EyePos():Distance(ent:GetPos()) < 115) then
 		taserevive(ent)
 		ent:Remove()
-	end
-	
-	if IsValid(ent) and ent:IsPlayer() and (ent:Team() == RP:GetTeamN("officer")) then
-		RP:Error(self.Owner, RP.colors.white, "You can not arrest other CPs!")
-		return
 	end
 		
 	if not IsValid(ent) or (self.Owner:EyePos():Distance(ent:GetPos()) > 115) or (not ent:IsPlayer() and not ent:IsNPC()) or (not ent:IsPlayer() and not ent.Tased) then
@@ -89,13 +84,13 @@ function SWEP:PrimaryAttack()
 	end
 	
 	if ( ent.RP_Jailed ) then
-		RP:Notify(ent, RP.colors.white, "You have been moved back to your cell!")
-		RP:Notify(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " was moved back to their cell!")
+		RP:Notify(ent, RP.colors.white, "You have been moved back to your cell.")
+		RP:Notify(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " was moved back to their cell.")
 		ent:SetPos(ent.JailPos)
 		return
 	end
 	
-	if not ( ent.Wanted ) then
+	if not ( ent.RP_Wanted ) then
 		RP:Error(self.Owner, RP.colors.blue, ent:Nick(), RP.colors.white, " is not wanted by police!")
 		return
 	end

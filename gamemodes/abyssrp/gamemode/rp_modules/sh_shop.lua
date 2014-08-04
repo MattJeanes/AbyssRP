@@ -81,13 +81,12 @@ if CLIENT then
 		listview:AddColumn("Cost"):SetFixedWidth(50)
 		listview:SetMultiSelect(false)
 		for k,v in pairs(items) do
-			listview:AddLine(v.name,RP:CC(v.cost))
+			listview:AddLine(v.name,RP:CC(v.cost)).v=v
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
-			local name=line:GetValue(1)
 			for k,v in pairs(items) do
-				if v.name==name then
+				if line.v==v then
 					selected=v
 					selectedn=k
 					update()

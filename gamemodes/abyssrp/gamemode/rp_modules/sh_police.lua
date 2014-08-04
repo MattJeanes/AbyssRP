@@ -3,6 +3,7 @@
 if SERVER then
 	RP:AddSetting("jailtime", 120)
 	util.AddNetworkString("RP-SetWanted")
+	util.AddNetworkString("RP-WantedUpdate")
 	
 	local meta = FindMetaTable("Player")
 	
@@ -96,6 +97,23 @@ if SERVER then
 	hook.Add("PlayerNoClip", "RP-Jail", function(ply)
 		if ( ply.RP_Jailed ) then return false end
 	end)
+	
+	net.Receive("RP-SetWanted", function(len,ply)
+		local pl=net.ReadEntity()
+		local wanted=tobool(net.ReadBit())
+		local reason=""
+		if wanted then
+			reason=net.ReadString()
+		end
+		local success=pl:SetWanted(wanted,reason)
+		if success then
+			RP:Notify(RP.colors.blue, pl:Nick(), RP.colors.white, " is "..(wanted and "now wanted by police with the reason \""..reason.."\"." or "no longer wanted by police."))
+			ScreenNotify(pl:Nick() .. " is "..(wanted and "now wanted by police." or "no longer wanted by police."))
+		else
+			RP:Error(ply, RP.colors.white, "Failed to set ", RP.colors.red, pl:Nick(), RP.colors.white, " as "..(wanted and "wanted" or "unwanted")..".")
+		end
+		net.Start("RP-WantedUpdate") net.Send(ply)
+	end)
 elseif CLIENT then
 	net.Receive("RP-SetWanted", function(len)
 		local ent=net.ReadEntity()
@@ -108,25 +126,70 @@ elseif CLIENT then
 		local panel = vgui.Create("Panel")
 		panel:SetSize(x,y)
 		
+		local selected,update
+		
 		local listview = vgui.Create("DListView",panel)
-		listview:SetSize(200,panel:GetTall())
+		listview:SetSize(100,panel:GetTall())
 		listview:AddColumn("Player")
-		listview:AddColumn("Wanted")
 		listview:SetMultiSelect(false)
 		for k,v in pairs(player.GetAll()) do
-			listview:AddLine(v:Nick(), v.RP_Wanted and v.RP_WantedReason or "Not wanted")
+			listview:AddLine(v:Nick()).v=v
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
-			local name=line:GetValue(1)
 			for k,v in pairs(player.GetAll()) do
-				if v.name==name then
+				if line.v==v then
 					selected=v
-					selectedn=k
 					update()
 				end
 			end
 		end
+		
+		local label = vgui.Create("DLabel",panel)
+		label:SetText("Wanted:")
+		label:SetFont("DermaLarge")
+		label:SizeToContents()
+		label:SetPos(listview:GetWide()+5,0)
+		
+		local wanted = vgui.Create("DLabel",panel)
+		wanted:SetPos(listview:GetPos()+listview:GetWide()+5,label:GetTall())
+		wanted:SetText("")
+		
+		local button = vgui.Create("DButton", panel)
+		button:SetSize(100,50)
+		button:SetPos(panel:GetWide()-button:GetWide()-1,panel:GetTall()-button:GetTall()-1)
+		button:SetText("Set wanted")
+		button.DoClick = function(self)
+			if not IsValid(selected) then return end
+			if selected.RP_Wanted then
+				net.Start("RP-SetWanted")
+					net.WriteEntity(selected)
+					net.WriteBit(false)
+				net.SendToServer()
+			else
+				Derma_StringRequest("Set wanted", "Reason?", "", function(text)
+					if text:len()==0 then
+						RP:Error(LocalPlayer(), RP.colors.white, "You need a reason!")
+						return
+					end
+					net.Start("RP-SetWanted")
+						net.WriteEntity(selected)
+						net.WriteBit(true)
+						net.WriteString(text)
+					net.SendToServer()
+				end)
+			end
+		end
+		
+		function update()
+			if not IsValid(selected) then return end
+			wanted:SetText(selected.RP_Wanted and selected.RP_WantedReason or "Not wanted")
+			button:SetText(selected.RP_Wanted and "Set unwanted" or "Set wanted")
+		end
+		
+		net.Receive("RP-WantedUpdate", function(len)
+			update() -- Bit hacky but only good solution afaik
+		end)
 		
 		sheet:AddSheet("Police", panel)
 	end)

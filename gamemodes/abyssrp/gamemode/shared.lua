@@ -12,10 +12,14 @@ RP = RP or {}
 if SERVER then
 	util.AddNetworkString("RP-Settings")
 	
+	RP.DefaultSettings={} -- Lets us reset all settings
 	RP.Settings = {}
 
 	function RP:AddSetting(name,value)
+		if self.Settings[name] ~= nil then return false end
+		self.DefaultSettings[name]=value
 		self.Settings[name]=value
+		return true
 	end
 
 	function RP:SetSetting(name,value)
@@ -48,6 +52,15 @@ if SERVER then
 		net.Start("RP-Settings")
 			net.WriteString(von.serialize(self.Settings))
 		net.Broadcast()
+	end
+	
+	function RP:ResetSettings()
+		for k,v in pairs(self.DefaultSettings) do
+			self.Settings[k]=v
+		end
+		self:SaveSettings()
+		self:BroadcastSettings()
+		return true
 	end
 	
 	hook.Add("PlayerInitialSpawn", "RP-Settings", function(ply)

@@ -14,6 +14,11 @@ local function changeteam_menu( close )
 		DermaPanel:ShowCloseButton( false )
 	end
 	DermaPanel:MakePopup()
+	DermaPanel.OnKeyCodePressed = function(self,key)
+		if input.GetKeyName(key)==input.LookupBinding("gm_showspare2") and close then
+			self:Close()
+		end
+	end
 
 	local PropertySheet = vgui.Create( "DPropertySheet" )
 	PropertySheet:SetParent( DermaPanel )

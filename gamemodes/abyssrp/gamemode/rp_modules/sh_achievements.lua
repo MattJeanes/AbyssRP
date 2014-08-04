@@ -137,13 +137,13 @@ if CLIENT then
 		listview:AddColumn("Achievement")
 		listview:SetMultiSelect(false)
 		for k,v in pairs(RP.Achievements) do
-			listview:AddLine(v.name)
+			listview:AddLine(v.name).v=k
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
 			local name=line:GetValue(1)
 			for k,v in pairs(RP.Achievements) do
-				if v.name==name then
+				if line.v==k then
 					selected=v
 					update()
 				end

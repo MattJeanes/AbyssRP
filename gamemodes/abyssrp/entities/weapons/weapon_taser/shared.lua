@@ -1,25 +1,18 @@
-
-
 if ( SERVER ) then
-
 	AddCSLuaFile()
 	
 	SWEP.Weight				= 2
 	SWEP.AutoSwitchTo		= true
 	SWEP.AutoSwitchFrom		= true
 	SWEP.HoldType			= "pistol"
-	
 end
 
 if ( CLIENT ) then
-
-SWEP.PrintName = "Taser";
-SWEP.Slot = 2;
-SWEP.SlotPos = 1;
-SWEP.DrawAmmo = false;
-SWEP.DrawCrosshair = true;
-
-
+	SWEP.PrintName = "Taser";
+	SWEP.Slot = 2;
+	SWEP.SlotPos = 1;
+	SWEP.DrawAmmo = false;
+	SWEP.DrawCrosshair = true;
 end
 
 SWEP.Author = "Fub4r";
@@ -69,10 +62,10 @@ function SWEP:PrimaryAttack()
 	end
 	  
 	  if ( eyetrace.Entity:IsPlayer() ) then 
-		if ( eyetrace.Entity.Wanted ) then
+		if ( eyetrace.Entity.RP_Wanted ) then
 			self.Weapon:EmitSound( "Weapon_StunStick.Activate")  
 			self.BaseClass.ShootEffects( self ) 
-			self:TakePrimaryAmmo(1) 
+			self:TakePrimaryAmmo(1)
 
 			 
 			if (!SERVER) then return end 
@@ -132,7 +125,7 @@ function SWEP:tasePlayer(ply)
 	
 	-- bring the motherfucker back
 
-     self:setrevivedelay(rag)
+	self:setrevivedelay(rag)
 	
 end
 
@@ -186,10 +179,8 @@ function SWEP:taseNPC(npc, npcShooter)
 	--remove npc
 	npc:Remove()
 
- self:setrevivedelay(rag)
-
-	
-	end
+	self:setrevivedelay(rag)	
+end
 
 function SWEP:setrevivedelay(rag)
 	if taseruniquetimer1 > 30 then
@@ -269,15 +260,16 @@ function taserevive(ent)
 
 		
 	-- don't deal with other ents
-	else return end
+	else
+		return
+	end
 	
-		for k, v in pairs(taseredrags) do 
+	for k, v in pairs(taseredrags) do 
 		if v == ent then 
 			 table.remove( taseredrags, k ) 
 		end
 	end
 	ent:Remove()
-	
 end
 
 function SWEP:Think()
@@ -287,10 +279,6 @@ function SWEP:Think()
 		end
 	end
 end
-
-
-
-
 
 function SWEP:SecondaryAttack()
 	if table.Count( taseredrags ) == 0 then return end

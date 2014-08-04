@@ -24,7 +24,7 @@ function PLUGIN:Call( ply, args )
 	local nick="~"..table.concat(args, " ")
 	RP:Notify(ply, RP.colors.white, "You have set your roleplay name to: "..nick)
 	ply:SetPData("rpname", nick)
-	UpdateRPNames()
+	RP:UpdateCustomNames()
 end
 
 RP:AddPlugin( PLUGIN )

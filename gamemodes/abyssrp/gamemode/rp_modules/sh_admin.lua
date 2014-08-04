@@ -66,6 +66,7 @@ end)
 
 if SERVER then
 	util.AddNetworkString("RP-SetSetting")
+	util.AddNetworkString("RP-ResetSettings")
 
 	RP:AddSetting("build", true)
 	RP:AddSetting("adminbuild", true)
@@ -93,14 +94,29 @@ if SERVER then
 	hook.Add("CanDrive", "RP-Admin", adminbuild)
 	
 	net.Receive("RP-SetSetting", function(len,ply)
+		if not ply:IsSuperAdmin() then return end
 		local k=net.ReadString()
 		local t=net.ReadUInt(8)
 		local v=net.ReadType(t)
 		if RP.Settings[k] ~= v then
 			local success=RP:SetSetting(k,v)
 			if success then
-				RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has changed '", RP.colors.red, k, RP.colors.white, "' to "..tostring(v)..".")
+				if type(v)=="table" then
+					RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has modified table '", RP.colors.red, k, RP.colors.white, "'.")
+				else
+					RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has changed '", RP.colors.red, k, RP.colors.white, "' to "..tostring(v)..".")
+				end
 			end
+		end
+	end)
+	
+	net.Receive("RP-ResetSettings", function(len,ply)
+		if not ply:IsSuperAdmin() then return end
+		local success=RP:ResetSettings()
+		if success then
+			RP:Notify(RP.colors.blue, ply:Nick(), RP.colors.white, " has ", RP.colors.red, "reset", RP.colors.white, " all gamemode settings.")
+		else
+			RP:Error(ply, RP.colors.white, "An error occurred.")
 		end
 	end)
 elseif CLIENT then
@@ -222,52 +238,68 @@ elseif CLIENT then
 			net.SendToServer()
 		end
 		
+		local reset = vgui.Create( "DButton", panel )
+		reset:SetText("Reset All")
+		reset:SetSize(100,50)
+		reset:SetPos(panel:GetWide()-reset:GetWide()-1,0)
+		reset.DoClick = function(self)
+			Derma_Query("Are you sure? This cannot be undone.", "Reset All Settings",
+				"Yes", function() net.Start("RP-ResetSettings") net.SendToServer() LocalPlayer():CloseMenu() end,
+				"No"
+			)
+		end
+		
+		local function update()
+			if (not selected) then return end
+			selectedv=RP.Settings[selected]
+			selectedt=nil
+			selectedtv=nil
+			reset:SetVisible(false)
+			wang:SetVisible(false)
+			check:SetVisible(false)
+			text:SetVisible(false)
+			tableview:SetVisible(false)
+			addline:SetVisible(false)
+			editline:SetVisible(false)
+			removeline:SetVisible(false)
+			local t=type(selectedv)
+			if t=="table" then
+				selectedv=table.Copy(selectedv)
+				tableview:build()
+				tableview:SetVisible(true)
+				addline:SetVisible(true)
+				editline:SetVisible(true)
+				removeline:SetVisible(true)
+			elseif t=="number" then
+				wang:SetValue(selectedv)
+				wang:SetVisible(true)
+			elseif t=="boolean" then
+				check:SetText(selected)
+				check:SetValue(selectedv)
+				check:SetVisible(true)
+				check:SizeToContents()
+			elseif t=="string" then
+				text:SetValue(selectedv)
+				text:SetVisible(true)
+			end
+		end
+		
 		local listview = vgui.Create("DListView",panel)
 		listview:SetSize(150,panel:GetTall())
 		listview:SetPos(0,0)
 		listview:AddColumn("Settings")
 		listview:SetMultiSelect(false)
 		for k,v in pairs(RP.Settings) do
-			listview:AddLine(k)
+			listview:AddLine(k).v=k
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
-			local name=line:GetValue(1)
 			for k,v in pairs(RP.Settings) do
-				if k==name then
+				if line.v==k then
 					selected=k
-					selectedv=v
-					selectedt=nil
-					selectedtv=nil
-					wang:SetVisible(false)
-					check:SetVisible(false)
-					text:SetVisible(false)
-					tableview:SetVisible(false)
-					addline:SetVisible(false)
-					editline:SetVisible(false)
-					removeline:SetVisible(false)
-					local t=type(v)
-					if t=="table" then
-						selectedv=table.Copy(v)
-						tableview:build()
-						tableview:SetVisible(true)
-						addline:SetVisible(true)
-						editline:SetVisible(true)
-						removeline:SetVisible(true)
-					elseif t=="number" then
-						wang:SetValue(v)
-						wang:SetVisible(true)
-					elseif t=="boolean" then
-						check:SetText(k)
-						check:SetValue(v)
-						check:SetVisible(true)
-						check:SizeToContents()
-					elseif t=="string" then
-						text:SetValue(v)
-						text:SetVisible(true)
-					end
 				end
 			end
+			update()
 		end
 		
 		sheet:AddSheet("Admin",panel)
