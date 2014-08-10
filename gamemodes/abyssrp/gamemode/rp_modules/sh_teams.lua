@@ -55,7 +55,7 @@ RP:AddTeam({
 	num=0,
 	nosetup=true,
 	model="models/player/group01/male_01",
-	name="No Class",
+	name="No Job",
 	salary=0,
 	desc="",
 	rules="",
@@ -151,7 +151,7 @@ RP:AddTeam({
 	model="models/player/monk.mdl",
 	salary=20,
 	desc="You are a black market dealer. You illegally sell stuff to those who want them, and avoid detection.",
-	rules="You must actually deal stuff; you're not allowed to use this class just to buy yourself stuff.",
+	rules="You must actually deal stuff; you're not allowed to use this job just to buy yourself stuff.",
 	extra="You can access the black market with !menu.",
 	maxplayers=2
 })
@@ -203,7 +203,7 @@ RP:AddTeam({
 	model="models/player/odessa.mdl",
 	salary=30,
 	desc="You are a gun dealer. You sell guns to people to make your living.",
-	rules="You must actually deal guns; you're not allowed to use this class just to buy yourself weapons.",
+	rules="You must actually deal guns; you're not allowed to use this job just to buy yourself weapons.",
 	extra="You can access the gun shop with !menu.",
 	votejoin=true,
 	maxplayers=2

@@ -55,6 +55,7 @@ if SERVER then
 	end
 	
 	function RP:ResetSettings()
+		self.Settings={}
 		for k,v in pairs(self.DefaultSettings) do
 			self.Settings[k]=v
 		end

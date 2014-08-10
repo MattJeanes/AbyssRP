@@ -114,7 +114,7 @@ local function changeteam_menu( close )
 	teamicon.LayoutEntity = function() end -- TODO: On/Off?
 
 	local join = vgui.Create("DButton", ChangeTeamSheet)
-	join.jointext = "Join this class!"
+	join.jointext = "Take this job!"
 	join.spawntext = "Respawn!"
 	join:SetPos( ScrW() * 0.74, ScrH() * 0.72 )
 	join:SetSize( ScrW() * 0.2, ScrH() * 0.15 )

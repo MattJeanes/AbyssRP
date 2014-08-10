@@ -39,20 +39,8 @@ function PLUGIN:GetArguments( msg )
 	return args
 end
 
-function PLUGIN:OOC( ply, msg )
-	local args = self:GetArguments( msg )
-	RP:PluginSafeCall("ooc", ply, args)
-end
-
-
-function PLUGIN:LOOC( ply, msg )
-	local args = self:GetArguments( msg )
-	RP:PluginSafeCall("looc", ply, args)
-end
-
 function PLUGIN:PlayerSay( ply, msg )
-	if string.Left( msg, 2 ) == "//" then self:OOC( ply, msg ) return "" end
-	if string.Left( msg, 3 ) == ".//" then self:LOOC( ply, msg ) return "" end
+	if RP:GetSetting("localchat",false) and RP:GetLocalMode(msg) ~= 0 then return end
 	if ( string.Left( msg, 1 ) == "/" or string.Left( msg, 1 ) == "!" or string.Left( msg, 1 ) == "@" ) then
 		local command = self:GetCommand( msg )
 		local args = self:GetArguments( msg )

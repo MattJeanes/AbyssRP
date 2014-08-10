@@ -54,7 +54,7 @@ elseif CLIENT then
 		panel:SetSize(x,y)
 		
 		local label = vgui.Create("DLabel",panel)
-		label:SetText("Menu.\nHello "..LocalPlayer():Nick()..".\nWIP.")
+		label:SetText("Menu.")
 		label:SetFont("DermaLarge")
 		label:SizeToContents()
 		label:SetPos(0,0)

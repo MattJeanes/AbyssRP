@@ -40,7 +40,6 @@ function SWEP:Deploy()
 end
 
 function SWEP:Holster()
-	self.Owner:SetMoveType(MOVETYPE_WALK)
 	return true
 end
 

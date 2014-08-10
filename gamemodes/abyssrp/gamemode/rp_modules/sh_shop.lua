@@ -15,18 +15,108 @@ function RP:GetShop(uid)
 	end
 end
 
-if CLIENT then
+if SERVER then
+	RP:AddSetting("maxcostmul", 2)
+	RP:AddSetting("maxquantity", 100)
+	
+	util.AddNetworkString("RP-Shop")
+	
+	net.Receive("RP-Shop", function(len, ply)
+		local t=net.ReadFloat() -- Type of shipment
+		local n=net.ReadFloat() -- Number in table
+		local q=math.Clamp(net.ReadFloat(),1,RP:GetSetting("maxquantity",1)) -- Quantity
+		local c=net.ReadFloat() -- Cost
+		local s=tobool(net.ReadBit()) -- Is shipment
+		
+		local shop=RP:GetShop(RP:GetConstant("shop",t))
+		if s then
+			RP:BuyShipment(ply,shop.tbl[n],c,q)
+		else
+			RP:BuySingle(ply,shop.tbl[n],c)
+		end
+		return true
+	end)
+
+	function RP:SpawnItem(ply,info,cost,pos,ang)
+		if not pos then return false end
+		if not ang then ang=Angle(0,0,0) end
+		
+		local item=ents.Create("spawned_item")
+		item:SetModel(info.model)
+		item.ShareGravgun = true
+		item.info = info
+		item.cost = cost
+		item.Owner = ply
+		item:SetPos(pos)
+		item:SetAngles(ang)
+		item.nodupe = true
+		item:Spawn()
+		item:Activate()
+		return item
+	end
+
+	function RP:SpawnShipment(ply,info,cost,quantity,pos,ang)
+		if not pos then return false end
+		if not ang then ang=Angle(0,0,0) end
+		
+		local shipment=ents.Create("spawned_shipment")
+		shipment:SetPos(pos)
+		shipment:SetAngles(ang)
+		shipment.count = quantity
+		shipment.info = info
+		shipment.cost = cost
+		shipment.Owner = ply
+		shipment:Spawn()
+		shipment:Activate()
+		return shipment
+	end
+
+	function RP:BuyShipment(ply,t,c,q)
+		if not (ply or t or q) then return end
+		c=math.Clamp(c,0,t.cost*RP:GetSetting("maxcostmul",1))
+		local cost=t.cost*q
+		if ply:GetCash() < cost then
+			RP:Error(ply, RP.colors.white, "You do not have enough cash to buy this shipment.")
+			return false
+		end
+		local tr=ply:GetEyeTraceNoCursor()
+		local item=RP:SpawnShipment(ply,t,c,q,tr.HitPos)
+		if IsValid(item) then
+			ply:TakeCash(cost)
+			RP:Notify(ply, RP.colors.white, "Shipment bought.")
+			return true
+		end
+		return false
+	end
+
+	function RP:BuySingle(ply,t,c)
+		c=math.Clamp(c,0,t.cost*RP:GetSetting("maxcostmul",1))
+		if ply:GetCash() < t.cost then
+			RP:Error(ply, RP.colors.white, "You do not have enough cash to buy this item.")
+			return false
+		end
+		local tr=ply:GetEyeTraceNoCursor()
+		local item=RP:SpawnItem(ply,t,c,tr.HitPos)
+		if IsValid(item) then
+			ply:TakeCash(t.cost)
+			RP:Notify(ply, RP.colors.white, "Item bought.")
+			return true
+		end
+		return false
+	end
+elseif CLIENT then
 	function RP:OpenShop(sheet,x,y,uid)
 		local shop=RP:GetShop(uid)
 		if not shop then return end
 		
-		local function send(n,q,s)
-			if n and q then
-				net.Start("RP-Shipments")
+		local function send(n,q,c,s)
+			if n and q and c then
+				net.Start("RP-Shop")
 					net.WriteFloat(shop.const)
 					net.WriteFloat(n)
 					net.WriteFloat(q)
-					net.WriteBit(tobool(s))
+					net.WriteFloat(c)
+					net.WriteBit(s)
 				net.SendToServer()
 				return true
 			else
@@ -74,6 +164,7 @@ if CLIENT then
 		
 		local selected,selectedn,update
 		local quantity=1
+		local cost=0
 
 		local listview = vgui.Create("DListView",panel)
 		listview:SetSize(200,panel:GetTall())
@@ -99,13 +190,23 @@ if CLIENT then
 		label:SetText("Quantity:")
 		label:SizeToContents()
 		local numberwang = vgui.Create("DNumberWang",panel)
-		numberwang:SetPos(label:GetPos()+label:GetWide()+5,0)
+		numberwang:SetPos(listview:GetWide()+label:GetWide()+10,0)
 		numberwang:SetValue(quantity)
-		numberwang:SetMinMax(1,100)
+		numberwang:SetMinMax(1,RP:GetSetting("maxquantity",1))
 		numberwang.OnValueChanged = function(self,value)
 			value=tonumber(value)
 			quantity=math.Clamp(value,self:GetMin(),self:GetMax())
 			update()
+		end
+		
+		local label = vgui.Create("DLabel",panel)
+		label:SetText("Cost:")
+		label:SizeToContents()
+		local setcost = vgui.Create("DNumberWang",panel)
+		setcost:SetPos(panel:GetWide()-setcost:GetWide()-1,0)
+		label:SetPos(panel:GetWide()-setcost:GetWide()-label:GetWide()-5,2.5)
+		setcost.OnValueChanged = function(self,value)
+			cost=tonumber(value)
 		end
 
 		local buy = vgui.Create("DButton",panel)
@@ -113,7 +214,7 @@ if CLIENT then
 		buy:SetPos(listview:GetWide()+5,panel:GetTall()-buy:GetTall()-1)
 		buy:SetText("Buy single")
 		buy.DoClick = function(self)
-			send(selectedn,quantity,false)
+			send(selectedn,quantity,cost,false)
 		end
 
 		local buy2 = vgui.Create("DButton",panel)
@@ -121,7 +222,7 @@ if CLIENT then
 		buy2:SetPos(panel:GetWide()-buy2:GetWide()-1,panel:GetTall()-buy2:GetTall()-1)
 		buy2:SetText("Buy shipment")
 		buy2.DoClick = function(self)
-			send(selectedn,quantity,true)
+			send(selectedn,quantity,cost,true)
 		end
 
 		local label = vgui.Create("DLabel",panel)
@@ -130,22 +231,25 @@ if CLIENT then
 		label:SizeToContents()
 		label:SetPos(listview:GetPos()+listview:GetWide()+5,panel:GetTall()-buy:GetTall()-label:GetTall()-5)
 
-		local cost = vgui.Create("DLabel",panel)
-		cost:SetText(RP:CC(0))
-		cost:SetFont("DermaLarge")
-		cost:SizeToContents()
-		cost:SetPos(label:GetPos()+label:GetWide()+5,panel:GetTall()-buy:GetTall()-cost:GetTall()-5)
+		local total = vgui.Create("DLabel",panel)
+		total:SetText(RP:CC(0))
+		total:SetFont("DermaLarge")
+		total:SizeToContents()
+		total:SetPos(label:GetPos()+label:GetWide()+5,panel:GetTall()-buy:GetTall()-total:GetTall()-5)
 
 		local icon = vgui.Create("DModelPanel",panel)
 		icon:SetPos(listview:GetWide()+5,numberwang:GetTall()+5)
-		icon:SetSize(panel:GetWide()-icon:GetPos(),panel:GetTall()-numberwang:GetTall()-buy:GetTall()-cost:GetTall()-10)
+		icon:SetSize(panel:GetWide()-icon:GetPos(),panel:GetTall()-numberwang:GetTall()-buy:GetTall()-total:GetTall()-10)
 		if shop.nospin then
 			icon.LayoutEntity = function() end
 		end
 
 		function update()
-			cost:SetText(RP:CC(selected.cost*quantity))
-			cost:SizeToContents()
+			setcost:SetMinMax(0,selected.cost*RP:GetSetting("maxcostmul",1))
+			setcost:SetValue(selected.cost)
+			cost=selected.cost
+			total:SetText(RP:CC(selected.cost*quantity))
+			total:SizeToContents()
 			icon:SetModel(selected.displaymodel or selected.model)
 			shop.view(icon)
 		end

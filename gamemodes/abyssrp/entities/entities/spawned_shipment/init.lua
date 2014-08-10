@@ -11,7 +11,7 @@ function ENT:Initialize()
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetNWInt("count", self.count)
 	self:SetNWString("name", self.info.name)
-	self:SetNWFloat("cost", self.info.cost)
+	self:SetNWFloat("cost", self.cost)
 	self:SetSharedOwner()
 	self.locked = true
 	self.IsShipment = true
@@ -43,7 +43,7 @@ function ENT:UseSpawn()
 	timer.Destroy(self:EntIndex() .. "crate")
 	self.sparking = false
 	if self.count <= 1 then self:Remove() end
-	local item=RP:SpawnItem(self.Owner,self.info,self:LocalToWorld(Vector(0,0,40)))
+	local item=RP:SpawnItem(self.Owner,self.info,self.cost,self:LocalToWorld(Vector(0,0,40)))
 	
 	if not IsValid(item) or not item:IsInWorld() then
 		self.locked = false

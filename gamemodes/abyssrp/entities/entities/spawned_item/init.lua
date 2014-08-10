@@ -19,8 +19,8 @@ function ENT:Use(activator,caller)
 	local item = ents.Create(self.info.class)
 	if not IsValid(item) then return false end
 	
-	if not (self.Owner==activator) and activator:GetCash() < self.info.cost then
-		RP:Error(activator, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(self.info.cost), RP.colors.white, ".")
+	if not (self.Owner==activator) and activator:GetCash() < self.cost then
+		RP:Error(activator, RP.colors.white, "Not enough cash! You need: ", RP.colors.blue, RP:CC(self.cost), RP.colors.white, ".")
 		return false
 	end
 	
@@ -35,7 +35,7 @@ function ENT:Use(activator,caller)
 	self:Remove()
 	
 	if self.Owner ~= activator then
-		activator:TakeCash(self.info.cost)
-		self.Owner:AddCash(self.info.cost)
+		activator:TakeCash(self.cost)
+		self.Owner:AddCash(self.cost)
 	end
 end
