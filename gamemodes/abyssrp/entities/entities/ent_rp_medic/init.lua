@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 /*---------------------------------------------------------
-   Name: ENT:Initialize()
+	Name: ENT:Initialize()
 ---------------------------------------------------------*/
 function ENT:Initialize()
 
@@ -37,7 +37,7 @@ function ENT:Initialize()
 end
 
 /*---------------------------------------------------------
-   Name: ENT:Use()
+	Name: ENT:Use()
 ---------------------------------------------------------*/
 function ENT:Use(activator, caller)
 
@@ -48,7 +48,7 @@ function ENT:Use(activator, caller)
 end
 
 /*---------------------------------------------------------
-   Name: ENT:Think()
+	Name: ENT:Think()
 ---------------------------------------------------------*/
 function ENT:Think()
 

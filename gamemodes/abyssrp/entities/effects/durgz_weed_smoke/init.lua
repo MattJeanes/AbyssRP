@@ -28,7 +28,7 @@ function EFFECT:Init(data)
 				p:SetRollDelta(math.Rand(-0.2,0.2));
 				
 				p:SetAirResistance(math.Rand(520,620));
-				p:SetGravity(   Vector( gravsideways, gravsideways, math.Rand(-60, -80) )    );
+				p:SetGravity(	Vector( gravsideways, gravsideways, math.Rand(-60, -80) )	);
 
 				p:SetCollide( true );
 				p:SetBounce( 0.42 );

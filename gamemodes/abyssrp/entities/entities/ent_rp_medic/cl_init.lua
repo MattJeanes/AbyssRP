@@ -3,7 +3,7 @@ include("shared.lua")
 language.Add("ent_rp_medic", "Medic Kit")
 
 /*---------------------------------------------------------
-   Name: ENT:Draw()
+	Name: ENT:Draw()
 ---------------------------------------------------------*/
 function ENT:Draw()
 

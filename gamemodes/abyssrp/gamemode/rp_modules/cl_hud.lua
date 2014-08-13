@@ -46,7 +46,7 @@ hook.Add("HUDPaint", "RP-HUD", function()
 	surface.DrawTexturedRectRotated(ScrW()*0.017, ScrH()*0.875, 16, 16, 0)
 
 	draw.SimpleText(team.GetName(LocalPlayer():Team()), "AbyssRPHUD2", ScrW()*0.025, ScrH()*0.865, Color(255,255,255,255))
-	 
+	
 
 	local cash = Material("icon16/money.png")
 	surface.SetMaterial(cash)

@@ -7,7 +7,7 @@ ENT.Author = "Arash Ansari"
 ENT.Category = "Drugs"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true
-ENT.Information	 = "Looks like sugar to me..." 
+ENT.Information	= "Looks like sugar to me..." 
 
 --function for high visuals
 

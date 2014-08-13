@@ -10,7 +10,7 @@ ENT.Author = "I don't know anyone who has done Heroin."
 ENT.Category = "Drugs"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true
-ENT.Information	 = "Put this stuff in your arm." 
+ENT.Information	= "Put this stuff in your arm." 
 
 --function for high visuals
 

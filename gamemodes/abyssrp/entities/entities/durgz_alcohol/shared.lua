@@ -2,15 +2,15 @@ ENT.Type = "anim"
 ENT.Base = "durgz_base"
 ENT.PrintName = "Alcohol"
 ENT.Nicknames = {
-    "booze", "beer", "alcohol", "Bud Light", "Coors Light", "Miller Light",
-    "shitty light beer", "frat juice", "water"
+	"booze", "beer", "alcohol", "Bud Light", "Coors Light", "Miller Light",
+	"shitty light beer", "frat juice", "water"
 }
 ENT.OverdosePhrase = {"drank too much", "got poisoned on", "discovered that the turnup is real while drinking", "YOLOed on", "Philliped"}
 ENT.Author = "Phillip Penrose"
 ENT.Category = "Drugs"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "Drink your troubles away... Just kidding, this is light beer. You won't even get a buzz." 
+ENT.Information	= "Drink your troubles away... Just kidding, this is light beer. You won't even get a buzz." 
 
 ENT.TRANSITION_TIME = 6
 

@@ -6,7 +6,7 @@ ENT.OverdosePhrase = {"took", "consumed", "gulped down"}
 ENT.Author = "The Man"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "Gets rid of headaches" 
+ENT.Information	= "Gets rid of headaches" 
 ENT.Category = "Drugs"
 if( CLIENT )then
 

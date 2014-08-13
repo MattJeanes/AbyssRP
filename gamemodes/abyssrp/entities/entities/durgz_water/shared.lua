@@ -7,4 +7,4 @@ ENT.OverdosePhrase = {0}
 ENT.Author = "Jesus Christ"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "Clears the mind" 
+ENT.Information	= "Clears the mind" 

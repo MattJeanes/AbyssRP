@@ -13,16 +13,16 @@ CreateConVar( "durgz_roleplay", "0", { FCVAR_REPLICATED, FCVAR_ARCHIVE } ) --set
 
 function ENT:SpawnFunction( ply, tr, Classname)
 
-    if ( !tr.Hit ) then return end
+	if ( !tr.Hit ) then return end
 
-    local SpawnPos = tr.HitPos + tr.HitNormal * 16
+	local SpawnPos = tr.HitPos + tr.HitNormal * 16
 
-    local ent = ents.Create(Classname)
-    ent:SetPos( SpawnPos )
-    ent:Spawn()
-    ent:Activate()
+	local ent = ents.Create(Classname)
+	ent:SetPos( SpawnPos )
+	ent:Spawn()
+	ent:Activate()
 
-    return ent
+	return ent
 
 end
 
@@ -46,9 +46,9 @@ function ENT:Initialize()
 end
 
  function ENT:OnTakeDamage( dmginfo ) 
-   
+	
  	self:TakePhysicsDamage( dmginfo ) 
- 	 
+ 	
  end 
 
  
@@ -90,7 +90,7 @@ hook.Add("PlayerDeath", "durgz_death_notice", function(victim, inflictor, attack
 			--add shmexy killicon
 			umsg.Start( "PlayerKilledByDrug" ) 
 					umsg.Entity( victim );
-			 		umsg.String( victim.DURGZ_MOD_DEATH );
+					umsg.String( victim.DURGZ_MOD_DEATH );
 			umsg.End()
 			local s = victim.DURGZ_MOD_OVERRIDE or victim:Nick().." "..victim.DURGZ_MOD_OVERDOSE.." "..victim.DURGZ_MOD_NICKNAMES.." and died.";
 			/*for id,pl in pairs(player.GetAll())do
@@ -124,24 +124,24 @@ function ENT:Use(activator,caller)
 		drug:Remove();
 	end
 	
-    self:Remove()
+	self:Remove()
 end
 
 --this is pretty much a function you call if you want the person taking the drug to say something, all this function does is check if the console command is a ok.
 function ENT:Say(pl, str)
-    local should_say = GetConVar("durgz_witty_sayings", 0):GetBool()
-    local is_empty = type(str) == "string" and str == "" or type(str) == "table" and #str == 0 or str == nil
-    if should_say and !is_empty then
-        if type(str) == "table" then
-            str = str[math.random(1, #str)]
-        end
-        pl:ConCommand("say "..str)
-    end
-    return should_say
+	local should_say = GetConVar("durgz_witty_sayings", 0):GetBool()
+	local is_empty = type(str) == "string" and str == "" or type(str) == "table" and #str == 0 or str == nil
+	if should_say and !is_empty then
+		if type(str) == "table" then
+				str = str[math.random(1, #str)]
+		end
+		pl:ConCommand("say "..str)
+	end
+	return should_say
 end
 
 function ENT:Realistic()
-    return GetConVar("durgz_roleplay", 0):GetBool()
+	return GetConVar("durgz_roleplay", 0):GetBool()
 end
 
 
@@ -154,79 +154,79 @@ end
 
 
 local function SoberUp(pl, x, y, z, ndeath, didntdie)
-    --make a smooth transition and not a instant soberization
-    local drugs = {
-        "weed",
-        "cocaine",
-        "cigarette",
-        "alcohol",
-        "mushroom",
-        "meth",
-        "ecstasy",
-        "caffeine",
-        "pcp",
-        "lsd",
-        "opium"
-    }
-    
-    local ttime = {
-        6,
-        5,
-        4,
-        6,
-        6,
-        3,
-        3,
-        3,
-        3,
-        6,
-        3
-    }
-    
-    --you can't get out of the heroine high because you die when the high ends
-    if( !didntdie )then
-        table.insert(ttime, 5)
-        table.insert(drugs, "heroine")
-    end
-    
-    for i = 1, #drugs do
-        local tend = 0
-        if( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_start") + ttime[i] > CurTime() )then
-            tend = ( CurTime() - pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_start") ) + CurTime()
-        elseif !( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end") - ttime[i] < CurTime() )then	
-            tend = CurTime() + ttime[i]
-        elseif( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end") > CurTime() )then
-            tend = pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end")
-        end
-    
-        pl:SetNetworkedFloat("durgz_"..drugs[i].."_high_start", 0)
-        pl:SetNetworkedFloat("durgz_"..drugs[i].."_high_end", tend)
-    end
-    
-    --set speed back to normal
-    
-    if pl.durgz_cocaine_fast then
+	--make a smooth transition and not a instant soberization
+	local drugs = {
+		"weed",
+		"cocaine",
+		"cigarette",
+		"alcohol",
+		"mushroom",
+		"meth",
+		"ecstasy",
+		"caffeine",
+		"pcp",
+		"lsd",
+		"opium"
+	}
+	
+	local ttime = {
+		6,
+		5,
+		4,
+		6,
+		6,
+		3,
+		3,
+		3,
+		3,
+		6,
+		3
+	}
+	
+	--you can't get out of the heroine high because you die when the high ends
+	if( !didntdie )then
+		table.insert(ttime, 5)
+		table.insert(drugs, "heroine")
+	end
+	
+	for i = 1, #drugs do
+		local tend = 0
+		if( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_start") + ttime[i] > CurTime() )then
+				tend = ( CurTime() - pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_start") ) + CurTime()
+		elseif !( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end") - ttime[i] < CurTime() )then	
+				tend = CurTime() + ttime[i]
+		elseif( pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end") > CurTime() )then
+				tend = pl:GetNetworkedFloat("durgz_"..drugs[i].."_high_end")
+		end
+	
+		pl:SetNetworkedFloat("durgz_"..drugs[i].."_high_start", 0)
+		pl:SetNetworkedFloat("durgz_"..drugs[i].."_high_end", tend)
+	end
+	
+	--set speed back to normal
+	
+	if pl.durgz_cocaine_fast then
 		pl:SetWalkSpeed(pl.durgz_cocaine_walkspeed)
 		pl:SetRunSpeed(pl.durgz_cocaine_runspeed)
 		pl.durgz_cocaine_fast = false
 		pl.durgz_cocaine_walkspeed = nil
 		pl.durgz_cocaine_runspeed = nil
-    end
-    
-    --set sound to normal
-    pl:SetDSP(1, false)
-    --no more floating
-    pl:SetGravity(1)
-    
-    if( ndeath )then
-        pl:EmitSound(Sound("vo/npc/male01/moan0"..math.random(4,5)..".wav"))
-    end
+	end
+	
+	--set sound to normal
+	pl:SetDSP(1, false)
+	--no more floating
+	pl:SetGravity(1)
+	
+	if( ndeath )then
+		pl:EmitSound(Sound("vo/npc/male01/moan0"..math.random(4,5)..".wav"))
+	end
 end
 hook.Add("DoPlayerDeath", "durgz_sober_up_cmd_death", SoberUp)
 hook.Add("PlayerSpawn", "durgz_sober_up_cmd_spawn", SoberUp)
 
 function ENT:Soberize(pl)
-    SoberUp(pl, true, true, true, true, true);
+	SoberUp(pl, true, true, true, true, true);
 end
 
 

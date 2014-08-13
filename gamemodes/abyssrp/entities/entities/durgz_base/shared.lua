@@ -12,7 +12,7 @@ ENT.Author = "God"
 ENT.Category = "Drugs"
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
-ENT.Information	 = "" 
+ENT.Information	= "" 
 
 
 
@@ -32,7 +32,7 @@ if(CLIENT)then
 		self:DrawModel()
 	end
 
- 	 
+ 	
 	usermessage.Hook( "PlayerKilledByDrug", function( message )
 
 		local victim 	= message:ReadEntity(); 

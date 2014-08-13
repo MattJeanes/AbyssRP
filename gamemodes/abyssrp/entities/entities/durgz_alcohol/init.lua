@@ -9,7 +9,7 @@ ENT.LASTINGEFFECT = 45; --how long the high lasts in seconds
 
 
 local function shouldnt_do_that_shit(pl)
-    return pl == NULL or not pl or pl == nil or not pl:GetActiveWeapon() or pl:GetNetworkedFloat("durgz_alcohol_high_end") < CurTime()
+	return pl == NULL or not pl or pl == nil or not pl:GetActiveWeapon() or pl:GetNetworkedFloat("durgz_alcohol_high_end") < CurTime()
 end
 
 function ENT:High(activator,caller)
@@ -47,8 +47,8 @@ function ENT:High(activator,caller)
 				timer.Simple(0.1, function() if activator == NULL or not activator or activator == nil then return end
 					activator:ConCommand("-attack")
 					if oldwep and oldwep != nil and oldwep != NULL and activator:Alive() then
-                        activator:SelectWeapon(oldwep)
-                    end
+								activator:SelectWeapon(oldwep)
+						end
 				end)
 			end)
 		end

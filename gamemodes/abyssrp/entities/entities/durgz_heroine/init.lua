@@ -11,13 +11,13 @@ ENT.LASTINGEFFECT = 20; --how long the high lasts in seconds, short because it's
 
 
 function ENT:High(activator,caller)
-    --make you invincible
-    if not self:Realistic() then
-        activator:GodEnable()
-        activator:SetHealth(1)
-    end
+	--make you invincible
+	if not self:Realistic() then
+		activator:GodEnable()
+		activator:SetHealth(1)
+	end
 
-    self:Say(activator, "It's my arm man! My fuckin' arm!")
+	self:Say(activator, "It's my arm man! My fuckin' arm!")
 end
 
 --heroine is bad, so you die when your high is over (you have to take more to NOT die, kind of like an "addiction")

@@ -27,14 +27,14 @@ SWEP.AdminSpawnable = false
 
 SWEP.Sound = Sound("physics/wood/wood_box_impact_hard3.wav")
 
-SWEP.Primary.ClipSize = -1      -- Size of a clip
-SWEP.Primary.DefaultClip = 0        -- Default number of bullets in a clip
-SWEP.Primary.Automatic = false      -- Automatic/Semi Auto
+SWEP.Primary.ClipSize = -1		-- Size of a clip
+SWEP.Primary.DefaultClip = 0		-- Default number of bullets in a clip
+SWEP.Primary.Automatic = false		-- Automatic/Semi Auto
 SWEP.Primary.Ammo = ""
 
-SWEP.Secondary.ClipSize = -1        -- Size of a clip
-SWEP.Secondary.DefaultClip = -1     -- Default number of bullets in a clip
-SWEP.Secondary.Automatic = false        -- Automatic/Semi Auto
+SWEP.Secondary.ClipSize = -1		-- Size of a clip
+SWEP.Secondary.DefaultClip = -1	 -- Default number of bullets in a clip
+SWEP.Secondary.Automatic = false		-- Automatic/Semi Auto
 SWEP.Secondary.Ammo = ""
 SWEP.PickPocketTime=10
 

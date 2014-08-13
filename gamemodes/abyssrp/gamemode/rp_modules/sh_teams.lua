@@ -24,7 +24,7 @@ function RP:GetTeamModel(n)
 		local i=math.random(t.modelrandn[1], t.modelrandn[2])
 		return t.model[1]..i..t.model[2]
 	else
-	 	return t.model
+		return t.model
 	end
 end
 

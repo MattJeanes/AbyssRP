@@ -5,7 +5,7 @@ ENT.RenderGroup = RENDERGROUP_BOTH
 surface.CreateFont("TabLarge", {font="Tahoma", size=72, weight=700, shadow=true})
 
 function ENT:Draw()
-    self:DrawModel()
+	self:DrawModel()
 	local pos = self:GetPos()
 	local ang = self:GetAngles()
 	local right = ang:Right()

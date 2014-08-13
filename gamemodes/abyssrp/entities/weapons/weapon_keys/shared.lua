@@ -5,7 +5,7 @@ SWEP.Purpose = ""
 
 SWEP.ViewModelFOV = 62
 SWEP.ViewModelFlip = false
-SWEP.AnimPrefix	 = "rpg"
+SWEP.AnimPrefix	= "rpg"
 
 SWEP.Spawnable = false
 SWEP.AdminSpawnable = false

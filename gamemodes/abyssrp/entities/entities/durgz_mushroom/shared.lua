@@ -7,7 +7,7 @@ ENT.Author = "Matt Malone"
 ENT.Category = "Drugs"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "*Insert mario reference here*" 
+ENT.Information	= "*Insert mario reference here*" 
 
 ENT.TRANSITION_TIME = 6
 
@@ -54,7 +54,7 @@ if(CLIENT)then
 				local c = CurTime();
 				local pf = (c-s) / (e-s);
 				
-				shroom_tab[ "$pp_colour_colour" ] =   1 - pf*0.37
+				shroom_tab[ "$pp_colour_colour" ] =	1 - pf*0.37
 				shroom_tab[ "$pp_colour_brightness" ] = -pf*0.15
 				shroom_tab[ "$pp_colour_contrast" ] = 1 + pf*1.57
 				//DrawMotionBlur( 1 - 0.18*pf, 1, 0);

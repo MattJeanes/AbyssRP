@@ -2,20 +2,20 @@ ENT.Type = "anim"
 ENT.Base = "durgz_base"
 ENT.PrintName = "Marijuana"
 ENT.Nicknames = {
-    "pot", "weed", "grass", "marijuana", "reefer", "ganj",
-    "kush", "ganja", "sour deisel", "pineapple express",
-    "OG kush", "True OG from Elemental Wellness in San Jose, California",
-    "the brickiest shit i have ever seen how can you even OD on this shit you pussy",
-    "cannabis indica", "cannabis sativa", "cannabis",
-    "sativa", "indica", "a drug that is technically impossible to overdose on",
-    "that sticky icky", "sum of dat stikky ikky", "Tin's dick",
-    "the peace pipe", "the most overrated drug ever"
+	"pot", "weed", "grass", "marijuana", "reefer", "ganj",
+	"kush", "ganja", "sour deisel", "pineapple express",
+	"OG kush", "True OG from Elemental Wellness in San Jose, California",
+	"the brickiest shit i have ever seen how can you even OD on this shit you pussy",
+	"cannabis indica", "cannabis sativa", "cannabis",
+	"sativa", "indica", "a drug that is technically impossible to overdose on",
+	"that sticky icky", "sum of dat stikky ikky", "Tin's dick",
+	"the peace pipe", "the most overrated drug ever"
 }
 ENT.OverdosePhrase = {"smoked too much", "breathed in a lot of", "pulled a Reed off of"}
 ENT.Author = "Tin Huynh"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "~ 420 ~" 
+ENT.Information	= "~ 420 ~" 
 ENT.Category = "Drugs"
 
 ENT.TRANSITION_TIME = 6
@@ -59,7 +59,7 @@ if(CLIENT)then
 				local pf = (c-s) / (e-s);
 				pl:SetDSP(6);
 				
-				tab[ "$pp_colour_colour" ] =   1 - pf*0.3 //pf*4*HIGH_INTENSITY + 1
+				tab[ "$pp_colour_colour" ] =	1 - pf*0.3 //pf*4*HIGH_INTENSITY + 1
 				tab[ "$pp_colour_brightness" ] = -pf*0.11
 				tab[ "$pp_colour_contrast" ] = 1 + pf*1.62
 				DrawMotionBlur( 0.03, pf*HIGH_INTENSITY, 0);

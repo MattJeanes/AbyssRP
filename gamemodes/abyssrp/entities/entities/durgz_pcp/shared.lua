@@ -6,7 +6,7 @@ ENT.OverdosePhrase = {"overdosed on", "was like \"HOLY SHIT I THINK I CAN PUNCH 
 ENT.Author = "Jared DeVries"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "GODLIKE!!!" 
+ENT.Information	= "GODLIKE!!!" 
 ENT.Category = "Drugs"
 ENT.TRANSITION_TIME = 3
 
@@ -39,7 +39,7 @@ if(CLIENT)then
 		
 		if( pl:GetNetworkedFloat("durgz_pcp_high_start") && pl:GetNetworkedFloat("durgz_pcp_high_end") > CurTime() )then
 		
-		      local pf = 1;
+				local pf = 1;
 		
 			if( pl:GetNetworkedFloat("durgz_pcp_high_start") + TRANSITION_TIME > CurTime() )then
 			
@@ -58,9 +58,9 @@ if(CLIENT)then
 			end
 				
 				tab[ "$pp_colour_addr" ] = pf*math.random(0,1);
-			    tab[ "$pp_colour_addg" ] = pf*math.random(0,1);
-			    tab[ "$pp_colour_addb" ] = pf*math.random(0,1);
-			    DrawColorModify(tab);
+				tab[ "$pp_colour_addg" ] = pf*math.random(0,1);
+				tab[ "$pp_colour_addb" ] = pf*math.random(0,1);
+				DrawColorModify(tab);
 		end
 	end
 	

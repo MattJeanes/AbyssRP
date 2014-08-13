@@ -19,8 +19,8 @@ function ENT:High(activator,caller)
 		else
 			activator:SetHealth( health - 5 )
 		end
-	    activator:SetGravity(0.135);
-        self:Say(activator, "what")
+		activator:SetGravity(0.135);
+		self:Say(activator, "what")
 	end
 	
 end

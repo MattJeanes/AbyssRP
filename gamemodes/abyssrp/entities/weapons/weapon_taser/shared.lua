@@ -60,25 +60,25 @@ function SWEP:PrimaryAttack()
 	if !eyetrace.Entity:IsPlayer() then
 		if !eyetrace.Entity:IsNPC() then return end 
 	end
-	  
-	  if ( eyetrace.Entity:IsPlayer() ) then 
+	 
+	 if ( eyetrace.Entity:IsPlayer() ) then 
 		if ( eyetrace.Entity.RP_Wanted ) then
 			self.Weapon:EmitSound( "Weapon_StunStick.Activate")  
 			self.BaseClass.ShootEffects( self ) 
 			self:TakePrimaryAmmo(1)
 
-			 
+			
 			if (!SERVER) then return end 
-			 
-			 
+			
+			
 			if eyetrace.Entity:IsPlayer() then
 				self.Owner:PrintMessage( HUD_PRINTCENTER, "Now right click to electrocute "..eyetrace.Entity:GetName( ) )  
-				self:tasePlayer(eyetrace.Entity)    // If the it is a player then bring them down tranqPlayer()
+				self:tasePlayer(eyetrace.Entity)	// If the it is a player then bring them down tranqPlayer()
 			end
 			
 			if eyetrace.Entity:IsNPC() then
-				 self.Owner:PrintMessage( HUD_PRINTCENTER, "Now right click to electrocute the NPC" )
-				 self:taseNPC(eyetrace.Entity, self.Owner)    // If the it is a NPC then bring them down with tranqNPC()
+				self.Owner:PrintMessage( HUD_PRINTCENTER, "Now right click to electrocute the NPC" )
+				self:taseNPC(eyetrace.Entity, self.Owner)	// If the it is a NPC then bring them down with tranqNPC()
 			end
 		else
 			self.Owner:PrintMessage( HUD_PRINTCENTER, eyetrace.Entity:Nick() .. " is not wanted!")
@@ -94,11 +94,11 @@ end
 function SWEP:tasePlayer(ply)
 	-- create ragdoll
 	local rag = ents.Create( "prop_ragdoll" )
-    if not rag:IsValid() then return end
+	if not rag:IsValid() then return end
 
 	-- build rag
 	rag:SetModel( ply:GetModel() )
-    rag:SetKeyValue( "origin", ply:GetPos().x .. " " .. ply:GetPos().y .. " " .. ply:GetPos().z )
+	rag:SetKeyValue( "origin", ply:GetPos().x .. " " .. ply:GetPos().y .. " " .. ply:GetPos().z )
 	rag:SetAngles(ply:GetAngles())
 			
 	-- player vars
@@ -117,8 +117,8 @@ function SWEP:tasePlayer(ply)
 	rag:SetWorldOwner()
 	
 	-- finalize ragdoll
-    rag:Spawn()
-    rag:Activate()
+	rag:Spawn()
+	rag:Activate()
 	
 	-- make ragdoll fall
 	rag:GetPhysicsObject():SetVelocity(4*ply:GetVelocity())
@@ -152,11 +152,11 @@ function SWEP:taseNPC(npc, npcShooter)
 
 	-- make ragdoll now that all info is gathered	
 	local rag = ents.Create( "prop_ragdoll" )
-    if not rag:IsValid() then return end
+	if not rag:IsValid() then return end
 	
 	-- build rag
 	rag:SetModel( npc:GetModel() )
-    rag:SetKeyValue( "origin", npc:GetPos().x .. " " .. npc:GetPos().y .. " " .. npc:GetPos().z )
+	rag:SetKeyValue( "origin", npc:GetPos().x .. " " .. npc:GetPos().y .. " " .. npc:GetPos().z )
 	rag:SetAngles(npc:GetAngles())
 	
 	-- npc vars
@@ -171,7 +171,7 @@ function SWEP:taseNPC(npc, npcShooter)
 	
 	--finalize
 	rag:Spawn()
-    rag:Activate()
+	rag:Activate()
 	
 	-- make ragdoll fall
   rag:GetPhysicsObject():SetVelocity(8*npc:GetVelocity())
@@ -266,7 +266,7 @@ function taserevive(ent)
 	
 	for k, v in pairs(taseredrags) do 
 		if v == ent then 
-			 table.remove( taseredrags, k ) 
+			table.remove( taseredrags, k ) 
 		end
 	end
 	ent:Remove()

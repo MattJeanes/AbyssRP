@@ -6,7 +6,7 @@ ENT.OverdosePhrase = {"saw God whilst on", "peed in their mouth after taking", "
 ENT.Author = "Jenna Huxley"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = " lol high scientists" 
+ENT.Information	= " lol high scientists" 
 ENT.Category = "Drugs"
 ENT.TRANSITION_TIME = 6
 
@@ -46,7 +46,7 @@ if(CLIENT)then
 				local c = CurTime();
 				local pf = (c-s) / (e-s);
 				
-				tab[ "$pp_colour_colour" ] =   1 + pf*3
+				tab[ "$pp_colour_colour" ] =	1 + pf*3
 				tab[ "$pp_colour_brightness" ] = -pf*0.19
 				tab[ "$pp_colour_contrast" ] = 1 + pf*5.31
 				DrawBloom(0.65, (pf^2)*0.1, 9, 9, 4, 7.7,255,255,255)
@@ -59,7 +59,7 @@ if(CLIENT)then
 				local c = CurTime();
 				local pf = 1 - (c-s) / (e-s);
 				
-				tab[ "$pp_colour_colour" ] =   1 + pf*3
+				tab[ "$pp_colour_colour" ] =	1 + pf*3
 				tab[ "$pp_colour_brightness" ] = -pf*0.19
 				tab[ "$pp_colour_contrast" ] = 1 + pf*5.31
 				DrawBloom(0.65, (pf^2)*0.1, 9, 9, 4, 7.7,255,255,255)
@@ -68,7 +68,7 @@ if(CLIENT)then
 			else
 				
 				
-				tab[ "$pp_colour_colour" ] =   1 + 3
+				tab[ "$pp_colour_colour" ] =	1 + 3
 				tab[ "$pp_colour_brightness" ] = -0.19
 				tab[ "$pp_colour_contrast" ] = 1 + 5.31
 				DrawBloom(0.65, 0.1, 9, 9, 4, 7.7,255,255,255)

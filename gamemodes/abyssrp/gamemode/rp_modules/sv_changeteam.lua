@@ -59,7 +59,7 @@ util.AddNetworkString("RP-TeamMenu")
 util.AddNetworkString("RP-ChangeTeam")
 
 function GM:ShowSpare2( ply )
-    net.Start("RP-TeamMenu")
+	net.Start("RP-TeamMenu")
 		net.WriteBit(true)
 	net.Send(ply)
 end

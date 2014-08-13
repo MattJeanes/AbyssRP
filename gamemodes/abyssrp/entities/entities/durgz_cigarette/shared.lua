@@ -7,7 +7,7 @@ ENT.OverdosePhrase = {"got cancer from"}
 ENT.Author = "John Siler"
 ENT.Spawnable = true
 ENT.AdminSpawnable = true 
-ENT.Information	 = "This stuff makes you look badass." 
+ENT.Information	= "This stuff makes you look badass." 
 
 ENT.TRANSITION_TIME = 4
 

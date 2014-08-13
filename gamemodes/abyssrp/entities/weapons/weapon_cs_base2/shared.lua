@@ -205,17 +205,17 @@ function SWEP:CSShootBullet(dmg, recoil, numbul, cone)
 
 	local bullet = {}
 	bullet.Num = numbul or 1
-	bullet.Src = self.Owner:GetShootPos()       -- Source
-	bullet.Dir = self.Owner:GetAimVector()      -- Dir of bullet
-	bullet.Spread = Vector(cone, cone, 0)     -- Aim Cone
-	bullet.Tracer = 4       -- Show a tracer on every x bullets
-	bullet.Force = 5        -- Amount of force to give to phys objects
+	bullet.Src = self.Owner:GetShootPos()		-- Source
+	bullet.Dir = self.Owner:GetAimVector()		-- Dir of bullet
+	bullet.Spread = Vector(cone, cone, 0)	 -- Aim Cone
+	bullet.Tracer = 4		-- Show a tracer on every x bullets
+	bullet.Force = 5		-- Amount of force to give to phys objects
 	bullet.Damage = dmg
 
 	self.Owner:FireBullets(bullet)
-	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)      -- View model animation
-	self.Owner:MuzzleFlash()        -- Crappy muzzle light
-	self.Owner:SetAnimation(PLAYER_ATTACK1)       -- 3rd Person Animation
+	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)		-- View model animation
+	self.Owner:MuzzleFlash()		-- Crappy muzzle light
+	self.Owner:SetAnimation(PLAYER_ATTACK1)		-- 3rd Person Animation
 	
 	if ( self.Owner:IsNPC() ) then return end
 
