@@ -20,7 +20,7 @@ function PLUGIN:Call( ply, args )
 	end
 
 	if not job then
-		RP:Notify( ply, RP.colors.white, "ERROR: ", RP.colors.red, "Invalid choice!")
+		RP:Error( ply, RP.colors.white, "Invalid choice!" )
 		return
 	end
 

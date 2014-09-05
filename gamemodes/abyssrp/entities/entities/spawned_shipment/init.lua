@@ -43,7 +43,7 @@ function ENT:UseSpawn()
 	timer.Destroy(self:EntIndex() .. "crate")
 	self.sparking = false
 	if self.count <= 1 then self:Remove() end
-	local item=RP:SpawnItem(self.Owner,self.info,self.cost,self:LocalToWorld(Vector(0,0,40)))
+	local item=RP.SpawnItem(self.Owner,self.info,self.cost,self:LocalToWorld(Vector(0,0,40)))
 	
 	if not IsValid(item) or not item:IsInWorld() then
 		self.locked = false
@@ -73,7 +73,7 @@ function ENT:Destruct()
 
 	local pos=self:GetPos()
 	for i=1,self.count do
-		RP:SpawnItem(self.Owner,self.info,pos+Vector(0,0,i*5),Angle(0,0,0))
+		RP.SpawnItem(self.Owner,self.info,pos+Vector(0,0,i*5),Angle(0,0,0))
 	end
 	self:Remove()
 end

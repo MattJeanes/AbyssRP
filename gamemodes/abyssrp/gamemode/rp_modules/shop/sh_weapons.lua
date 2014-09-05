@@ -7,20 +7,56 @@ RP.Attachments = {}
 function RP:AddAmmoType(t)
 	t.model="models/items/boxmrounds.mdl"
 	t.class="rp_ammobox"
-	local n = #RP.AmmoTypes+1
-	RP.AmmoTypes[n]=table.Copy(t)
+	table.insert(self.AmmoTypes,table.Copy(t))
 end
 
 function RP:AddWeapon(t)
-	local n = #RP.Weapons+1
-	RP.Weapons[n]=table.Copy(t)
+	table.insert(self.Weapons,table.Copy(t))
 end
 
 function RP:AddAttachment(t)
 	t.model="models/items/boxmrounds.mdl"
-	local n = #RP.Attachments+1
-	RP.Attachments[n]=table.Copy(t)
+	table.insert(self.Attachments,table.Copy(t))
 end
+
+-- Shops
+
+RP:AddShop({
+	uid="weapon",
+	name="Weapons",
+	column="Weapon",
+	tbl=RP.Weapons,
+	nospin=true,
+	view=function(p)
+		local mins,maxs = p.Entity:GetRenderBounds()
+		p:SetCamPos(mins:Distance(maxs)*Vector(0,1,0))
+		p:SetLookAt((maxs + mins)/2)
+	end
+})
+
+RP:AddShop({
+	uid="ammo",
+	name="Ammo",
+	column="Ammo type",
+	tbl=RP.AmmoTypes,
+	view=function(p)
+		local mins,maxs = p.Entity:GetRenderBounds()
+		p:SetCamPos(mins:Distance(maxs)*Vector(1.5,0,1))
+		p:SetLookAt((maxs + mins)/2)
+	end
+})
+
+RP:AddShop({
+	uid="attachment",
+	name="Attachments",
+	column="Attachment",
+	tbl=RP.Attachments,
+	view=function(p)
+		local mins,maxs = p.Entity:GetRenderBounds()
+		p:SetCamPos(mins:Distance(maxs)*Vector(1.5,0,1))
+		p:SetLookAt((maxs + mins)/2)
+	end
+})
 
 -- Ammo types
 
@@ -508,51 +544,3 @@ RP:AddAttachment({
 	class="fas2_att_uziwoodenstock",
 	cost=100
 })
-
--- Shops
-
-RP:AddShop({
-	uid="weapon",
-	name="Weapons",
-	column="Weapon",
-	tbl=RP.Weapons,
-	nospin=true,
-	view=function(p)
-		local mins,maxs = p.Entity:GetRenderBounds()
-		p:SetCamPos(mins:Distance(maxs)*Vector(0,1,0))
-		p:SetLookAt((maxs + mins)/2)
-	end
-})
-
-RP:AddShop({
-	uid="ammo",
-	name="Ammo",
-	column="Ammo type",
-	tbl=RP.AmmoTypes,
-	view=function(p)
-		local mins,maxs = p.Entity:GetRenderBounds()
-		p:SetCamPos(mins:Distance(maxs)*Vector(1.5,0,1))
-		p:SetLookAt((maxs + mins)/2)
-	end
-})
-
-RP:AddShop({
-	uid="attachment",
-	name="Attachments",
-	column="Attachment",
-	tbl=RP.Attachments,
-	view=function(p)
-		local mins,maxs = p.Entity:GetRenderBounds()
-		p:SetCamPos(mins:Distance(maxs)*Vector(1.5,0,1))
-		p:SetLookAt((maxs + mins)/2)
-	end
-})
-
-if CLIENT then
-	hook.Add("RP-Menu", "RP-Weapons", function(sheet,x,y)
-		if not LocalPlayer():IsTeam("gun dealer") then return end
-		RP:OpenShop(sheet,x,y,"weapon")
-		RP:OpenShop(sheet,x,y,"ammo")
-		RP:OpenShop(sheet,x,y,"attachment")
-	end)
-end

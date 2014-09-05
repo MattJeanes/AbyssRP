@@ -17,6 +17,11 @@ end
 
 local ent = FindMetaTable( "Entity" )
 
+function ent:SetPlayerOwner(ply)
+	self:SetNWString("Owner", ply:Nick())
+	self:SetNWEntity("OwnerObj", ply)
+end
+
 function ent:SetWorldOwner()
 	self:SetNWString("Owner", "World")
 	self:SetNWEntity("OwnerObj", game.GetWorld())

@@ -47,14 +47,19 @@ function meta:IsTeam(str)
 	return self:Team()==RP:GetTeamN(str)
 end
 
-function meta:GetTeamValue(value)
-	return RP.Team[self:Team()][value]
+function meta:GetTeamValue(value,default)
+	local v=RP.Team[self:Team()][value]
+	if v ~= nil then
+		return v
+	else
+		return default
+	end
 end
 
 RP:AddTeam({
 	num=0,
 	nosetup=true,
-	model="models/player/group01/male_01",
+	model="models/player/group01/male_01.mdl",
 	name="No Job",
 	salary=0,
 	desc="",
@@ -104,14 +109,9 @@ RP:AddTeam({
 	desc="You are a car dealer. You sell cars for a living, and that is your main source of income.",
 	rules="Make sure to transfer ownership of the vehicle with !giveownership <ply> before handing it over.",
 	extra="Use !shop to access the car shop.",
-	func=function(a,b,c)
-		hook.Add("SpawnMenuOpen", b, function()
-			if LocalPlayer():Team()==c then
-				SpawnVehicle_Menu( LocalPlayer() )
-				return false
-			end
-		end)
-	end
+	shops={
+		"vehicle"
+	}
 })
 
 RP:AddTeam({
@@ -153,7 +153,10 @@ RP:AddTeam({
 	desc="You are a black market dealer. You illegally sell stuff to those who want them, and avoid detection.",
 	rules="You must actually deal stuff; you're not allowed to use this job just to buy yourself stuff.",
 	extra="You can access the black market with !menu.",
-	maxplayers=2
+	maxplayers=2,
+	shops={
+		"drug"
+	}
 })
 
 RP:AddTeam({
@@ -206,7 +209,12 @@ RP:AddTeam({
 	rules="You must actually deal guns; you're not allowed to use this job just to buy yourself weapons.",
 	extra="You can access the gun shop with !menu.",
 	votejoin=true,
-	maxplayers=2
+	maxplayers=2,
+	shops={
+		"weapon",
+		"ammo",
+		"attachment"
+	}
 })
 
 RP:AddTeam({

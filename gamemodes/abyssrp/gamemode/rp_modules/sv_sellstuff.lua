@@ -48,20 +48,14 @@ function pl:SellVehicles(left)
 	
 	local VehicleCount = ply:CountVehicles()
 	local VehicleTable = ply:OwnedVehicles()
-	local CarPrice = {}
 	
+	local cost = 0
 	for k,v in ipairs(VehicleTable) do
-		CarPrice[k] = v.Cost
+		cost = cost + v.cost
 		v:Remove()
 	end
 	
-	local Cost = 0
-	
-	for i=1,#CarPrice do
-		Cost = Cost + tonumber(CarPrice[i])
-	end
-	
-	local SellPrice = Cost * RP:GetSetting("sellpercent")
+	local SellPrice = cost * RP:GetSetting("sellpercent")
 	
 	if not left then
 		if #VehicleTable == 1 then
@@ -88,7 +82,7 @@ function pl:SellShipments(left)
 	local ShipmentPrice = {}
 	
 	for k,v in ipairs(ShipmentTable) do
-		ShipmentPrice[k] = (tonumber(v.Price) or tonumber(v.DefaultPrice))*v.Count
+		ShipmentPrice[k] = v.info.cost*v.count
 		v:Remove()
 	end
 	

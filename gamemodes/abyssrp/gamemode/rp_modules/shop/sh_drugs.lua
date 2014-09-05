@@ -3,9 +3,24 @@
 RP.Drugs={}
 
 function RP:AddDrug(t)
-	local n = #RP.Drugs+1
-	RP.Drugs[n]=table.Copy(t)
+	table.insert(self.Drugs,table.Copy(t))
 end
+
+-- Shop
+
+RP:AddShop({
+	uid="drug",
+	name="Drugs",
+	column="Drug",
+	tbl=RP.Drugs,
+	view=function(p)
+		local mins,maxs = p.Entity:GetRenderBounds()
+		p:SetCamPos(mins:Distance(maxs)*Vector(1,1,1))
+		p:SetLookAt((maxs + mins)/2)
+	end
+})
+
+-- Drugs
 
 RP:AddDrug({
 	name="Alcohol",
@@ -76,24 +91,3 @@ RP:AddDrug({
 	model="models/katharsmodels/contraband/zak_wiet/zak_wiet.mdl",
 	cost=175
 })
-
--- Shop
-
-RP:AddShop({
-	uid="drug",
-	name="Drugs",
-	column="Drug",
-	tbl=RP.Drugs,
-	view=function(p)
-		local mins,maxs = p.Entity:GetRenderBounds()
-		p:SetCamPos(mins:Distance(maxs)*Vector(1,1,1))
-		p:SetLookAt((maxs + mins)/2)
-	end
-})
-
-if CLIENT then
-	hook.Add("RP-Menu", "RP-Drugs", function(sheet,x,y)
-		if not LocalPlayer():IsTeam("black market dealer") then return end
-		RP:OpenShop(sheet,x,y,"drug")
-	end)
-end

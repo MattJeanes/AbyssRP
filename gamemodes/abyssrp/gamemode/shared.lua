@@ -89,7 +89,7 @@ function RP:AddConstant(type,name)
 	if not RP.Constants[type] then
 		RP.Constants[type]={}
 	end
-	if table.HasValue(RP.Constants[type], name) then
+	if table.HasValue(RP.Constants[type],name) then
 		return RP:GetConstantN(type,name)
 	end
 	local n=#RP.Constants[type]+1

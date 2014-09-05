@@ -29,18 +29,18 @@ if SERVER then
 		local s=tobool(net.ReadBit()) -- Is shipment
 		
 		local shop=RP:GetShop(RP:GetConstant("shop",t))
-		if s then
-			RP:BuyShipment(ply,shop.tbl[n],c,q)
+		local tbl=shop.tbl[n]
+		if s and not tbl.noshipment then
+			RP.BuyShipment(ply,shop,tbl,c,q)
 		else
-			RP:BuySingle(ply,shop.tbl[n],c)
+			RP.BuySingle(ply,shop,tbl,c)
 		end
-		return true
 	end)
 
-	function RP:SpawnItem(ply,info,cost,pos,ang)
+	function RP.SpawnItem(ply,info,cost,pos,ang)
 		if not pos then return false end
 		if not ang then ang=Angle(0,0,0) end
-		
+
 		local item=ents.Create("spawned_item")
 		item:SetModel(info.model)
 		item.ShareGravgun = true
@@ -55,10 +55,10 @@ if SERVER then
 		return item
 	end
 
-	function RP:SpawnShipment(ply,info,cost,quantity,pos,ang)
+	function RP.SpawnShipment(ply,info,cost,quantity,pos,ang)
 		if not pos then return false end
 		if not ang then ang=Angle(0,0,0) end
-		
+
 		local shipment=ents.Create("spawned_shipment")
 		shipment:SetPos(pos)
 		shipment:SetAngles(ang)
@@ -71,7 +71,7 @@ if SERVER then
 		return shipment
 	end
 
-	function RP:BuyShipment(ply,t,c,q)
+	function RP.BuyShipment(ply,s,t,c,q)
 		if not (ply or t or q) then return end
 		c=math.Clamp(c,0,t.cost*RP:GetSetting("maxcostmul",1))
 		local cost=t.cost*q
@@ -80,7 +80,8 @@ if SERVER then
 			return false
 		end
 		local tr=ply:GetEyeTraceNoCursor()
-		local item=RP:SpawnShipment(ply,t,c,q,tr.HitPos)
+		local handler=s.shipmenthandler or RP.SpawnShipment
+		local item=handler(ply,t,c,q,tr.HitPos)
 		if IsValid(item) then
 			ply:TakeCash(cost)
 			RP:Notify(ply, RP.colors.white, "Shipment bought.")
@@ -89,14 +90,15 @@ if SERVER then
 		return false
 	end
 
-	function RP:BuySingle(ply,t,c)
+	function RP.BuySingle(ply,s,t,c)
 		c=math.Clamp(c,0,t.cost*RP:GetSetting("maxcostmul",1))
 		if ply:GetCash() < t.cost then
 			RP:Error(ply, RP.colors.white, "You do not have enough cash to buy this item.")
 			return false
 		end
 		local tr=ply:GetEyeTraceNoCursor()
-		local item=RP:SpawnItem(ply,t,c,tr.HitPos)
+		local handler=s.handler or RP.SpawnItem
+		local item=handler(ply,t,c,tr.HitPos)
 		if IsValid(item) then
 			ply:TakeCash(t.cost)
 			RP:Notify(ply, RP.colors.white, "Item bought.")
@@ -108,7 +110,6 @@ elseif CLIENT then
 	function RP:OpenShop(sheet,x,y,uid)
 		local shop=RP:GetShop(uid)
 		if not shop then return end
-		
 		local function send(n,q,c,s)
 			if n and q and c then
 				net.Start("RP-Shop")
@@ -128,21 +129,29 @@ elseif CLIENT then
 		local entlist=scripted_ents.GetList()
 		local weplist=weapons.GetList()
 		local ammolist=game.BuildAmmoTypes()
+		local vehlist=list.Get("Vehicles")
 		for k,v in pairs(shop.tbl) do
 			if v.class=="rp_ammobox" then
 				for a,b in pairs(ammolist) do
 					if v.name==b.name then
-						table.insert(items,v)
+						items[k]=v
 						break
 					end
 				end
 			elseif entlist[v.class] then
-				table.insert(items,v)
+				items[k]=v
+			else
+				for a,b in pairs(vehlist) do
+					if v.model==b.Model then
+						items[k]=v
+						break
+					end
+				end
 			end
 			
 			for a,b in pairs(weplist) do
 				if v.class==b.ClassName then
-					table.insert(items,v)
+					items[k]=v
 					break
 				end
 			end
@@ -181,10 +190,12 @@ elseif CLIENT then
 					selected=v
 					selectedn=k
 					update()
+					break
 				end
 			end
 		end
 			
+		
 		local label = vgui.Create("DLabel",panel)
 		label:SetPos(listview:GetPos()+listview:GetWide()+5,2.5)
 		label:SetText("Quantity:")
@@ -197,6 +208,11 @@ elseif CLIENT then
 			value=tonumber(value)
 			quantity=math.Clamp(value,self:GetMin(),self:GetMax())
 			update()
+		end
+		
+		if shop.noshipment then
+			label:SetVisible(false)
+			numberwang:SetVisible(false)
 		end
 		
 		local label = vgui.Create("DLabel",panel)
@@ -217,12 +233,16 @@ elseif CLIENT then
 			send(selectedn,quantity,cost,false)
 		end
 
-		local buy2 = vgui.Create("DButton",panel)
-		buy2:SetSize(panel:GetWide()-buy:GetWide()-listview:GetWide()-10,50)
-		buy2:SetPos(panel:GetWide()-buy2:GetWide()-1,panel:GetTall()-buy2:GetTall()-1)
-		buy2:SetText("Buy shipment")
-		buy2.DoClick = function(self)
-			send(selectedn,quantity,cost,true)
+		if shop.noshipment then
+			buy:SetPos(panel:GetWide()-buy:GetWide()-1,panel:GetTall()-buy:GetTall()-1)
+		else
+			local buy2 = vgui.Create("DButton",panel)
+			buy2:SetSize(panel:GetWide()-buy:GetWide()-listview:GetWide()-10,50)
+			buy2:SetPos(panel:GetWide()-buy2:GetWide()-1,panel:GetTall()-buy2:GetTall()-1)
+			buy2:SetText("Buy shipment")
+			buy2.DoClick = function(self)
+				send(selectedn,quantity,cost,true)
+			end
 		end
 
 		local label = vgui.Create("DLabel",panel)
@@ -256,6 +276,11 @@ elseif CLIENT then
 
 		listview:SelectFirstItem()
 	end
+	hook.Add("RP-Menu", "RP-Shop", function(sheet,x,y)
+		for k,v in ipairs(LocalPlayer():GetTeamValue("shops",{})) do
+			RP:OpenShop(sheet,x,y,v)
+		end
+	end)
 end
 
 RP:AddInclude("rp_modules/shop")
