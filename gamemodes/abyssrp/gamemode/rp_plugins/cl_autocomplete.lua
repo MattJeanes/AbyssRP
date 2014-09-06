@@ -9,7 +9,7 @@ PLUGIN.Author = "Overv"
 PLUGIN.ChatCommand = nil
 PLUGIN.Usage = nil
 
-local Suggestions = {}
+PLUGIN.Suggestions = {}
 
 function PLUGIN:HUDPaint()
 	if ( self.Chat ) then
@@ -19,7 +19,7 @@ function PLUGIN:HUDPaint()
 		
 		surface.SetFont( "ChatFont" )
 		
-		for _, v in ipairs( Suggestions ) do
+		for _, v in ipairs( self.Suggestions ) do
 			local sx, sy = surface.GetTextSize( v.ChatCommand )
 			
 			draw.SimpleText( v.ChatCommand, "ChatFont", x, y, Color( 0, 0, 0, 255 ) )
@@ -32,30 +32,69 @@ function PLUGIN:HUDPaint()
 	end
 end
 
+function PLUGIN:Initialize()
+	if evolve then
+		local attempts=0
+		timer.Create("rpev-autocomplete",5,0,function()
+			attempts = attempts+1
+			if evolve.installed then
+				for k,v in pairs(evolve.plugins) do
+					if v.Title:lower()=="chat autocomplete" then
+						v.HUDPaint=function() end -- sorry evolve :(
+					end
+				end
+				timer.Remove("rpev-autocomplete")
+			elseif attempts>=10 then
+				timer.Remove("rpev-autocomplete")
+			end
+		end)
+	end
+end
+
 function PLUGIN:ChatTextChanged( str )
 	if ( string.Left( str, 1 ) == "/" or string.Left( str, 1 ) == "!" or string.Left( str, 1 ) == "@" ) then
 		local com = string.sub( str, 2, ( string.find( str, " " ) or ( #str + 1 ) ) - 1 )
-		Suggestions = {}
+		self.Suggestions = {}
 		
 		for _, v in pairs( RP.plugins ) do
-			if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #Suggestions < 3 ) then table.insert( Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } ) end
+			if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #self.Suggestions < 3 ) then
+				table.insert( self.Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } )
+			end
 		end
 		
 		if evolve then
 			for _, v in pairs( evolve.plugins ) do
-				if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #Suggestions < 3 ) then table.insert( Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } ) end
+				if type(v.ChatCommand)=="table" then
+					for k,cmd in pairs(v.ChatCommand) do
+						if (string.sub(cmd, 0, #com) == string.lower(com) and #self.Suggestions < 3) then
+							local suggestion = {ChatCommand = string.sub(str, 1, 1) .. cmd}
+							
+							if (type(v.Usage) == "table") then
+								suggestion.Usage = v.Usage[k] or ""
+							else
+								suggestion.Usage = v.Usage or ""
+							end
+							
+							table.insert(self.Suggestions, suggestion)
+						end
+					end
+				else
+					if ( v.ChatCommand and string.sub( v.ChatCommand, 0, #com ) == string.lower( com ) and #self.Suggestions < 3 ) then
+						table.insert( self.Suggestions, { ChatCommand = string.sub( str, 1, 1 ) .. v.ChatCommand, Usage = v.Usage or "" } )
+					end
+				end
 			end
 		end
 		
-		table.SortByMember( Suggestions, "ChatCommand", function( a, b ) return a < b end )
+		table.SortByMember( self.Suggestions, "ChatCommand", function( a, b ) return a < b end )
 	else
-		Suggestions = {}
+		self.Suggestions = {}
 	end
 end
 
 function PLUGIN:OnChatTab( str )
 	if ( string.match( str, "^[/!][^ ]*$" ) and #Suggestions > 0 ) then
-		return Suggestions[1].ChatCommand .. " "
+		return self.Suggestions[1].ChatCommand .. " "
 	end
 end
 
