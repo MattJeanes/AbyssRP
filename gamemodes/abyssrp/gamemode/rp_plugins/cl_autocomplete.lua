@@ -93,7 +93,7 @@ function PLUGIN:ChatTextChanged( str )
 end
 
 function PLUGIN:OnChatTab( str )
-	if ( string.match( str, "^[/!][^ ]*$" ) and #Suggestions > 0 ) then
+	if ( string.match( str, "^[/!][^ ]*$" ) and #self.Suggestions > 0 ) then
 		return self.Suggestions[1].ChatCommand .. " "
 	end
 end
