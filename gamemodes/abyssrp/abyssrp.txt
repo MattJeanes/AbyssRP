@@ -1,7 +1,8 @@
-"gamemode"
+"abyssrp"
 {
 	"base"		"sandbox"
 	"title"		"AbyssRP"
 	"maps"		"^rp_"
 	"menusystem"	"1"
+	"workshopid"	"310462053"
 }
