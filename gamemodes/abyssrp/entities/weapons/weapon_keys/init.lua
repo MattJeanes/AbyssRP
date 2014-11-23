@@ -8,7 +8,7 @@ function SWEP:Lock(e,nomsg)
 	self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
 	self.Weapon:SetNextSecondaryFire(CurTime() + 1.0)
 	if not nomsg then
-		self.Owner:ChatPrint("Door locked.")
+		self.Owner:ChatPrint("Locked.")
 	end
 end
 
@@ -18,7 +18,7 @@ function SWEP:Unlock(e,nomsg)
 	self.Weapon:SetNextPrimaryFire(CurTime() + 1.0)
 	self.Weapon:SetNextSecondaryFire(CurTime() + 1.0)
 	if not nomsg then
-		self.Owner:ChatPrint("Door unlocked.")
+		self.Owner:ChatPrint("Unlocked.")
 	end
 end
 

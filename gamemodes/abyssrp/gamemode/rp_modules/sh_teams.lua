@@ -76,7 +76,10 @@ RP:AddTeam({
 	salary=50,
 	desc="You are a citizen. You have no special benefits or abilities but are free to roam the world.",
 	rules="No specific rules, just follow the law.",
-	extra="You earn a fair salary, higher than the lawbreakers but lower than authority figures."
+	extra="You earn a fair salary, higher than the lawbreakers but lower than authority figures.",
+	weps={
+		"weapon_pickpocket"
+	}
 })
 
 RP:AddTeam({

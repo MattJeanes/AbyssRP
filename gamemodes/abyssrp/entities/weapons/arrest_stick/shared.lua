@@ -7,7 +7,7 @@ if CLIENT then
 	SWEP.Slot = 1
 	SWEP.SlotPos = 3
 	SWEP.DrawAmmo = false
-	SWEP.DrawCrosshair = false
+	SWEP.DrawCrosshair = true
 end
 
 SWEP.Base = "weapon_cs_base2"

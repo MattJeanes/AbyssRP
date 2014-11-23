@@ -7,7 +7,7 @@ if CLIENT then
 	SWEP.Slot = 1
 	SWEP.SlotPos = 0
 	SWEP.DrawAmmo = false
-	SWEP.DrawCrosshair = false
+	SWEP.DrawCrosshair = true
 end
 
 -- Variables that are used on both client and server

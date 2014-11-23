@@ -3,9 +3,9 @@
 if SERVER then
 	function RP:UpdateCustomNames()
 		for k,v in pairs(player.GetAll()) do
-			if v:GetPData("rpname") then
-				v:SetNWString("rpname", v:GetPData("rpname"))
-			elseif not v:GetPData("rpname") and v:GetNWString("rpname") then
+			if v:GetValue("rpname") then
+				v:SetNWString("rpname", v:GetValue("rpname"))
+			else
 				v:SetNWString("rpname","")
 			end
 		end

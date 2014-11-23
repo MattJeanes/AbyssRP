@@ -7,14 +7,14 @@ PLUGIN.Title = "Roleplay Name"
 PLUGIN.Description = "Give yourself a roleplay nickname."
 PLUGIN.Author = "Dr. Matt"
 PLUGIN.ChatCommand = "rpname"
-PLUGIN.Usage = "<name>"
+PLUGIN.Usage = "[name]"
 PLUGIN.Privileges = { "RP Name" }
 
 function PLUGIN:Call( ply, args )
-	if not args[1] and ply:GetPData("rpname") then
+	if not args[1] and ply:GetValue("rpname",nil) then
 		RP:Notify(ply, RP.colors.white, "You have disabled your roleplay name.")
-		ply:RemovePData("rpname")
-		UpdateRPNames()
+		ply:SetValue("rpname", nil)
+		RP:UpdateCustomNames()
 		return
 	elseif not args[1] then
 		RP:Error(ply, RP.colors.white, "Invalid arguments.")
@@ -23,7 +23,7 @@ function PLUGIN:Call( ply, args )
 	
 	local nick="~"..table.concat(args, " ")
 	RP:Notify(ply, RP.colors.white, "You have set your roleplay name to: "..nick)
-	ply:SetPData("rpname", nick)
+	ply:SetValue("rpname", nick)
 	RP:UpdateCustomNames()
 end
 
