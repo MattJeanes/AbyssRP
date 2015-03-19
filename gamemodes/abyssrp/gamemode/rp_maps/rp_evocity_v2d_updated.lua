@@ -3,10 +3,6 @@ RP:AddATM(Vector(-4831, -4856.5, 208),Angle(0,90,0))
 RP:AddATM(Vector(1972, 4607, 100),Angle(0,90,0))
 RP:AddATM(Vector(5295, -4377, 75),Angle(0,-90,0))
 
-RP:AddVendingMachine(Vector(1860, 4629, 116),Angle(0,90,0))
-RP:AddVendingMachine(Vector(-5233,-4834,120),Angle(0,90,0))
-RP:AddVendingMachine(Vector(-6827,-7334,112),Angle(0,-90,0))
-
 RP:AddJailPos(Vector(-7682.8892, -9015.1963, 840.0313))
 RP:AddJailPos(Vector(-7674.4780, -9290.0791, 840.0313))
 RP:AddJailPos(Vector(-7864.9814, -9013.0439, 840.0313))

@@ -88,8 +88,6 @@ function SWEP:Reload()
 		return
 	end
 	
-	print(ent.Owner)
-	
 	if ent:Owned() and ent.Owner == self.Owner and ent:IsDoor() then
 		ent.Owner = nil
 		RP:Notify(self.Owner, RP.colors.white, "You sold your door for: ", RP.colors.blue, RP:CC(sellprice))
@@ -113,7 +111,7 @@ function SWEP:Reload()
 			RP:Error(self.Owner, RP.colors.white, "You don't have enough cash!")
 		end
 	elseif ent:IsVehicle() and ent.Owner == self.Owner then
-		local vehiclecost = ent.Cost
+		local vehiclecost = ent.cost
 		local sellprice2 = (tonumber(vehiclecost) * tonumber(sellpercent))
 		RP:Notify(self.Owner, RP.colors.white, "You sold your vehicle for: ", RP.colors.blue, RP:CC(sellprice2))
 		ent:Remove()

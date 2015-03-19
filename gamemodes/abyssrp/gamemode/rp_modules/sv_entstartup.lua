@@ -90,6 +90,7 @@ function RP:EntStartup()
 			ent:Spawn()
 		end
 	end
+	--[[
 	if self.VendingMachines then
 		for k,v in pairs(self.VendingMachines) do
 			local ent = ents.Create("vendingmachine")
@@ -99,6 +100,7 @@ function RP:EntStartup()
 			ent:Spawn()
 		end
 	end
+	]]--
 end
 
 hook.Add( "InitPostEntity", "RP-EntStartup", function()

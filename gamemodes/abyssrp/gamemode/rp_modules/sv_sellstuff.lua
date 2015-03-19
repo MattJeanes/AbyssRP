@@ -6,16 +6,15 @@ RP:AddSetting("sellpercent", 0.5)
 local pl = FindMetaTable( "Player" )
 
 function pl:SellDoors(left)
-	local ply = self
-	if(ply:CountDoors() == 0) then
+	if(self:CountDoors() == 0) then
 		if not left then
-			RP:Notify(ply, RP.colors.white, "No doors to sell!")
+			RP:Notify(self, RP.colors.white, "No doors to sell!")
 		end
 		return
 	end
 		
-	local DoorCount = ply:CountDoors()
-	local DoorTable = ply:OwnedDoors()
+	local DoorCount = self:CountDoors()
+	local DoorTable = self:OwnedDoors()
 	
 	for k,v in pairs(DoorTable) do
 		v.Ownable = true
@@ -24,30 +23,29 @@ function pl:SellDoors(left)
 		v:Fire( "lock", "", 0 );
 	end
 	
-	local SellPrice = (RP:GetSetting("doorcost") * RP:GetSetting("sellpercent")) * DoorCount
+	local sellprice = (RP:GetSetting("doorcost") * RP:GetSetting("sellpercent")) * DoorCount
 	
 	if not left then
 		if #DoorTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " door for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " door for: ", RP.colors.blue, RP:CC(sellprice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " doors for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(DoorCount), RP.colors.white, " doors for: ", RP.colors.blue, RP:CC(sellprice))
 		end
 	end
 	
-	ply:AddCash(SellPrice)
+	self:AddCash(sellprice)
 end
 
 function pl:SellVehicles(left)
-	local ply = self
-	if(ply:CountVehicles() == 0) then
+	if(self:CountVehicles() == 0) then
 		if not left then
-			RP:Notify(ply, RP.colors.white, "No cars to sell!")
+			RP:Notify(self, RP.colors.white, "No cars to sell!")
 		end
 		return
 	end
 	
-	local VehicleCount = ply:CountVehicles()
-	local VehicleTable = ply:OwnedVehicles()
+	local VehicleCount = self:CountVehicles()
+	local VehicleTable = self:OwnedVehicles()
 	
 	local cost = 0
 	for k,v in ipairs(VehicleTable) do
@@ -55,30 +53,29 @@ function pl:SellVehicles(left)
 		v:Remove()
 	end
 	
-	local SellPrice = cost * RP:GetSetting("sellpercent")
+	local sellprice = cost * RP:GetSetting("sellpercent")
 	
 	if not left then
 		if #VehicleTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicle for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicle for: ", RP.colors.blue, RP:CC(sellprice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicles for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(VehicleCount), RP.colors.white, " vehicles for: ", RP.colors.blue, RP:CC(sellprice))
 		end
 	end
 		
-	ply:AddCash(SellPrice)
+	self:AddCash(sellprice)
 end
 
 function pl:SellShipments(left)
-	local ply = self
-	if(ply:CountShipments() == 0) then
+	if(self:CountShipments() == 0) then
 		if not left then
-			RP:Notify(ply, RP.colors.white, "No shipments to sell!")
+			RP:Notify(self, RP.colors.white, "No shipments to sell!")
 		end
 		return
 	end
 	
-	local ShipmentCount = ply:CountShipments()
-	local ShipmentTable = ply:OwnedShipments()
+	local ShipmentCount = self:CountShipments()
+	local ShipmentTable = self:OwnedShipments()
 	local ShipmentPrice = {}
 	
 	for k,v in ipairs(ShipmentTable) do
@@ -86,34 +83,33 @@ function pl:SellShipments(left)
 		v:Remove()
 	end
 	
-	local Cost = 0
-	
+	local cost = 0
 	for i=1,#ShipmentPrice do
-		Cost = Cost + tonumber(ShipmentPrice[i])
+		cost = cost + tonumber(ShipmentPrice[i])
 	end
 	
-	local SellPrice = Cost * RP:GetSetting("sellpercent")
+	local sellprice = cost * RP:GetSetting("sellpercent")
 	
 	if not left then
 		if #ShipmentTable == 1 then
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipment for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipment for: ", RP.colors.blue, RP:CC(sellprice))
 		else
-			RP:Notify(ply, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipments for: ", RP.colors.blue, RP:CC(SellPrice))
+			RP:Notify(self, RP.colors.white, "You sold ", RP.colors.red, tostring(ShipmentCount), RP.colors.white, " shipments for: ", RP.colors.blue, RP:CC(sellprice))
 		end
 	end
 		
-	ply:AddCash(SellPrice)
+	self:AddCash(sellprice)
 end
 
 
 function pl:CountDoors()
-	local Count = 0
+	local count = 0
 	for k, v in pairs(ents.FindByClass("prop_door_rotating")) do
 		if v.Owner == self then
-			Count = Count + 1
+			count = count + 1
 		end
 	end
-	return Count
+	return count
 end
 
 function pl:OwnedDoors()
@@ -137,23 +133,23 @@ function pl:OwnedVehicles()
 end
 
 function pl:CountVehicles()
-	local Count = 0
+	local count = 0
 	for k,v in pairs(ents.GetAll()) do
 		if (v:IsVehicle()) and (v.Owner == self) then
-			Count = Count + 1
+			count = count + 1
 		end
 	end
-	return Count
+	return count
 end
 
 function pl:CountShipments()
-	local Count = 0
+	local count = 0
 	for k, v in pairs(ents.GetAll()) do
 		if v.IsShipment and (v.Owner == self) then
-			Count = Count + 1
+			count = count + 1
 		end
 	end
-	return Count
+	return count
 end
 
 function pl:OwnedShipments()

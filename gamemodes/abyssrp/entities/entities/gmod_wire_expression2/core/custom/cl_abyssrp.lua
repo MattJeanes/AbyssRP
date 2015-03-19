@@ -1,1 +1,1 @@
-E2Helper.Descriptions["spawnShipment"] = "Use the name string of a shipment to spawn it.\nYou can set the position and/or the rotation as well.\nThe last 2 numbers indicate (Optional) count of weapons and (Optional) Price."
+--E2Helper.Descriptions["spawnShipment"] = "Use the name string of a shipment to spawn it.\nYou can set the position and/or the rotation as well.\nThe last 2 numbers indicate (Optional) count of weapons and (Optional) Price."

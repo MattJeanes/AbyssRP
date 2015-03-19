@@ -24,7 +24,7 @@ function PLUGIN:Call( ply, args )
 	elseif arg == "shipments" then
 		ply:SellShipments(false)
 	else
-		RP:Error(ply, RP.colors.white, "Invalid Choice!")
+		RP:Error(ply, RP.colors.white, "Invalid choice!")
 	end
 	
 end

@@ -1,3 +1,4 @@
+/*
 local function spawnShipment(self,name,pos,angles,count1,price)
 	
 	pos = E2Lib.clampPos( pos )
@@ -76,3 +77,4 @@ end
 e2function void spawnShipment(string name, vector pos, angle rot)
 	return spawnShipment(self,name,Vector(pos[1],pos[2],pos[3]),Angle(rot[1],rot[2],rot[3]))
 end
+*/
