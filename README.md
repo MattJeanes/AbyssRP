@@ -11,7 +11,7 @@ The gamemode utilises the following addons:
 - [FA:S 2.0 Alpha SWEPs - SMGs](http://steamcommunity.com/sharedfiles/filedetails/?id=183139624)
 - [FA:S 2.0 Alpha SWEPs - Rifles](http://steamcommunity.com/sharedfiles/filedetails/?id=181656972)
 - [FA:S 2.0 Alpha SWEPs - Pistols](http://steamcommunity.com/sharedfiles/filedetails/?id=181283903)
-- [Drugs Mod](http://steamcommunity.com/sharedfiles/filedetails/?id=112986621) (Only clients need for materials/models)
+- [Drugs Mod](http://steamcommunity.com/sharedfiles/filedetails/?id=112986621)
 - [TDMCars - Ford](http://steamcommunity.com/sharedfiles/filedetails/?id=113999373)
 
 Without these some features may be limited.
