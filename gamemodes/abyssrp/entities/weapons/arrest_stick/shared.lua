@@ -10,7 +10,7 @@ if CLIENT then
 	SWEP.DrawCrosshair = true
 end
 
-SWEP.Base = "weapon_cs_base2"
+SWEP.Base = "weapon_base"
 
 SWEP.Author = "Dr. Matt, Rick Darkaliono, philxyz"
 SWEP.Instructions = "Left click to arrest, right click to unarrest"
@@ -43,7 +43,7 @@ SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = ""
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType("normal")
+	self:SetHoldType("normal")
 end
 
 function SWEP:Holster()

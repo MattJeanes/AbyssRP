@@ -17,7 +17,8 @@ RP:AddSetting("dropweaponblacklist",{
 	"weapon_pickpocket",
 	"hands",
 	"weapon_climb",
-	"weapon_stunstick"
+	"weapon_stunstick",
+	"parkourmod"
 })
 
 function RP:PlayerDropWeapon( ply )

@@ -60,3 +60,28 @@ function ScreenNotify(msg)
 		v:PrintMessage(HUD_PRINTCENTER, tostring(msg))
 	end
 end
+
+function RP:ItemExists(class)
+	local entlist=scripted_ents.GetList()
+	if entlist[class] then
+		return true
+	end
+	
+	local weplist=weapons.GetList()
+	for a,b in pairs(weplist) do
+		if class==b.ClassName then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function RP:Print(...)
+	MsgC(Color(0,255,255), "[AbyssRP] ", Color(255,255,255), ...)
+	MsgN()
+end
+
+function RP:Warning(...)
+	self:Print(Color(255,255,0), "Warning: ", Color(255,255,255), ...)
+end

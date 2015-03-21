@@ -177,7 +177,7 @@ RP:AddTeam({
 	walkspeed=250,
 	runspeed=500,
 	weps={
-		"weapon_climb"
+		{"parkourmod", "weapon_climb"}
 	}
 })
 

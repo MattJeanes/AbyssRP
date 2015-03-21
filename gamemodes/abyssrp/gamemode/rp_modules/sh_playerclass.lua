@@ -37,7 +37,23 @@ function PLAYER:Loadout()
 	
 	if t.weps then
 		for k,v in pairs(t.weps) do
-			self.Player:Give(v)
+			if type(v)=="table" then
+				for a,b in ipairs(v) do
+					local found=false
+					if itemexists(b) then
+						self.Player:Give(b)
+						found=true
+						break
+					end
+					if not found then
+						RP:Warning("Weapon classes '"..table.concat(v, "','").."' not found")
+					end
+				end
+			elseif itemexists(v) then
+				self.Player:Give(v)
+			else
+				RP:Warning("Weapon class '"..v.."' not found")
+			end
 		end
 	end
 	

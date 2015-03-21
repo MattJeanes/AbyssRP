@@ -157,6 +157,9 @@ elseif CLIENT then
 			end
 		end
 		entlist=nil
+		weplist=nil
+		ammolist=nil
+		vehlist=nil
 		
 		local panel = vgui.Create("Panel")	
 		panel:SetSize(x,y)
