@@ -186,9 +186,7 @@ elseif CLIENT then
 		for k,v in pairs(items) do
 			local line=listview:AddLine(v.name,RP:CC(v.cost))
 			line.v=v
-			line.GetSortValue = function(self, i)
-				return i==2 and self.v.cost or self.Data[i]
-			end
+			line:SetSortValue(2,v.cost)
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)
