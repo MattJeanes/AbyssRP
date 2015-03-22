@@ -50,38 +50,31 @@ concommand.Add("getclass", function(ply)
 	ply:ChatPrint(ent:GetClass())
 end)
 
+concommand.Add("getmodel", function(ply)
+	local ent = ply:GetEyeTraceNoCursor().Entity
+	ply:ChatPrint(ent:GetModel())
+end)
+
 concommand.Add("hitpos",function(ply)
 	local pos = ply:GetEyeTraceNoCursor().HitPos
 	ply:ChatPrint("Vector("..pos.x ..", " ..pos.y..", ".. pos.z..")")
 end)
 
+function generatelist()
+	local veh={}
+	for k,v in pairs(table.Copy(list.Get("Vehicles"))) do
+		table.insert(veh,table.Merge(v,{uid=k}))
+	end
+	table.sort(veh,function(a,b) return a.Name<b.Name end) 
+	for k,v in ipairs(veh) do
+		if v.Category=="LW Cars" then
+			file.Append("vehicles.txt", "RP:AddVehicle({\n\tname=\""..v.Name.."\",\n\tuid=\""..v.uid.."\",\n\tmodel=\""..v.Model.."\",\n\tcost=150\n})\n\n")
+		end
+	end
+end
+
 function ScreenNotify(msg)
 	for k,v in pairs(player.GetAll()) do
 		v:PrintMessage(HUD_PRINTCENTER, tostring(msg))
 	end
-end
-
-function RP:ItemExists(class)
-	local entlist=scripted_ents.GetList()
-	if entlist[class] then
-		return true
-	end
-	
-	local weplist=weapons.GetList()
-	for a,b in pairs(weplist) do
-		if class==b.ClassName then
-			return true
-		end
-	end
-	
-	return false
-end
-
-function RP:Print(...)
-	MsgC(Color(0,255,255), "[AbyssRP] ", Color(255,255,255), ...)
-	MsgN()
-end
-
-function RP:Warning(...)
-	self:Print(Color(255,255,0), "Warning: ", Color(255,255,255), ...)
 end

@@ -142,7 +142,7 @@ elseif CLIENT then
 				items[k]=v
 			else
 				for a,b in pairs(vehlist) do
-					if v.model==b.Model then
+					if v.uid==a then
 						items[k]=v
 						break
 					end
@@ -184,7 +184,11 @@ elseif CLIENT then
 		listview:AddColumn("Cost"):SetFixedWidth(50)
 		listview:SetMultiSelect(false)
 		for k,v in pairs(items) do
-			listview:AddLine(v.name,RP:CC(v.cost)).v=v
+			local line=listview:AddLine(v.name,RP:CC(v.cost))
+			line.v=v
+			line.GetSortValue = function(self, i)
+				return i==2 and self.v.cost or self.Data[i]
+			end
 		end
 		listview:SortByColumn(1)
 		listview.OnRowSelected = function(self,id,line)

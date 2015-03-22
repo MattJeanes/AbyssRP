@@ -40,7 +40,7 @@ function PLAYER:Loadout()
 			if type(v)=="table" then
 				for a,b in ipairs(v) do
 					local found=false
-					if itemexists(b) then
+					if RP:ItemExists(b) then
 						self.Player:Give(b)
 						found=true
 						break
@@ -49,7 +49,7 @@ function PLAYER:Loadout()
 						RP:Warning("Weapon classes '"..table.concat(v, "','").."' not found")
 					end
 				end
-			elseif itemexists(v) then
+			elseif RP:ItemExists(v) then
 				self.Player:Give(v)
 			else
 				RP:Warning("Weapon class '"..v.."' not found")
