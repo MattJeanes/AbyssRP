@@ -424,124 +424,124 @@ RP:AddVehicle({
 	name="NFS Ford Mustang GT",
 	uid="nfsmustang",
 	model="models/LoneWolfie/nfs_mustanggt.mdl",
-	cost=150
+	cost=19500
 })
 
 RP:AddVehicle({
 	name="Nissan 200SX S14 Avant",
 	uid="nissan_silvia_s14_lw",
 	model="models/LoneWolfie/nissan_silvia_s14.mdl",
-	cost=150
+	cost=8500
 })
 
 RP:AddVehicle({
 	name="Nissan 200SX S14 Widebody",
 	uid="nissan_silvia_s14_wide_lw",
 	model="models/LoneWolfie/nissan_silvia_s14_wide.mdl",
-	cost=150
+	cost=10000
 })
 
 RP:AddVehicle({
 	name="Nissan 200SX S14 Works Kit",
 	uid="nissan_silvia_s14_works_lw",
 	model="models/LoneWolfie/nissan_silvia_s14_works.mdl",
-	cost=150
+	cost=13000
 })
 
 RP:AddVehicle({
 	name="Nissan Sileighty",
 	uid="nissan_sileighty_lw",
 	model="models/LoneWolfie/nissan_sileighty.mdl",
-	cost=150
+	cost=7800
 })
 
 RP:AddVehicle({
 	name="Nissan Silvia Club K's Mk.V [S13]",
 	uid="nis_s13",
 	model="models/LoneWolfie/nis_s13.mdl",
-	cost=150
+	cost=9200
 })
 
 RP:AddVehicle({
 	name="Nissan Skyline 2000GT-R Mk.III",
 	uid="2000gtrstock",
 	model="models/LoneWolfie/2000gtr_stock.mdl",
-	cost=150
+	cost=5200
 })
 
 RP:AddVehicle({
 	name="Nissan Skyline 2000GTR Speedhunters",
 	uid="2000gtr_sh",
 	model="models/LoneWolfie/2000gtr_speedhunters.mdl",
-	cost=150
+	cost=19000
 })
 
 RP:AddVehicle({
 	name="Nissan Skyline GT-R R32",
 	uid="nis_skyline_r32",
 	model="models/LoneWolfie/nis_skyline_r32.mdl",
-	cost=150
+	cost=9500
 })
 
 RP:AddVehicle({
 	name="Polaris Quad 4x4",
 	uid="polaris_4x4_lw",
 	model="models/LoneWolfie/polaris_4x4.mdl",
-	cost=150
+	cost=5500
 })
 
 RP:AddVehicle({
 	name="Polaris Quad 6x6",
 	uid="polaris_6x6_lw",
 	model="models/LoneWolfie/polaris_6x6.mdl",
-	cost=150
+	cost=6000
 })
 
 RP:AddVehicle({
 	name="Smart ForTwo",
 	uid="smartfortwo",
 	model="models/LoneWolfie/smart_fortwo.mdl",
-	cost=150
+	cost=5700
 })
 
 RP:AddVehicle({
 	name="Spyker C8 Aileron",
 	uid="spyker_aileron",
 	model="models/LoneWolfie/Spyker_Aileron.mdl",
-	cost=150
+	cost=35000
 })
 
 RP:AddVehicle({
 	name="Subaru BRZ",
 	uid="subarubrz",
 	model="models/LoneWolfie/subaru_brz.mdl",
-	cost=150
+	cost=17000
 })
 
 RP:AddVehicle({
 	name="Subaru Impreza 22B-STi series",
 	uid="22b",
 	model="models/LoneWolfie/subaru_22b.mdl",
-	cost=150
+	cost=25000
 })
 
 RP:AddVehicle({
 	name="Suzuki Kingquad",
 	uid="suzuki_kingquad_lw",
 	model="models/LoneWolfie/suzuki_kingquad.mdl",
-	cost=150
+	cost=5700
 })
 
 RP:AddVehicle({
 	name="Volvo S60 R",
 	uid="volvo_s60",
 	model="models/LoneWolfie/volvo_s60.mdl",
-	cost=150
+	cost=11000
 })
 
 RP:AddVehicle({
 	name="Y.A.R.E Buggy",
 	uid="yare_buggy",
 	model="models/LoneWolfie/yare_buggy.mdl",
-	cost=150
+	cost=17000
 })
