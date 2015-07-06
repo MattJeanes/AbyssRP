@@ -4,23 +4,74 @@ RP.Achievements = {}
 
 local meta = FindMetaTable("Player")
 
-function meta:AddAchievement(t)
-	if not self:Achieved(t) then
-		RP:Notify(team.GetColor(self:Team()), self:Nick(), RP.colors.white, " has earned the achievement: '", RP.colors.blue, t.name, RP.colors.white, "'.")
-		RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, RP:CC(t.reward), RP.colors.white, " for earning that achievement!")
-		self:AddCash(t.reward)
-		self:UpdateAchievement(t,"ach",true)
+if SERVER then
+	function meta:AddAchievement(t)
+		if not self:Achieved(t) then
+			RP:Notify(team.GetColor(self:Team()), self:Nick(), RP.colors.white, " has earned the achievement: '", RP.colors.blue, t.name, RP.colors.white, "'.")
+			RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, RP:CC(t.reward), RP.colors.white, " for earning that achievement!")
+			self:UpdateAchievement(t,"ach",true)
+			self:AddCash(t.reward)
+		end
+	end
+
+	function meta:UpdateAchievement(t,i,v)
+		if not self:GetValue("ach") then self:SetValue("ach",{}) end
+		local ach=self:GetValue("ach")
+		if not ach[t.id] then ach[t.id]={} end
+		
+		ach[t.id][i] = v
+		self:SetValue("ach", ach)
+		RP:SavePlayerInfo()
+	end
+	
+	function meta:ResetAchievements()
+		self:SetValue("ach",{})
+		RP:SavePlayerInfo()
+	end
+	
+	util.AddNetworkString("RP-Achievement")
+	
+	net.Receive("RP-Achievement", function(len,ply)
+		local id=net.ReadString()
+		local update=net.ReadBool()
+		local t=RP.Achievements[id]
+		if t and t.client then
+			if update then
+				local i=net.ReadType()
+				local v=net.ReadType()
+				ply:UpdateAchievement(t,i,v)
+			else
+				ply:AddAchievement(t)
+			end
+		end
+	end)
+else
+	function meta:AddAchievement(t)
+		if t.id then
+			net.Start("RP-Achievement")
+				net.WriteString(t.id)
+				net.WriteBool(false)
+			net.SendToServer()
+		end
+	end
+
+	function meta:UpdateAchievement(t,i,v)
+		if t.id then
+			net.Start("RP-Achievement")
+				net.WriteString(t.id)
+				net.WriteBool(true)
+				net.WriteType(i)
+				net.WriteType(v)
+			net.SendToServer()
+		end
 	end
 end
 
-function meta:UpdateAchievement(t,i,v)
-	if not self:GetValue("ach") then self:SetValue("ach",{}) end
-	local ach=self:GetValue("ach")
-	if not ach[t.id] then ach[t.id]={} end
-	
-	ach[t.id][i] = v
-	self:SetValue("ach", ach)
-	RP:SavePlayerInfo()
+function RP:AddAchievement(t)
+	RP.Achievements[t.id]=table.Copy(t)
+	if RP.Achievements[t.id].func and (CLIENT and t.client or SERVER) then
+		RP.Achievements[t.id].func(RP.Achievements[t.id], "Ach-"..t.id)
+	end
 end
 
 function meta:GetAchievement(t,d)
@@ -47,31 +98,6 @@ function meta:Achieved(t)
 	return false
 end
 
-function meta:ResetAchievements()
-	self:SetValue("ach",{})
-	RP:SavePlayerInfo()
-end
-
-function RP:AddAchievement(t)
-	local n=#RP.Achievements+1
-	RP.Achievements[n]=table.Copy(t)
-	if RP.Achievements[n].func then
-		RP.Achievements[n].func(RP.Achievements[n], "Ach-"..t.name)
-	end
-end
-
-		RP:AddAchievement({
-			name="Que?",
-			id="que",
-			desc="Attempted to open the spawn menu",
-			reward=300,
-			func=function(a,b)
-				hook.Add("SpawnMenuOpen", b, function(ply)
-					ply:AddAchievement(a)
-				end)
-			end
-		})
-
 RP:AddAchievement({
 	name="Play AbyssRP",
 	id="play",
@@ -85,137 +111,168 @@ RP:AddAchievement({
 })
 
 RP:AddAchievement({
-        name="Lucky Day",
-        id="luckyday",
-        maxcash=RP:GetSetting("maxdroppedcash",0),
-        desc="Find and pick up the maximum amount of dropped money (£"..RP:GetSetting("maxdroppedcash",0)..")",
-        reward=2500,
-        func=function(a,b)
-                hook.Add("RP-PickupCash", b, function(ply, amount, owner)
-                      if ply:IsPlayer() && IsValid(ply) && ply~=owner  && amount==a.maxcash then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-})  
-
-    RP:AddAchievement({
-            name="I regret nothiiiiinnnnng",
-            id="regret",
-            desc="Kill yourself",
-            reward=500,
-            func=function(a,b)
-                    hook.Add("PlayerDeath", b, function(victim, _ , killer)
-                          if killer:IsPlayer() and IsValid(killer) then
-                                 if (victim:IsPlayer() || IsValid(victim)) && victim==killer  then
-                                    victim:AddAchievement(a)
-                                 end
-                          end
-                    end)
-            end
-    })
-
-RP:AddAchievement({
-        name="I'm Sorry",
-        id="killadmin",
-        desc="Kill an Admin",
-        reward=500,
-        func=function(a,b)
-                hook.Add("PlayerDeath", b, function(victim, _ , killer)
-                      if killer:IsPlayer() and IsValid(killer) then
-                             if (victim:IsAdmin() || victim:IsSuperAdmin()) && victim~=killer  then
-                                killer:AddAchievement(a)
-                             end
-                      end
-                end)
-        end
+	name="Lucky day",
+	id="luckyday",
+	desc="Find and pick up the maximum amount of dropped money ("..RP:CC(RP:GetSetting("maxdroppedcash",0))..")",
+	reward=2500,
+	func=function(a,b)
+		hook.Add("RP-PickupCash", b, function(ply, amount, owner)
+			if IsValid(ply) and ply:IsPlayer() and ply~=owner and amount==RP:GetSetting("maxdroppedcash",0) then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
 })
 
 RP:AddAchievement({
-        name="Getting bank",
-        id="getbank",
-        desc="Have £10,000 in your bank.",
-        reward=750,
-        func=function(a,b)
-                hook.Add("RP-BankChanged", b, function(ply, amount)
-                      if ply:IsPlayer() && IsValid(ply) && amount>=10000 then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-})   
-    
-RP:AddAchievement({
-        name="Saving for something?",
-        id="sfs",
-        desc="Have £20,000 in your bank.",   
-        reward=1500,
-        func=function(a,b)
-                hook.Add("RP-BankChanged", b, function(ply, amount)
-                      if ply:IsPlayer() && IsValid(ply) && amount>=20000 then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-})  
-    
-RP:AddAchievement({
-        name="Big Money",
-        id="humbug",
-        desc="Have £50,000 in your bank.",   
-        reward=5000,
-        func=function(a,b)
-                hook.Add("RP-BankChanged", b, function(ply, amount)
-                      if ply:IsPlayer() && IsValid(ply)  && amount>=50000 then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-})  
+	name="I regret nothing",
+	id="regret",
+	desc="Kill yourself",
+	reward=500,
+	func=function(a,b)
+		hook.Add("PlayerDeath", b, function(victim, _ , killer)
+			if IsValid(killer) and killer:IsPlayer() and IsValid(victim) and victim:IsPlayer() and victim==killer then
+				victim:AddAchievement(a)
+			end
+		end)
+	end
+})
 
 RP:AddAchievement({
-        name="Life savings",
-        id="lifesavings",
-        desc="Have £100,000 in your bank.",   
-        reward=10000,
-        func=function(a,b)
-                hook.Add("RP-BankChanged", b, function(ply, amount)
-                      if ply:IsPlayer() && IsValid(ply)  && amount>=100000 then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-})  
+	name="I'm sorry",
+	id="killadmin",
+	desc="Kill an Admin",
+	reward=500,
+	func=function(a,b)
+		hook.Add("PlayerDeath", b, function(victim, _, killer)
+			if IsValid(killer) and killer:IsPlayer() and IsValid(victim) and victim:IsPlayer() and (victim:IsAdmin() or victim:IsSuperAdmin()) and victim~=killer then
+				killer:AddAchievement(a)
+			end
+		end)
+	end
+})
 
 RP:AddAchievement({
-        name="Deep Pockets",
-        id="dpockets",
-        desc="Have Â£10,000 on you.",
-        reward=1500,
-        func=function(a,b)
-                hook.Add("RP-CashChanged", b, function(ply, amount)
-                      if ply:IsPlayer() && IsValid(ply) && amount>=10000 then
-                                ply:AddAchievement(a)
-                      end
-                end)
-        end
-}) 
+	name="Getting bank",
+	id="getbank",
+	desc="Have "..RP:CC(10000).." in your bank.",
+	reward=750,
+	func=function(a,b)
+		hook.Add("RP-BankChanged", b, function(ply, amount)
+			if IsValid(ply) and ply:IsPlayer() and amount>=10000 then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
+})
 
-	RP:AddAchievement({
-		name="Sir, I think you dropped something.",
-		id="killownwep",
-		desc="Kill someone with their own dropped weapon!",
-		reward=1000,
-		func=function(a,b)
-			hook.Add("PlayerDeath", b, function(victim, weapon, killer)
-				if killer:IsPlayer() and IsValid(killer:GetActiveWeapon()) then
-					if killer:GetActiveWeapon().OldOwner == victim then
-						killer:AddAchievement(a)
-					end
+RP:AddAchievement({
+	name="Saving for something?",
+	id="sfs",
+	desc="Have "..RP:CC(20000).." in your bank.",   
+	reward=1500,
+	func=function(a,b)
+		hook.Add("RP-BankChanged", b, function(ply, amount)
+			if IsValid(ply) and ply:IsPlayer() and amount>=20000 then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="Big money",
+	id="humbug",
+	desc="Have "..RP:CC(50000).." in your bank.",   
+	reward=5000,
+	func=function(a,b)
+		hook.Add("RP-BankChanged", b, function(ply, amount)
+			if IsValid(ply) and ply:IsPlayer() and amount>=50000 then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="Life savings",
+	id="lifesavings",
+	desc="Have "..RP:CC(100000).." in your bank.",   
+	reward=10000,
+	func=function(a,b)
+		hook.Add("RP-BankChanged", b, function(ply, amount)
+			if IsValid(ply) and ply:IsPlayer() and amount>=100000 then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="Deep pockets",
+	id="dpockets",
+	desc="Have "..RP:CC(10000).." on you.",
+	reward=1500,
+	func=function(a,b)
+		hook.Add("RP-CashChanged", b, function(ply, amount)
+			if IsValid(ply) and ply:IsPlayer() and amount>=10000 then
+				ply:AddAchievement(a)
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="Embarrassing", -- Shit name
+	id="killownwep",
+	desc="Kill someone with their own dropped weapon!",
+	reward=1000,
+	func=function(a,b)
+		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
+			if killer:IsPlayer() and IsValid(killer:GetActiveWeapon()) then
+				if killer:GetActiveWeapon().OldOwner == victim then
+					killer:AddAchievement(a)
 				end
-			end)
-		end
-	})
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="Payday!",
+	id="payday",
+	desc="Receive your first payday",   
+	reward=250,
+	func=function(a,b)
+		hook.Add("RP-Payday", b, function(ply, amount)
+			ply:AddAchievement(a)
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="But by the grace of a god",
+	id="bbtgog",
+	desc="Be on the server with Dr. Matt",   
+	reward=250,
+	func=function(a,b)
+		hook.Add( "PlayerInitialSpawn", b, function( ply )
+			if ply:SteamID()=="STEAM_0:0:24831103" then 
+				for k, v in pairs( player.GetAll() ) do
+					v:AddAchievement(a)
+				end
+				
+			else
+			
+				for k,v in pairs(player.GetAll()) do 
+					if v:SteamID()=="STEAM_0:0:24831103" then
+						ply:AddAchievement(a)
+					end
+				end	
+			end
+		end)
+	end
+})
 
 RP:AddAchievement({
 	name="Rest In Peace",
@@ -234,6 +291,125 @@ RP:AddAchievement({
 		end)
 	end
 })
+
+RP:AddAchievement({
+	name="One Small Step",
+	id="oss",
+	desc="Take 1 Step",
+	reward=150,
+	total=1,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Few Small Steps",
+	id="afss",
+	desc="Take 500 Steps",
+	reward=200,
+	total=500,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="Many Small Steps",
+	id="mss",
+	desc="Take 2000 Steps",
+	reward=500,
+	total=2000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Lot Of Small Steps",
+	id="aloss",
+	desc="Take 5000 Steps",
+	reward=1000,
+	total=5000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Giant Leap",
+	id="agl",
+	desc="Take 10000 Steps",
+	reward=2000,
+	total=10000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="Rest In Peace",
+	id="die",
+	desc="Die a total of 200 times!",
+	reward=2000,
+	total=200,
+	func=function(a,b,c)
+		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
+			if not victim:Achieved(a) then
+				victim:UpdateAchievement(a,"c",math.Clamp(victim:GetAchievementValue(a,"c",0)+1,0,a.total))
+				if victim:GetAchievementValue(a,"c") >= a.total then
+					victim:AddAchievement(a)
+				end
+			end
+		end)
+	end
+})
+
 
 RP:AddAchievement({
 	name="Homicidal",
@@ -317,7 +493,7 @@ if CLIENT then
 		totallabel:SetVisible(false)
 		
 		local total = vgui.Create("DLabel",panel)
-		total:SetPos(listviw:GetPos()+listview:GetWide()+5,150+label:GetTall())
+		total:SetPos(listview:GetPos()+listview:GetWide()+5,150+label:GetTall())
 		total:SetText("")
 		
 		function update()
