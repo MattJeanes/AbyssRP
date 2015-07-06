@@ -223,7 +223,7 @@ RP:AddAchievement({
 })
 
 RP:AddAchievement({
-	name="Embarrassing", -- Shit name
+	name="Embarrassing",
 	id="killownwep",
 	desc="Kill someone with their own dropped weapon!",
 	reward=1000,
@@ -256,37 +256,17 @@ RP:AddAchievement({
 	desc="Be on the server with Dr. Matt",   
 	reward=250,
 	func=function(a,b)
-		hook.Add( "PlayerInitialSpawn", b, function( ply )
+		hook.Add("PlayerInitialSpawn", b, function(ply)
 			if ply:SteamID()=="STEAM_0:0:24831103" then 
 				for k, v in pairs( player.GetAll() ) do
 					v:AddAchievement(a)
 				end
-				
 			else
-			
 				for k,v in pairs(player.GetAll()) do 
 					if v:SteamID()=="STEAM_0:0:24831103" then
 						ply:AddAchievement(a)
 					end
 				end	
-			end
-		end)
-	end
-})
-
-RP:AddAchievement({
-	name="Rest In Peace",
-	id="die",
-	desc="Die a total of 200 times!",
-	reward=1500,
-	total=200,
-	func=function(a,b,c)
-		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
-			if not victim:Achieved(a) then
-				victim:UpdateAchievement(a,"c",math.Clamp(victim:GetAchievementValue(a,"c",0)+1,0,a.total))
-				if victim:GetAchievementValue(a,"c") >= a.total then
-					victim:AddAchievement(a)
-				end
 			end
 		end)
 	end
@@ -427,7 +407,6 @@ RP:AddAchievement({
 		end)
 	end
 })
-
 
 if CLIENT then
 	hook.Add("RP-Menu", "Achievements", function(sheet,x,y)
