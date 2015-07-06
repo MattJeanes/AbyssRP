@@ -288,4 +288,4 @@ elseif CLIENT then
 	end)
 end
 
-RP:AddInclude("rp_modules/shop")
+RP:LoadFolder("rp_modules/shop")

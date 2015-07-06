@@ -78,3 +78,44 @@ function ScreenNotify(msg)
 		v:PrintMessage(HUD_PRINTCENTER, tostring(msg))
 	end
 end
+
+local defaultweps={
+	["weapon_stunstick"]=true,
+	["weapon_crowbar"]=true,
+	["weapon_pistol"]=true,
+	["weapon_smg1"]=true,
+	["weapon_ar2"]=true,
+	["weapon_crossbow"]=true,
+	["weapon_shotgun"]=true,
+	["weapon_grenade"]=true,
+	["weapon_rpg"]=true
+}
+
+function RP:ItemExists(class)
+	if defaultweps[class] then
+		return true
+	end
+
+	local entlist=scripted_ents.GetList()
+	if entlist[class] then
+		return true
+	end
+	
+	local weplist=weapons.GetList()
+	for a,b in pairs(weplist) do
+		if class==b.ClassName then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function RP:Print(...)
+	MsgC(Color(0,255,255), "[AbyssRP] ", Color(255,255,255), ...)
+	MsgN()
+end
+
+function RP:Warning(...)
+	self:Print(Color(255,255,0), "Warning: ", Color(255,255,255), ...)
+end

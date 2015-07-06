@@ -65,7 +65,7 @@ net.Receive("RP-ATM", function(len)
 	local DButton1 = vgui.Create('DButton')
 	DButton1:SetParent(DFrame1)
 	DButton1:SetSize(70, 25)
-	DButton1:SetPos(25, 148)
+	DButton1:SetPos(19, 148)
 	DButton1:SetText('Deposit')
 	DButton1.DoClick = function()
 		if not tonumber(DTextEntry1:GetValue()) then
@@ -85,7 +85,7 @@ net.Receive("RP-ATM", function(len)
 	local DButton2 = vgui.Create('DButton')
 	DButton2:SetParent(DFrame1)
 	DButton2:SetSize(70, 25)
-	DButton2:SetPos(130, 148)
+	DButton2:SetPos(135, 148)
 	DButton2:SetText('Withdraw')
 	DButton2.DoClick = function() 
 		if not tonumber(DTextEntry1:GetValue()) then
@@ -100,5 +100,14 @@ net.Receive("RP-ATM", function(len)
 				net.WriteFloat(DTextEntry1:GetValue())
 			net.SendToServer()
 		end
+	end
+	
+	local DButton2 = vgui.Create('DButton')
+	DButton2:SetParent(DFrame1)
+	DButton2:SetPos(92, 148)
+	DButton2:SetSize(40, 25)
+	DButton2:SetText('All')
+	DButton2.DoClick = function() 
+		DTextEntry1:SetValue(LocalPlayer():GetBank())
 	end
 end)

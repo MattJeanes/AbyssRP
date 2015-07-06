@@ -74,13 +74,13 @@ if SERVER then
 	
 	local ragdollwhitelist={
 		"models/props_c17/FurnitureMattress001a.mdl"
-	}	
+	}
 	
 	hook.Add("PlayerSpawnProp", "RP-Admin", build)
 	
 	hook.Add("PlayerSpawnRagdoll", "RP-Admin", function(ply,item)
 		local allowed=build(ply)
-		if not table.HasValue(ragdollwhitelist,item) or allowed==false then
+		if not table.HasValue(ragdollwhitelist,item) and allowed==false then
 			return false
 		end
 	end)

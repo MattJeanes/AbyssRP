@@ -34,6 +34,7 @@ function ENT:Use(activator, caller)
 	if IsValid(activator) then
 		if activator:IsPlayer() and activator:Alive() then
 			activator:AddCash(tonumber(self.Cash))
+			hook.Call("RP-PickupCash", GAMEMODE, activator, tonumber(self.Cash), self.Owner)
 			if activator == self.Owner then
 				RP:Notify(self.Owner, RP.colors.white, "You picked up your own dropped cash: ", RP.colors.blue, RP:CC(self.Cash), RP.colors.white, "!")
 			else

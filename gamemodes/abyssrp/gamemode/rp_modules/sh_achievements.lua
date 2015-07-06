@@ -4,23 +4,74 @@ RP.Achievements = {}
 
 local meta = FindMetaTable("Player")
 
-function meta:AddAchievement(t)
-	if not self:Achieved(t) then
-		RP:Notify(team.GetColor(self:Team()), self:Nick(), RP.colors.white, " has earned the achievement: '", RP.colors.blue, t.name, RP.colors.white, "'.")
-		RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, RP:CC(t.reward), RP.colors.white, " for earning that achievement!")
-		self:AddCash(t.reward)
-		self:UpdateAchievement(t,"ach",true)
+if SERVER then
+	function meta:AddAchievement(t)
+		if not self:Achieved(t) then
+			RP:Notify(team.GetColor(self:Team()), self:Nick(), RP.colors.white, " has earned the achievement: '", RP.colors.blue, t.name, RP.colors.white, "'.")
+			RP:Notify(self, RP.colors.white, "You have recieved ", RP.colors.blue, RP:CC(t.reward), RP.colors.white, " for earning that achievement!")
+			self:UpdateAchievement(t,"ach",true)
+			self:AddCash(t.reward)
+		end
+	end
+
+	function meta:UpdateAchievement(t,i,v)
+		if not self:GetValue("ach") then self:SetValue("ach",{}) end
+		local ach=self:GetValue("ach")
+		if not ach[t.id] then ach[t.id]={} end
+		
+		ach[t.id][i] = v
+		self:SetValue("ach", ach)
+		RP:SavePlayerInfo()
+	end
+	
+	function meta:ResetAchievements()
+		self:SetValue("ach",{})
+		RP:SavePlayerInfo()
+	end
+	
+	util.AddNetworkString("RP-Achievement")
+	
+	net.Receive("RP-Achievement", function(len,ply)
+		local id=net.ReadString()
+		local update=net.ReadBool()
+		local t=RP.Achievements[id]
+		if t and t.client then
+			if update then
+				local i=net.ReadType()
+				local v=net.ReadType()
+				ply:UpdateAchievement(t,i,v)
+			else
+				ply:AddAchievement(t)
+			end
+		end
+	end)
+else
+	function meta:AddAchievement(t)
+		if t.id then
+			net.Start("RP-Achievement")
+				net.WriteString(t.id)
+				net.WriteBool(false)
+			net.SendToServer()
+		end
+	end
+
+	function meta:UpdateAchievement(t,i,v)
+		if t.id then
+			net.Start("RP-Achievement")
+				net.WriteString(t.id)
+				net.WriteBool(true)
+				net.WriteType(i)
+				net.WriteType(v)
+			net.SendToServer()
+		end
 	end
 end
 
-function meta:UpdateAchievement(t,i,v)
-	if not self:GetValue("ach") then self:SetValue("ach",{}) end
-	local ach=self:GetValue("ach")
-	if not ach[t.id] then ach[t.id]={} end
-	
-	ach[t.id][i] = v
-	self:SetValue("ach", ach)
-	RP:SavePlayerInfo()
+function RP:AddAchievement(t)
+	RP.Achievements[t.id]=table.Copy(t)
+	if RP.Achievements[t.id].func and (CLIENT and t.client or SERVER) then
+		RP.Achievements[t.id].func(RP.Achievements[t.id], "Ach-"..t.id)
+	end
 end
 
 function meta:GetAchievement(t,d)
@@ -45,19 +96,6 @@ function meta:Achieved(t)
 		return true
 	end
 	return false
-end
-
-function meta:ResetAchievements()
-	self:SetValue("ach",{})
-	RP:SavePlayerInfo()
-end
-
-function RP:AddAchievement(t)
-	local n=#RP.Achievements+1
-	RP.Achievements[n]=table.Copy(t)
-	if RP.Achievements[n].func then
-		RP.Achievements[n].func(RP.Achievements[n], "Ach-"..t.name)
-	end
 end
 
 RP:AddAchievement({
