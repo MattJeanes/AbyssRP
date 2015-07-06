@@ -223,7 +223,7 @@ RP:AddAchievement({
 })
 
 RP:AddAchievement({
-	name="Embarrassing",
+	name="Embarrassing", -- Shit name
 	id="killownwep",
 	desc="Kill someone with their own dropped weapon!",
 	reward=1000,
@@ -239,10 +239,164 @@ RP:AddAchievement({
 })
 
 RP:AddAchievement({
+	name="Payday!",
+	id="payday",
+	desc="Receive your first payday",   
+	reward=250,
+	func=function(a,b)
+		hook.Add("RP-Payday", b, function(ply, amount)
+			ply:AddAchievement(a)
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="But by the grace of a god",
+	id="bbtgog",
+	desc="Be on the server with Dr. Matt",   
+	reward=250,
+	func=function(a,b)
+		hook.Add( "PlayerInitialSpawn", b, function( ply )
+			if ply:SteamID()=="STEAM_0:0:24831103" then 
+				for k, v in pairs( player.GetAll() ) do
+					v:AddAchievement(a)
+				end
+				
+			else
+			
+				for k,v in pairs(player.GetAll()) do 
+					if v:SteamID()=="STEAM_0:0:24831103" then
+						ply:AddAchievement(a)
+					end
+				end	
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
 	name="Rest In Peace",
 	id="die",
 	desc="Die a total of 200 times!",
 	reward=1500,
+	total=200,
+	func=function(a,b,c)
+		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
+			if not victim:Achieved(a) then
+				victim:UpdateAchievement(a,"c",math.Clamp(victim:GetAchievementValue(a,"c",0)+1,0,a.total))
+				if victim:GetAchievementValue(a,"c") >= a.total then
+					victim:AddAchievement(a)
+				end
+			end
+		end)
+	end
+})
+
+RP:AddAchievement({
+	name="One Small Step",
+	id="oss",
+	desc="Take 1 Step",
+	reward=150,
+	total=1,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Few Small Steps",
+	id="afss",
+	desc="Take 500 Steps",
+	reward=200,
+	total=500,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="Many Small Steps",
+	id="mss",
+	desc="Take 2000 Steps",
+	reward=500,
+	total=2000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Lot Of Small Steps",
+	id="aloss",
+	desc="Take 5000 Steps",
+	reward=1000,
+	total=5000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="A Giant Leap",
+	id="agl",
+	desc="Take 10000 Steps",
+	reward=2000,
+	total=10000,
+	func=function(a,b,c)
+		if SERVER then
+			hook.Add("PlayerFootstep", b, function(ply)
+				if not ply:Achieved(a) then
+					ply:UpdateAchievement(a,"c",math.Clamp(ply:GetAchievementValue(a,"c",0)+1,0,a.total))
+					if ply:GetAchievementValue(a,"c") >= a.total then
+						ply:AddAchievement(a)
+					end
+				end
+			end)
+		end
+	end
+})
+
+RP:AddAchievement({
+	name="Rest In Peace",
+	id="die",
+	desc="Die a total of 200 times!",
+	reward=2000,
 	total=200,
 	func=function(a,b,c)
 		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
@@ -273,6 +427,7 @@ RP:AddAchievement({
 		end)
 	end
 })
+
 
 if CLIENT then
 	hook.Add("RP-Menu", "Achievements", function(sheet,x,y)
