@@ -376,7 +376,7 @@ RP:AddAchievement({
 	name="Rest In Peace",
 	id="die",
 	desc="Die a total of 200 times!",
-	reward=2000,
+	reward=1500,
 	total=200,
 	func=function(a,b,c)
 		hook.Add("PlayerDeath", b, function(victim, weapon, killer)
@@ -416,7 +416,7 @@ if CLIENT then
 		local selected,update
 		
 		local listview = vgui.Create("DListView",panel)
-		listview:SetSize(100,panel:GetTall())
+		listview:SetSize(150,panel:GetTall())
 		listview:SetPos(0,0)
 		listview:AddColumn("Achievement")
 		listview:SetMultiSelect(false)
@@ -442,37 +442,39 @@ if CLIENT then
 		
 		local desc = vgui.Create("DLabel",panel)
 		desc:SetPos(listview:GetPos()+listview:GetWide()+5,label:GetTall())
+		desc:SetWrap(true)
+		desc:SetAutoStretchVertical(true)
 		desc:SetText("")
 		
 		local label = vgui.Create("DLabel",panel)
 		label:SetText("Reward:")
 		label:SetFont("DermaLarge")
 		label:SizeToContents()
-		label:SetPos(listview:GetWide()+5,50)
+		label:SetPos(listview:GetWide()+5,60)
 		
 		local reward = vgui.Create("DLabel",panel)
-		reward:SetPos(listview:GetPos()+listview:GetWide()+5,50+label:GetTall())
+		reward:SetPos(listview:GetPos()+listview:GetWide()+5,60+label:GetTall())
 		reward:SetText("")
 		
 		local label = vgui.Create("DLabel",panel)
 		label:SetText("Achieved:")
 		label:SetFont("DermaLarge")
 		label:SizeToContents()
-		label:SetPos(listview:GetWide()+5,100)
+		label:SetPos(listview:GetWide()+5,120)
 		
 		local ach = vgui.Create("DLabel",panel)
-		ach:SetPos(listview:GetPos()+listview:GetWide()+5,100+label:GetTall())
+		ach:SetPos(listview:GetPos()+listview:GetWide()+5,120+label:GetTall())
 		ach:SetText("")
 		
 		local totallabel = vgui.Create("DLabel",panel)
 		totallabel:SetText("Progress:")
 		totallabel:SetFont("DermaLarge")
 		totallabel:SizeToContents()
-		totallabel:SetPos(listview:GetWide()+5,150)
+		totallabel:SetPos(listview:GetWide()+5,180)
 		totallabel:SetVisible(false)
 		
 		local total = vgui.Create("DLabel",panel)
-		total:SetPos(listview:GetPos()+listview:GetWide()+5,150+label:GetTall())
+		total:SetPos(listview:GetPos()+listview:GetWide()+5,180+label:GetTall())
 		total:SetText("")
 		
 		function update()
@@ -481,7 +483,8 @@ if CLIENT then
 			total:SetVisible(false)
 			
 			desc:SetText(selected.desc)
-			desc:SizeToContents()
+			local x,y=desc:GetPos()
+			desc:SetSize(panel:GetWide()-x, 30)
 			
 			reward:SetText(RP:CC(selected.reward))
 			reward:SizeToContents()

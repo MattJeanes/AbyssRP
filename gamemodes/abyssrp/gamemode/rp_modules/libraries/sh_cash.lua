@@ -37,8 +37,6 @@ function RP:CC(value) -- Cash convert
 	end
 end
 
-RP.SalaryTime = 300
-
 if SERVER then
 	function meta:SetCash(amount)
 		if not tonumber(amount) then return end

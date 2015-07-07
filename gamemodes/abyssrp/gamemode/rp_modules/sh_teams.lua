@@ -245,6 +245,10 @@ RP:AddTeam({
 	rules="Make sure to respond to 'medic' requests wherever possible.",
 	extra="People can call for you with !medic.",
 	weps={
-		"med_kit"
+		"med_kit",
+		"fas2_ifak"
+	},
+	shops={
+		"medic"
 	}
 })

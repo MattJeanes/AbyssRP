@@ -96,12 +96,12 @@ function RP:ItemExists(class)
 		return true
 	end
 
-	local entlist=scripted_ents.GetList()
+	local entlist=list.Get("SpawnableEntities")
 	if entlist[class] then
 		return true
 	end
 	
-	local weplist=weapons.GetList()
+	local weplist=list.Get("Weapon")
 	for a,b in pairs(weplist) do
 		if class==b.ClassName then
 			return true

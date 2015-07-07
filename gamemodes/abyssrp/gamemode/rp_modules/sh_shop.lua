@@ -126,8 +126,8 @@ elseif CLIENT then
 		end
 		
 		local items={}
-		local entlist=scripted_ents.GetList()
-		local weplist=weapons.GetList()
+		local entlist=list.Get("SpawnableEntities")
+		local weplist=list.Get("Weapon")
 		local ammolist=game.BuildAmmoTypes()
 		local vehlist=list.Get("Vehicles")
 		for k,v in pairs(shop.tbl) do
@@ -199,25 +199,29 @@ elseif CLIENT then
 				end
 			end
 		end
-			
 		
 		local label = vgui.Create("DLabel",panel)
 		label:SetPos(listview:GetPos()+listview:GetWide()+5,2.5)
 		label:SetText("Quantity:")
 		label:SizeToContents()
-		local numberwang = vgui.Create("DNumberWang",panel)
-		numberwang:SetPos(listview:GetWide()+label:GetWide()+10,0)
-		numberwang:SetValue(quantity)
-		numberwang:SetMinMax(1,RP:GetSetting("maxquantity",1))
-		numberwang.OnValueChanged = function(self,value)
+		local setquantity = vgui.Create("DNumberWang",panel)
+		setquantity:SetPos(listview:GetWide()+label:GetWide()+10,0)
+		setquantity:SetValue(quantity)
+		setquantity:SetMinMax(1,RP:GetSetting("maxquantity",1))
+		setquantity.OnValueChanged = function(self,value)
 			value=tonumber(value)
 			quantity=math.Clamp(value,self:GetMin(),self:GetMax())
-			update()
+			if quantity~=value then
+				self:SetValue(quantity)
+			end
+		end
+		setquantity.OnLoseFocus = function(self)
+			self:SetText(quantity)
 		end
 		
 		if shop.noshipment then
 			label:SetVisible(false)
-			numberwang:SetVisible(false)
+			setquantity:SetVisible(false)
 		end
 		
 		local label = vgui.Create("DLabel",panel)
@@ -227,7 +231,10 @@ elseif CLIENT then
 		setcost:SetPos(panel:GetWide()-setcost:GetWide()-1,0)
 		label:SetPos(panel:GetWide()-setcost:GetWide()-label:GetWide()-5,2.5)
 		setcost.OnValueChanged = function(self,value)
-			cost=tonumber(value)
+			cost=math.Clamp(tonumber(value),self:GetMin(),self:GetMax())
+		end
+		setcost.OnLoseFocus = function(self)
+			self:SetText(cost)
 		end
 
 		local buy = vgui.Create("DButton",panel)
@@ -263,8 +270,8 @@ elseif CLIENT then
 		total:SetPos(label:GetPos()+label:GetWide()+5,panel:GetTall()-buy:GetTall()-total:GetTall()-5)
 
 		local icon = vgui.Create("DModelPanel",panel)
-		icon:SetPos(listview:GetWide()+5,numberwang:GetTall()+5)
-		icon:SetSize(panel:GetWide()-icon:GetPos(),panel:GetTall()-numberwang:GetTall()-buy:GetTall()-total:GetTall()-10)
+		icon:SetPos(listview:GetWide()+5,setquantity:GetTall()+5)
+		icon:SetSize(panel:GetWide()-icon:GetPos(),panel:GetTall()-setquantity:GetTall()-buy:GetTall()-total:GetTall()-10)
 		if shop.nospin then
 			icon.LayoutEntity = function() end
 		end

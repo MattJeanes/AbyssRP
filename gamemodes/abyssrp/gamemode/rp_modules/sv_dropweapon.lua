@@ -18,7 +18,8 @@ RP:AddSetting("dropweaponblacklist",{
 	"hands",
 	"weapon_climb",
 	"weapon_stunstick",
-	"parkourmod"
+	"parkourmod",
+	"fas2_ifak"
 })
 
 function RP:PlayerDropWeapon( ply )

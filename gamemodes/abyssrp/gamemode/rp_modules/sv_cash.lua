@@ -3,6 +3,7 @@
 RP:AddSetting("cashlosspercent", 0.25)
 RP:AddSetting("maxdroppedcash", 5000)
 RP:AddSetting("admindropcash",false)
+RP:AddSetting("salarytime", 300)
 
 hook.Add("PlayerInitialSpawn", "RP-Money", function(ply)
 	if ply:GetValue("cash",nil) == nil then
@@ -23,7 +24,7 @@ function RP:GiveSalary()
 	end
 end
 
-timer.Create("RP-GiveSalary", RP.SalaryTime, 0, function()
+timer.Create("RP-GiveSalary", RP:GetSetting("salarytime",300), 0, function()
 	RP:GiveSalary()
 end)
 

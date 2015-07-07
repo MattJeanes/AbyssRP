@@ -21,93 +21,110 @@ function ENT:Draw()
 end
 
 net.Receive("RP-ATM", function(len)	
-	local DFrame1 = vgui.Create('DFrame')
-	DFrame1:SetSize(228, 194)
-	DFrame1:Center()
-	DFrame1:SetTitle('Bank ATM')
-	DFrame1:SetSizable(false)
-	DFrame1:SetDeleteOnClose(false)
-	DFrame1:MakePopup()
+	local frame = vgui.Create('DFrame')
+	frame:SetSize(228, 224)
+	frame:Center()
+	frame:SetTitle('Bank ATM')
+	frame:SetSizable(false)
+	frame:SetDeleteOnClose(false)
+	frame:MakePopup()
 
-	local DLabel1 = vgui.Create("DTextEntry", DFrame1)
-	DLabel1:SetPos(13, 41)
-	DLabel1:SetSize(200, 150)
-	DLabel1:SetMultiline(true)
-	DLabel1:SetWrap(true)
-	DLabel1:SetTextColor(color_white)
-	DLabel1:SetDrawBackground(false)
-	DLabel1:SetDrawBorder(false)
-	DLabel1:SetEditable(false)
-	DLabel1.Update = function(self,value)
+	local label = vgui.Create("DTextEntry", frame)
+	label:SetPos(13, 41)
+	label:SetSize(200, 150)
+	label:SetMultiline(true)
+	label:SetWrap(true)
+	label:SetTextColor(color_white)
+	label:SetDrawBackground(false)
+	label:SetDrawBorder(false)
+	label:SetEditable(false)
+	label.Update = function(self,value)
 		self:SetText("Welcome to your bank account, Please enter the values below on how much you want to withdraw or deposit. You have "..RP:CC(value).." in your bank account.")
 	end
-	DLabel1:Update(LocalPlayer():GetBank())
+	label:Update(LocalPlayer():GetBank())
 	
 	net.Receive("RP-ATMUpdate", function(len)
-		DLabel1:Update(net.ReadFloat())
+		label:Update(net.ReadFloat())
 	end)
 	
-	local DTextEntry1 = vgui.Create('DTextEntry')
-	DTextEntry1:SetParent(DFrame1)
-	DTextEntry1:SetSize(185, 25)
-	DTextEntry1:SetPos(19, 115)
-	DTextEntry1.OnGetFocus = function(PanelVar) -- Passes a single argument, the text entry object.
-		if DTextEntry1:GetValue() == "Enter a number here!" then
-			DTextEntry1:SetText("")
+	local textentry = vgui.Create('DTextEntry')
+	textentry:SetParent(frame)
+	textentry:SetSize(185, 25)
+	textentry:SetPos(19, 115)
+	textentry.OnGetFocus = function(PanelVar) -- Passes a single argument, the text entry object.
+		if textentry:GetValue() == "Enter a number here!" then
+			textentry:SetText("")
 		end
 	end
-	DTextEntry1.OnLoseFocus = function(PanelVar) -- Passes a single argument, the text entry object.
-		if DTextEntry1:GetValue() == "" then
-			DTextEntry1:SetText("Enter a number here!")
+	textentry.OnLoseFocus = function(PanelVar) -- Passes a single argument, the text entry object.
+		if textentry:GetValue() == "" then
+			textentry:SetText("Enter a number here!")
 		end
 	end
 	
-	local DButton1 = vgui.Create('DButton')
-	DButton1:SetParent(DFrame1)
-	DButton1:SetSize(70, 25)
-	DButton1:SetPos(19, 148)
-	DButton1:SetText('Deposit')
-	DButton1.DoClick = function()
-		if not tonumber(DTextEntry1:GetValue()) then
-			if DTextEntry1:GetValue() == "Enter a number here!" then
+	local function deposit(n)
+		net.Start("RP-ATM")
+			net.WriteBit(false)
+			net.WriteFloat(tonumber(n))
+		net.SendToServer()
+	end
+	
+	local function withdraw(n)
+		net.Start("RP-ATM")
+			net.WriteBit(true)
+			net.WriteFloat(tonumber(n))
+		net.SendToServer()
+	end
+	
+	local button = vgui.Create('DButton')
+	button:SetParent(frame)
+	button:SetSize(90, 25)
+	button:SetPos(19, 148)
+	button:SetText('Deposit')
+	button.DoClick = function()
+		if not tonumber(textentry:GetValue()) then
+			if textentry:GetValue() == "Enter a number here!" then
 				RP:Error(LocalPlayer(), RP.colors.white, "Please enter an amount!")
 			else
 				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
-			net.Start("RP-ATM")
-				net.WriteBit(false)
-				net.WriteFloat(DTextEntry1:GetValue())
-			net.SendToServer()
+			deposit(textentry:GetValue())
 		end
 	end
 	
-	local DButton2 = vgui.Create('DButton')
-	DButton2:SetParent(DFrame1)
-	DButton2:SetSize(70, 25)
-	DButton2:SetPos(135, 148)
-	DButton2:SetText('Withdraw')
-	DButton2.DoClick = function() 
-		if not tonumber(DTextEntry1:GetValue()) then
-			if DTextEntry1:GetValue() == "Enter a number here!" then
+	local button = vgui.Create('DButton')
+	button:SetParent(frame)
+	button:SetSize(90, 25)
+	button:SetPos(114, 148)
+	button:SetText('Withdraw')
+	button.DoClick = function() 
+		if not tonumber(textentry:GetValue()) then
+			if textentry:GetValue() == "Enter a number here!" then
 				RP:Error(LocalPlayer(), RP.colors.white, "Please enter an amount!")
 			else
 				RP:Error(LocalPlayer(), RP.colors.white, "Invalid input!")
 			end
 		else
-			net.Start("RP-ATM")
-				net.WriteBit(true)
-				net.WriteFloat(DTextEntry1:GetValue())
-			net.SendToServer()
+			withdraw(textentry:GetValue())
 		end
 	end
+
+	local button = vgui.Create('DButton')
+	button:SetParent(frame)
+	button:SetPos(19, 178)
+	button:SetSize(90, 25)
+	button:SetText('Deposit All')
+	button.DoClick = function() 
+		deposit(LocalPlayer():GetCash())
+	end
 	
-	local DButton2 = vgui.Create('DButton')
-	DButton2:SetParent(DFrame1)
-	DButton2:SetPos(92, 148)
-	DButton2:SetSize(40, 25)
-	DButton2:SetText('All')
-	DButton2.DoClick = function() 
-		DTextEntry1:SetValue(LocalPlayer():GetBank())
+	local button = vgui.Create('DButton')
+	button:SetParent(frame)
+	button:SetPos(114, 178)
+	button:SetSize(90, 25)
+	button:SetText('Withdraw All')
+	button.DoClick = function() 
+		withdraw(LocalPlayer():GetBank())
 	end
 end)

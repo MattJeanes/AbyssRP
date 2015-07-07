@@ -73,7 +73,7 @@ function ENT:Destruct()
 
 	local pos=self:GetPos()
 	for i=1,self.count do
-		RP.SpawnItem(self.Owner,self.info,pos+Vector(0,0,i*5),Angle(0,0,0))
+		RP.SpawnItem(self.Owner,self.info,self.cost,pos+Vector(0,0,i*5),Angle(0,0,0))
 	end
 	self:Remove()
 end
