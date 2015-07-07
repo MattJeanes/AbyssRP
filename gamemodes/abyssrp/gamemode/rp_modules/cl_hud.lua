@@ -60,7 +60,7 @@ hook.Add("HUDPaint", "RP-HUD", function()
 	surface.SetDrawColor(255,255,255,255)
 	surface.DrawTexturedRectRotated(ScrW()*0.017, ScrH()*0.925, 16, 16,0)
 
-	draw.SimpleText(RP:CC(LocalPlayer():GetTeamValue("salary")).." | "..RP:FormatTime(RP.SalaryTime), "AbyssRPHUD2", ScrW()*0.025, ScrH()*0.915, Color(255,255,255,255))
+	draw.SimpleText(RP:CC(LocalPlayer():GetTeamValue("salary")).." | "..RP:FormatTime(RP:GetSetting("salarytime",0)), "AbyssRPHUD2", ScrW()*0.025, ScrH()*0.915, Color(255,255,255,255))
 
 end)
  
