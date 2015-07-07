@@ -13,6 +13,8 @@ The gamemode utilises the following addons:
 - [FA:S 2.0 Alpha SWEPs - Pistols](http://steamcommunity.com/sharedfiles/filedetails/?id=181283903)
 - [Drugs Mod](http://steamcommunity.com/sharedfiles/filedetails/?id=112986621)
 - [TDMCars - Ford](http://steamcommunity.com/sharedfiles/filedetails/?id=113999373)
+- [Wheatley's Parkour](http://steamcommunity.com/sharedfiles/filedetails/?id=410645074)
+- [LoneWolfie Cars](http://steamcommunity.com/workshop/filedetails/?id=221591331)
 
 Without these some features may be limited.
 
