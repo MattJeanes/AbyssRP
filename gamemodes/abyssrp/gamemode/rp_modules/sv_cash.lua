@@ -39,21 +39,19 @@ end)
 
 hook.Add( "PlayerDeath", "RP-Cash", function(victim, weapon, killer)
 	if (victim:GetCash() * RP:GetSetting("cashlosspercent") > 5) and not (not RP:GetSetting("admindropcash") and victim:RP_IsAdmin()) then
-		if math.random(1,4) == 1 then
-			local ent = ents.Create("rp_cash")
-			local pos = victim:GetPos()
-			local cash = math.Round(math.Clamp(victim:GetCash() * RP:GetSetting("cashlosspercent"), 0, RP:GetSetting("maxdroppedcash")))
-			ent.Cash = cash
-			ent:SetPos(pos)
-			ent:Spawn()
-			ent:DropToFloor()
-			ent.Owner = victim
-			timer.Simple(0.5,function()
-				if IsValid(ent) and ent:IsInWorld() then
-					victim:TakeCash(cash)
-					RP:Notify(victim, RP.colors.white, "You dropped ", RP.colors.red, RP:CC(cash), RP.colors.white, " on death!")
-				end
-			end)
-		end
+		local ent = ents.Create("rp_cash")
+		local pos = victim:GetPos()
+		local cash = math.Round(math.Clamp(victim:GetCash() * RP:GetSetting("cashlosspercent"), 0, RP:GetSetting("maxdroppedcash")))
+		ent.Cash = cash
+		ent:SetPos(pos)
+		ent:Spawn()
+		ent:DropToFloor()
+		ent.Owner = victim
+		timer.Simple(0.5,function()
+			if IsValid(ent) and ent:IsInWorld() then
+				victim:TakeCash(cash)
+				RP:Notify(victim, RP.colors.white, "You dropped ", RP.colors.red, RP:CC(cash), RP.colors.white, " on death!")
+			end
+		end)
 	end
 end)
