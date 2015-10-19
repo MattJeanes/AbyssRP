@@ -251,19 +251,19 @@ RP:AddAchievement({
 })
 
 RP:AddAchievement({
-	name="But by the grace of a god",
-	id="bbtgog",
-	desc="Be on the server with Dr. Matt",   
-	reward=250,
+	name="Developers Developers Developers",
+	id="ddd",
+	desc="Be on the server with a member of the dev team for AbyssRP",   
+	reward=500,
 	func=function(a,b)
 		hook.Add("PlayerInitialSpawn", b, function(ply)
-			if ply:SteamID()=="STEAM_0:0:24831103" then 
+			if ply:SteamID()=="STEAM_0:0:24831103" or "STEAM_0:1:31884971" or "STEAM_0:0:33037550" then 
 				for k, v in pairs( player.GetAll() ) do
 					v:AddAchievement(a)
 				end
 			else
 				for k,v in pairs(player.GetAll()) do 
-					if v:SteamID()=="STEAM_0:0:24831103" then
+					if v:SteamID()=="STEAM_0:0:24831103" or "STEAM_0:1:31884971" or "STEAM_0:0:33037550" then
 						ply:AddAchievement(a)
 					end
 				end	
@@ -295,9 +295,9 @@ RP:AddAchievement({
 RP:AddAchievement({
 	name="A Few Small Steps",
 	id="afss",
-	desc="Take 500 Steps",
+	desc="Take 5000 Steps",
 	reward=200,
-	total=500,
+	total=5000,
 	func=function(a,b,c)
 		if SERVER then
 			hook.Add("PlayerFootstep", b, function(ply)
@@ -315,9 +315,9 @@ RP:AddAchievement({
 RP:AddAchievement({
 	name="Many Small Steps",
 	id="mss",
-	desc="Take 2000 Steps",
+	desc="Take 20000 Steps",
 	reward=500,
-	total=2000,
+	total=20000,
 	func=function(a,b,c)
 		if SERVER then
 			hook.Add("PlayerFootstep", b, function(ply)
@@ -335,9 +335,9 @@ RP:AddAchievement({
 RP:AddAchievement({
 	name="A Lot Of Small Steps",
 	id="aloss",
-	desc="Take 5000 Steps",
+	desc="Take 50000 Steps",
 	reward=1000,
-	total=5000,
+	total=50000,
 	func=function(a,b,c)
 		if SERVER then
 			hook.Add("PlayerFootstep", b, function(ply)
@@ -355,9 +355,9 @@ RP:AddAchievement({
 RP:AddAchievement({
 	name="A Giant Leap",
 	id="agl",
-	desc="Take 10000 Steps",
+	desc="Take 100000 Steps",
 	reward=2000,
-	total=10000,
+	total=100000,
 	func=function(a,b,c)
 		if SERVER then
 			hook.Add("PlayerFootstep", b, function(ply)
